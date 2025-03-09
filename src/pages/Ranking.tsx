@@ -7,10 +7,12 @@ import { ArrowLeft, Calendar, Timer, Trophy, Share, Film } from "lucide-react";
 import { getGameSessionById, GameSession, formatTime, formatSessionDate } from "@/utils/gameStorage";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getMovieById } from "@/services/movieService";
 
 const Ranking = () => {
   const { id } = useParams<{ id: string }>();
   const [session, setSession] = useState<GameSession | null>(null);
+  const [moviePosters, setMoviePosters] = useState<Record<string, string>>({});
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -24,6 +26,28 @@ const Ranking = () => {
     const sessionData = getGameSessionById(id);
     if (sessionData) {
       setSession(sessionData);
+      
+      // Fetch movie posters for each movie in the session
+      const fetchMoviePosters = async () => {
+        const posters: Record<string, string> = {};
+        
+        for (const movie of sessionData.movies) {
+          if (movie.imdbID) {
+            try {
+              const movieDetails = await getMovieById(movie.imdbID);
+              if (movieDetails && movieDetails.Poster && movieDetails.Poster !== "N/A") {
+                posters[movie.id] = movieDetails.Poster;
+              }
+            } catch (error) {
+              console.error(`Failed to fetch poster for movie ${movie.title}:`, error);
+            }
+          }
+        }
+        
+        setMoviePosters(posters);
+      };
+      
+      fetchMoviePosters();
     } else {
       toast({
         title: "Session not found",
@@ -198,8 +222,18 @@ const Ranking = () => {
                       key={movie.id}
                       className="flex p-4 bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
                     >
-                      <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-gray-50 mr-3">
-                        <div className="text-2xl">{movie.emojis.split(' ')[0]}</div>
+                      <div className="w-12 h-16 flex-shrink-0 mr-3 rounded-lg overflow-hidden">
+                        {moviePosters[movie.id] ? (
+                          <img 
+                            src={moviePosters[movie.id]} 
+                            alt={movie.title} 
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                            <div className="text-2xl">{movie.emojis.split(' ')[0]}</div>
+                          </div>
+                        )}
                       </div>
                       
                       <div className="flex-1">
