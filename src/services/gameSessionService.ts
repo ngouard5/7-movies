@@ -24,6 +24,11 @@ const sessionsCollection = collection(db, 'gameSessions');
 const sessionCache = new Map<string, {data: GameSession, timestamp: number}>();
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
+// Helper function to clean session IDs (remove local- prefix)
+const cleanSessionId = (id: string): string => {
+  return id.startsWith('local-') ? id.substring(6) : id;
+};
+
 // Create a new game session
 export const createGameSession = async (
   totalTime: number,
@@ -72,8 +77,8 @@ export const createGameSession = async (
   } catch (error) {
     console.error("Error creating game session:", error);
     
-    // Generate a local ID for offline fallback
-    const localId = "local-" + Date.now().toString(36);
+    // Generate a local ID for offline fallback - but WITHOUT the local- prefix in the ID
+    const localId = Date.now().toString(36);
     return localId;
   }
 };
@@ -81,15 +86,18 @@ export const createGameSession = async (
 // Get a specific game session with caching
 export const getGameSession = async (sessionId: string): Promise<GameSession | null> => {
   try {
+    // Clean the session ID
+    const cleanId = cleanSessionId(sessionId);
+    
     // Check cache first
-    const cachedSession = sessionCache.get(sessionId);
+    const cachedSession = sessionCache.get(cleanId);
     if (cachedSession && (Date.now() - cachedSession.timestamp) < CACHE_DURATION) {
-      console.log("Retrieved session from cache:", sessionId);
+      console.log("Retrieved session from cache:", cleanId);
       return cachedSession.data;
     }
     
-    console.log("Fetching session from Firestore:", sessionId);
-    const sessionDoc = await getDoc(doc(sessionsCollection, sessionId));
+    console.log("Fetching session from Firestore:", cleanId);
+    const sessionDoc = await getDoc(doc(sessionsCollection, cleanId));
     
     if (sessionDoc.exists()) {
       // Convert Firestore timestamp to ISO string
@@ -113,7 +121,7 @@ export const getGameSession = async (sessionId: string): Promise<GameSession | n
       }
       
       // Update cache
-      sessionCache.set(sessionId, {data: data as GameSession, timestamp: Date.now()});
+      sessionCache.set(cleanId, {data: data as GameSession, timestamp: Date.now()});
       
       return data as GameSession;
     }
@@ -256,7 +264,10 @@ export const subscribeToSession = (
   sessionId: string,
   callback: (session: GameSession) => void
 ) => {
-  const sessionRef = doc(sessionsCollection, sessionId);
+  // Clean the session ID
+  const cleanId = cleanSessionId(sessionId);
+  
+  const sessionRef = doc(sessionsCollection, cleanId);
   
   return onSnapshot(sessionRef, (doc) => {
     if (doc.exists()) {

@@ -83,22 +83,27 @@ const Results = () => {
       if (challengeSessionId) {
         console.log("This was a challenge response for session:", challengeSessionId);
         
+        // Clean the challenge session ID if it has a 'local-' prefix
+        const cleanChallengeId = challengeSessionId.startsWith('local-') 
+          ? challengeSessionId.substring(6) 
+          : challengeSessionId;
+        
         // Try to get the session from Firestore first
-        const firestoreSession = await getGameSession(challengeSessionId);
+        const firestoreSession = await getGameSession(cleanChallengeId);
         
         if (firestoreSession) {
           console.log("Found challenge session in Firestore:", firestoreSession);
           
           // Add participant to the Firestore session
           const added = await addParticipantToSession(
-            challengeSessionId,
+            cleanChallengeId,
             nickname,
             avatarEmoji,
             parsedTime
           );
           
-          console.log(`Added participant to Firestore session ${challengeSessionId}: ${added}`);
-          setSessionId(challengeSessionId);
+          console.log(`Added participant to Firestore session ${cleanChallengeId}: ${added}`);
+          setSessionId(cleanChallengeId);
         } else {
           // Fall back to local session if Firestore fails
           console.log("Challenge session not found in Firestore, checking local storage");
@@ -327,8 +332,13 @@ const Results = () => {
       return;
     }
     
+    // Remove any 'local-' prefix from the ID
+    const cleanId = currentSessionId.startsWith('local-') 
+      ? currentSessionId.substring(6) 
+      : currentSessionId;
+    
     // Simply share the session ID directly
-    const shareUrl = `${window.location.origin}/challenge/${currentSessionId}`;
+    const shareUrl = `${window.location.origin}/challenge/${cleanId}`;
     
     navigator.clipboard.writeText(shareUrl)
       .then(() => {
@@ -357,8 +367,14 @@ const Results = () => {
 
   const handleViewRanking = () => {
     // Use the challenge session ID if available, otherwise use the new session ID
-    const rankingSessionId = challengeSessionId || sessionId;
+    let rankingSessionId = challengeSessionId || sessionId;
+    
     if (rankingSessionId) {
+      // Remove any 'local-' prefix
+      rankingSessionId = rankingSessionId.startsWith('local-') 
+        ? rankingSessionId.substring(6) 
+        : rankingSessionId;
+        
       navigate(`/ranking/${rankingSessionId}`);
     }
   };

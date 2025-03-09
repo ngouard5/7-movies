@@ -27,8 +27,12 @@ const Ranking = () => {
     try {
       console.time('LoadSessionData');
       
+      // Strip any 'local-' prefix if it exists
+      const cleanId = id.startsWith('local-') ? id.substring(6) : id;
+      console.log("Loading session data for ID:", cleanId);
+      
       // Attempt to get session data
-      const firestoreSession = await getGameSession(id);
+      const firestoreSession = await getGameSession(cleanId);
       
       console.timeEnd('LoadSessionData');
       
@@ -45,7 +49,7 @@ const Ranking = () => {
         // Fetch movie posters in parallel
         fetchMoviePosters(firestoreSession.movies);
       } else {
-        console.error("Session not found:", id);
+        console.error("Session not found:", cleanId);
         toast.error("Session not found", {
           description: "Could not find this game session"
         });
@@ -103,8 +107,11 @@ const Ranking = () => {
   useEffect(() => {
     if (!id) return;
     
+    // Clean the ID
+    const cleanId = id.startsWith('local-') ? id.substring(6) : id;
+    
     // Set up real-time listener for this session
-    const unsubscribe = subscribeToSession(id, (updatedSession) => {
+    const unsubscribe = subscribeToSession(cleanId, (updatedSession) => {
       console.log("Real-time update received");
       
       // Ensure we have participants array properly sorted
@@ -178,4 +185,3 @@ const Ranking = () => {
 };
 
 export default Ranking;
-

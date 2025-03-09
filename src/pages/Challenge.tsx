@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
@@ -20,15 +21,16 @@ const Challenge = () => {
       setIsLoading(true);
       
       try {
-        // The ID is now directly the session ID (no need to decode)
-        console.log("Challenge session ID:", id);
+        // Strip any 'local-' prefix if it exists
+        const cleanId = id.startsWith('local-') ? id.substring(6) : id;
+        console.log("Challenge session ID:", cleanId);
         
         // Verify the session exists in Firestore
-        const firestoreSession = await getGameSession(id);
+        const firestoreSession = await getGameSession(cleanId);
         
         if (firestoreSession) {
           console.log("Found challenge session in Firestore:", firestoreSession);
-          setGameSessionId(id);
+          setGameSessionId(cleanId);
         } else {
           console.error("Challenge session not found");
           toast.error("Challenge not found", {
