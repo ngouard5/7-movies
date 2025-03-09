@@ -51,6 +51,10 @@ const Results = () => {
     navigate("/pregame");
   };
 
+  const handleGoHome = () => {
+    navigate("/");
+  };
+
   // Helper function to format time or return an empty string if time is 0
   const displayTime = (time?: number) => {
     if (!time || time === 0) {
@@ -117,12 +121,18 @@ const Results = () => {
             ))}
           </div>
 
-          <div className="flex w-full gap-2 mt-8">
+          <div className="flex w-full gap-2 mt-8 flex-col">
             <button
               className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors"
               onClick={handlePlayAgain}
             >
               Play again
+            </button>
+            <button
+              className="w-full h-14 border text-[#191919] text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08)] bg-white rounded-2xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors mt-3"
+              onClick={handleGoHome}
+            >
+              Go to homepage
             </button>
           </div>
         </div>
