@@ -343,38 +343,40 @@ export const subscribeToSession = (
   callback: (session: GameSession) => void
 ) => {
   try {
-    // Clean the session ID
+    // Clean the ID
     const cleanId = cleanSessionId(sessionId);
     
-    const sessionRef = doc(sessionsCollection, cleanId);
-    
-    return onSnapshot(sessionRef, (doc) => {
-      if (doc.exists()) {
-        const data = doc.data() as GameSession & { createdAt?: any };
-        if (data.createdAt) {
-          data.date = data.createdAt.toDate().toISOString();
-          delete data.createdAt;
-        }
-        
-        // Ensure participants are sorted
-        if (data.participants) {
-          data.participants.sort((a, b) => a.totalTime - b.totalTime);
-        } else {
-          // If no participants array, create one with the original player
-          data.participants = [{
-            id: data.id,
-            nickname: data.playerNickname,
-            avatar: data.playerAvatar,
-            totalTime: data.totalTime
-          }];
-        }
-        
-        callback(data as GameSession);
-      }
-    }, (error) => {
-      console.error("Error in session subscription:", error);
+    // Safety check for empty ID
+    if (!cleanId) {
+      console.error("Cannot subscribe to session with empty ID");
+      return () => {}; // Return no-op unsubscribe function
+    }
+
+    // Check if Firebase is in online mode
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+      console.log("Running on localhost, not subscribing to Firestore");
       
-      // If Firestore subscription fails, check localStorage once
+      // On localhost, just return a no-op
+      try {
+        // Try to fetch local session once
+        const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+        const localSession = localSessions.find((s: GameSession) => s.id === cleanId);
+        
+        if (localSession) {
+          callback(localSession);
+        }
+      } catch (localError) {
+        console.error("Error fetching from localStorage:", localError);
+      }
+      
+      return () => {};
+    }
+    
+    // Check if Firestore is available
+    if (!db) {
+      console.error("Firestore not initialized");
+      
+      // Fallback to localStorage
       try {
         const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
         const localSession = localSessions.find((s: GameSession) => s.id === cleanId);
@@ -385,9 +387,84 @@ export const subscribeToSession = (
       } catch (localError) {
         console.error("Error fetching from localStorage:", localError);
       }
-    });
+      
+      return () => {};
+    }
+
+    const sessionRef = doc(sessionsCollection, cleanId);
+    
+    try {
+      return onSnapshot(sessionRef, (doc) => {
+        if (doc.exists()) {
+          const data = doc.data() as GameSession & { createdAt?: any };
+          if (data.createdAt) {
+            data.date = data.createdAt.toDate().toISOString();
+            delete data.createdAt;
+          }
+          
+          // Ensure participants are sorted
+          if (data.participants) {
+            data.participants.sort((a, b) => a.totalTime - b.totalTime);
+          } else {
+            // If no participants array, create one with the original player
+            data.participants = [{
+              id: data.id,
+              nickname: data.playerNickname,
+              avatar: data.playerAvatar,
+              totalTime: data.totalTime
+            }];
+          }
+          
+          callback(data as GameSession);
+        }
+      }, (error) => {
+        console.error("Error in session subscription:", error);
+        
+        // If Firestore subscription fails, check localStorage once
+        try {
+          const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+          const localSession = localSessions.find((s: GameSession) => s.id === cleanId);
+          
+          if (localSession) {
+            callback(localSession);
+          }
+        } catch (localError) {
+          console.error("Error fetching from localStorage:", localError);
+        }
+      });
+    } catch (error) {
+      console.error("Error setting up onSnapshot:", error);
+      
+      // Fallback to localStorage
+      try {
+        const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+        const localSession = localSessions.find((s: GameSession) => s.id === cleanId);
+        
+        if (localSession) {
+          callback(localSession);
+        }
+      } catch (localError) {
+        console.error("Error fetching from localStorage:", localError);
+      }
+      
+      // Return a no-op unsubscribe function
+      return () => {};
+    }
   } catch (error) {
     console.error("Error setting up subscription:", error);
+    
+    // Fallback to localStorage
+    try {
+      const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+      const localSession = localSessions.find((s: GameSession) => s.id === cleanSessionId(sessionId));
+      
+      if (localSession) {
+        callback(localSession);
+      }
+    } catch (localError) {
+      console.error("Error fetching from localStorage:", localError);
+    }
+    
     // Return a no-op unsubscribe function
     return () => {};
   }

@@ -18,13 +18,14 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Flag to control whether authentication is required
+// Flag to control whether online mode is enabled
+const ONLINE_MODE_ENABLED = false;
 const AUTH_REQUIRED = false;
 
 // Helper function to ensure the user is authenticated (anonymously) if needed
 export const ensureAuthenticated = async (): Promise<User | null> => {
   // If authentication is not required, return null
-  if (!AUTH_REQUIRED) {
+  if (!AUTH_REQUIRED || !ONLINE_MODE_ENABLED) {
     return null;
   }
 
@@ -49,6 +50,11 @@ export const ensureAuthenticated = async (): Promise<User | null> => {
       reject(error);
     }
   });
+};
+
+// Helper function to check if we're in online mode
+export const isOnlineMode = (): boolean => {
+  return ONLINE_MODE_ENABLED;
 };
 
 export { db, auth };

@@ -9,12 +9,14 @@ import { SessionHeader } from "@/components/ranking/SessionHeader";
 import { SessionTabs } from "@/components/ranking/SessionTabs";
 import { getGameSession, subscribeToSession } from "@/services/gameSessionService";
 import { toast } from "sonner";
+import { isOnlineMode } from "@/services/firebase";
 
 const Ranking = () => {
   const { id } = useParams<{ id: string }>();
   const [session, setSession] = useState<GameSession | null>(null);
   const [moviePosters, setMoviePosters] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [subscriptionActive, setSubscriptionActive] = useState(false);
   const navigate = useNavigate();
 
   // Function to load session data from Firestore with optimized performance
@@ -105,26 +107,38 @@ const Ranking = () => {
 
   // Subscribe to real-time updates from Firestore
   useEffect(() => {
-    if (!id) return;
+    if (!id || !isOnlineMode() || subscriptionActive) return;
     
     // Clean the ID
     const cleanId = id.replace(/^local-/, '');
     
-    // Set up real-time listener for this session
-    const unsubscribe = subscribeToSession(cleanId, (updatedSession) => {
-      console.log("Real-time update received");
+    try {
+      // Set up real-time listener for this session
+      const unsubscribe = subscribeToSession(cleanId, (updatedSession) => {
+        console.log("Real-time update received");
+        
+        // Ensure we have participants array properly sorted
+        if (updatedSession.participants) {
+          updatedSession.participants.sort((a, b) => a.totalTime - b.totalTime);
+        }
+        
+        setSession(updatedSession);
+      });
+
+      setSubscriptionActive(true);
       
-      // Ensure we have participants array properly sorted
-      if (updatedSession.participants) {
-        updatedSession.participants.sort((a, b) => a.totalTime - b.totalTime);
-      }
-      
-      setSession(updatedSession);
-    });
-    
-    // Clean up subscription when component unmounts
-    return () => unsubscribe();
-  }, [id]);
+      // Clean up subscription when component unmounts
+      return () => {
+        unsubscribe();
+        setSubscriptionActive(false);
+      };
+    } catch (error) {
+      console.error("Failed to subscribe to session updates:", error);
+      // Don't try to subscribe again if it fails
+      setSubscriptionActive(true);
+      return () => setSubscriptionActive(false);
+    }
+  }, [id, session]);
 
   const handleBack = () => {
     navigate(-1);
