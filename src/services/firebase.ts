@@ -18,8 +18,16 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Helper function to ensure the user is authenticated (anonymously)
-export const ensureAuthenticated = async (): Promise<User> => {
+// Flag to control whether authentication is required
+const AUTH_REQUIRED = false;
+
+// Helper function to ensure the user is authenticated (anonymously) if needed
+export const ensureAuthenticated = async (): Promise<User | null> => {
+  // If authentication is not required, return null
+  if (!AUTH_REQUIRED) {
+    return null;
+  }
+
   return new Promise((resolve, reject) => {
     try {
       const unsubscribe = onAuthStateChanged(auth, (user) => {

@@ -1,4 +1,3 @@
-
 import { db } from './firebase';
 import { 
   collection, 
@@ -26,7 +25,12 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 // Helper function to clean session IDs (remove local- prefix)
 const cleanSessionId = (id: string): string => {
-  return id.startsWith('local-') ? id.substring(6) : id;
+  return id.replace(/^local-/, '');
+};
+
+// Helper function to generate a unique ID
+const generateUniqueId = (): string => {
+  return Date.now().toString(36) + Math.random().toString(36).substring(2);
 };
 
 // Create a new game session
@@ -37,11 +41,14 @@ export const createGameSession = async (
   playerAvatar: string
 ): Promise<string> => {
   try {
-    const user = await ensureAuthenticated();
+    // Try to get authenticated user, but don't require it
+    const user = await ensureAuthenticated().catch(() => null);
     
-    const sessionId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+    const sessionId = generateUniqueId();
+    const participantId = user?.uid || `anonymous-${generateUniqueId()}`;
+    
     const participant: Participant = {
-      id: user.uid,
+      id: participantId,
       nickname: playerNickname,
       avatar: playerAvatar,
       totalTime
@@ -58,12 +65,16 @@ export const createGameSession = async (
       isParticipant: true
     };
     
-    // Save to Firestore
-    await setDoc(doc(sessionsCollection, sessionId), {
-      ...session,
-      createdAt: Timestamp.now(),
-      createdBy: user.uid
-    });
+    try {
+      // Save to Firestore
+      await setDoc(doc(sessionsCollection, sessionId), {
+        ...session,
+        createdAt: Timestamp.now(),
+        createdBy: participantId
+      });
+    } catch (firestoreError) {
+      console.error("Firestore error, falling back to local storage:", firestoreError);
+    }
     
     // Also save to localStorage for offline access
     const existingSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
@@ -77,8 +88,8 @@ export const createGameSession = async (
   } catch (error) {
     console.error("Error creating game session:", error);
     
-    // Generate a local ID for offline fallback - but WITHOUT the local- prefix in the ID
-    const localId = Date.now().toString(36);
+    // Generate a local ID for offline fallback
+    const localId = generateUniqueId();
     return localId;
   }
 };
@@ -97,39 +108,61 @@ export const getGameSession = async (sessionId: string): Promise<GameSession | n
     }
     
     console.log("Fetching session from Firestore:", cleanId);
-    const sessionDoc = await getDoc(doc(sessionsCollection, cleanId));
     
-    if (sessionDoc.exists()) {
-      // Convert Firestore timestamp to ISO string
-      const data = sessionDoc.data() as GameSession & { createdAt?: any };
-      if (data.createdAt) {
-        data.date = data.createdAt.toDate().toISOString();
-        delete data.createdAt;
+    try {
+      const sessionDoc = await getDoc(doc(sessionsCollection, cleanId));
+      
+      if (sessionDoc.exists()) {
+        // Convert Firestore timestamp to ISO string
+        const data = sessionDoc.data() as GameSession & { createdAt?: any };
+        if (data.createdAt) {
+          data.date = data.createdAt.toDate().toISOString();
+          delete data.createdAt;
+        }
+        
+        // Ensure participants are sorted by time
+        if (data.participants) {
+          data.participants.sort((a, b) => a.totalTime - b.totalTime);
+        } else {
+          // If no participants array, create one with the original player
+          data.participants = [{
+            id: data.id,
+            nickname: data.playerNickname,
+            avatar: data.playerAvatar,
+            totalTime: data.totalTime
+          }];
+        }
+        
+        // Update cache
+        sessionCache.set(cleanId, {data: data as GameSession, timestamp: Date.now()});
+        
+        return data as GameSession;
       }
-      
-      // Ensure participants are sorted by time
-      if (data.participants) {
-        data.participants.sort((a, b) => a.totalTime - b.totalTime);
-      } else {
-        // If no participants array, create one with the original player
-        data.participants = [{
-          id: data.id,
-          nickname: data.playerNickname,
-          avatar: data.playerAvatar,
-          totalTime: data.totalTime
-        }];
-      }
-      
-      // Update cache
-      sessionCache.set(cleanId, {data: data as GameSession, timestamp: Date.now()});
-      
-      return data as GameSession;
+    } catch (firestoreError) {
+      console.error("Firestore error, checking localStorage:", firestoreError);
+    }
+    
+    // If not found in Firestore, check localStorage
+    const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+    const localSession = localSessions.find((s: GameSession) => s.id === cleanId);
+    
+    if (localSession) {
+      console.log("Found session in localStorage:", cleanId);
+      return localSession;
     }
     
     return null;
   } catch (error) {
     console.error("Error fetching game session:", error);
-    return null;
+    
+    // Fallback to localStorage
+    try {
+      const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+      return localSessions.find((s: GameSession) => s.id === cleanSessionId(sessionId));
+    } catch (localError) {
+      console.error("Error fetching from localStorage:", localError);
+      return null;
+    }
   }
 };
 
@@ -141,80 +174,125 @@ export const addParticipantToSession = async (
   totalTime: number
 ): Promise<boolean> => {
   try {
-    // Generate a unique participant ID if not authenticated
+    // Generate a unique participant ID
     let participantId;
     try {
       const user = await ensureAuthenticated();
-      participantId = user.uid;
+      participantId = user?.uid || `anonymous-${generateUniqueId()}`;
     } catch (error) {
       // If authentication fails, generate a random ID
-      participantId = "anon-" + Date.now().toString(36) + Math.random().toString(36).substring(2);
+      participantId = `anonymous-${generateUniqueId()}`;
     }
     
-    const sessionRef = doc(sessionsCollection, sessionId);
-    const sessionDoc = await getDoc(sessionRef);
+    // Clean the session ID
+    const cleanId = cleanSessionId(sessionId);
     
-    if (!sessionDoc.exists()) {
-      console.error(`Session with ID ${sessionId} not found in Firestore`);
-      return false;
-    }
-    
-    const sessionData = sessionDoc.data() as GameSession;
-    let participants = sessionData.participants || [];
-    
-    // Deep copy the participants array to avoid reference issues
-    participants = JSON.parse(JSON.stringify(participants));
-    
-    console.log("Original participants:", participants);
-    
-    // Check if this user has already participated
-    const existingParticipantIndex = participants.findIndex(
-      p => p.id === participantId || (p.nickname === nickname && p.avatar === avatar)
-    );
-    
-    const newParticipant: Participant = {
-      id: participantId,
-      nickname,
-      avatar,
-      totalTime
-    };
-    
-    if (existingParticipantIndex !== -1) {
-      // If existing time is better, don't update
-      if (participants[existingParticipantIndex].totalTime <= totalTime) {
-        console.log("Existing participant has better time, not updating");
+    try {
+      const sessionRef = doc(sessionsCollection, cleanId);
+      const sessionDoc = await getDoc(sessionRef);
+      
+      if (sessionDoc.exists()) {
+        const sessionData = sessionDoc.data() as GameSession;
+        let participants = sessionData.participants || [];
+        
+        // Deep copy the participants array to avoid reference issues
+        participants = JSON.parse(JSON.stringify(participants));
+        
+        console.log("Original participants:", participants);
+        
+        // Check if this user has already participated
+        const existingParticipantIndex = participants.findIndex(
+          p => p.id === participantId || (p.nickname === nickname && p.avatar === avatar)
+        );
+        
+        const newParticipant: Participant = {
+          id: participantId,
+          nickname,
+          avatar,
+          totalTime
+        };
+        
+        if (existingParticipantIndex !== -1) {
+          // If existing time is better, don't update
+          if (participants[existingParticipantIndex].totalTime <= totalTime) {
+            console.log("Existing participant has better time, not updating");
+            return true;
+          }
+          
+          // Update existing participant's time
+          console.log("Updating existing participant's time");
+          participants[existingParticipantIndex].totalTime = totalTime;
+        } else {
+          // Add new participant
+          console.log("Adding new participant");
+          participants.push(newParticipant);
+        }
+        
+        // Sort participants by total time
+        participants.sort((a, b) => a.totalTime - b.totalTime);
+        
+        console.log("Updated participants array:", participants);
+        
+        // Update in Firestore with the complete, sorted array
+        await updateDoc(sessionRef, {
+          participants: participants
+        });
+        
+        console.log("Firestore document updated successfully");
         return true;
       }
-      
-      // Update existing participant's time
-      console.log("Updating existing participant's time");
-      participants[existingParticipantIndex].totalTime = totalTime;
-    } else {
-      // Add new participant
-      console.log("Adding new participant");
-      participants.push(newParticipant);
+    } catch (firestoreError) {
+      console.error("Firestore error, falling back to localStorage:", firestoreError);
     }
     
-    // Sort participants by total time
-    participants.sort((a, b) => a.totalTime - b.totalTime);
+    // Fallback to updating localStorage
+    const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+    const sessionIndex = localSessions.findIndex((s: GameSession) => s.id === cleanId);
     
-    console.log("Updated participants array:", participants);
+    if (sessionIndex !== -1) {
+      const session = localSessions[sessionIndex];
+      
+      // Add or update participant
+      const localParticipantId = `local-${generateUniqueId()}`;
+      const participants = session.participants || [];
+      
+      const existingParticipantIndex = participants.findIndex(
+        (p: Participant) => p.nickname === nickname && p.avatar === avatar
+      );
+      
+      if (existingParticipantIndex !== -1) {
+        if (participants[existingParticipantIndex].totalTime > totalTime) {
+          participants[existingParticipantIndex].totalTime = totalTime;
+        }
+      } else {
+        participants.push({
+          id: localParticipantId,
+          nickname,
+          avatar,
+          totalTime
+        });
+      }
+      
+      // Sort participants
+      participants.sort((a: Participant, b: Participant) => a.totalTime - b.totalTime);
+      
+      // Update the session
+      session.participants = participants;
+      localSessions[sessionIndex] = session;
+      
+      // Save back to localStorage
+      localStorage.setItem('gameSessions', JSON.stringify(localSessions));
+      return true;
+    }
     
-    // Update in Firestore with the complete, sorted array
-    await updateDoc(sessionRef, {
-      participants: participants
-    });
-    
-    console.log("Firestore document updated successfully");
-    return true;
+    return false;
   } catch (error) {
     console.error("Error adding participant to session:", error);
     
-    // If Firestore fails, try to update locally
+    // Fallback to local storage
     try {
-      // Get the session from localStorage
       const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
-      const sessionIndex = localSessions.findIndex((s: GameSession) => s.id === sessionId);
+      const sessionIndex = localSessions.findIndex((s: GameSession) => s.id === cleanSessionId(sessionId));
       
       if (sessionIndex !== -1) {
         const session = localSessions[sessionIndex];
@@ -264,43 +342,66 @@ export const subscribeToSession = (
   sessionId: string,
   callback: (session: GameSession) => void
 ) => {
-  // Clean the session ID
-  const cleanId = cleanSessionId(sessionId);
-  
-  const sessionRef = doc(sessionsCollection, cleanId);
-  
-  return onSnapshot(sessionRef, (doc) => {
-    if (doc.exists()) {
-      const data = doc.data() as GameSession & { createdAt?: any };
-      if (data.createdAt) {
-        data.date = data.createdAt.toDate().toISOString();
-        delete data.createdAt;
+  try {
+    // Clean the session ID
+    const cleanId = cleanSessionId(sessionId);
+    
+    const sessionRef = doc(sessionsCollection, cleanId);
+    
+    return onSnapshot(sessionRef, (doc) => {
+      if (doc.exists()) {
+        const data = doc.data() as GameSession & { createdAt?: any };
+        if (data.createdAt) {
+          data.date = data.createdAt.toDate().toISOString();
+          delete data.createdAt;
+        }
+        
+        // Ensure participants are sorted
+        if (data.participants) {
+          data.participants.sort((a, b) => a.totalTime - b.totalTime);
+        } else {
+          // If no participants array, create one with the original player
+          data.participants = [{
+            id: data.id,
+            nickname: data.playerNickname,
+            avatar: data.playerAvatar,
+            totalTime: data.totalTime
+          }];
+        }
+        
+        callback(data as GameSession);
       }
+    }, (error) => {
+      console.error("Error in session subscription:", error);
       
-      // Ensure participants are sorted
-      if (data.participants) {
-        data.participants.sort((a, b) => a.totalTime - b.totalTime);
-      } else {
-        // If no participants array, create one with the original player
-        data.participants = [{
-          id: data.id,
-          nickname: data.playerNickname,
-          avatar: data.playerAvatar,
-          totalTime: data.totalTime
-        }];
+      // If Firestore subscription fails, check localStorage once
+      try {
+        const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+        const localSession = localSessions.find((s: GameSession) => s.id === cleanId);
+        
+        if (localSession) {
+          callback(localSession);
+        }
+      } catch (localError) {
+        console.error("Error fetching from localStorage:", localError);
       }
-      
-      callback(data as GameSession);
-    }
-  }, (error) => {
-    console.error("Error in session subscription:", error);
-  });
+    });
+  } catch (error) {
+    console.error("Error setting up subscription:", error);
+    // Return a no-op unsubscribe function
+    return () => {};
+  }
 };
 
 // Get user's participated sessions
 export const getUserSessions = async (): Promise<GameSession[]> => {
   try {
     const user = await ensureAuthenticated();
+    
+    if (!user) {
+      // If auth is disabled or failed, just return local sessions
+      throw new Error("Authentication disabled or failed");
+    }
     
     // Query sessions where the user is a participant
     const q = query(
