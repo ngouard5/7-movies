@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Check, ClipboardCopy } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { GameSession } from "@/utils/gameStorage";
 
 interface ShareButtonProps {
@@ -11,7 +11,6 @@ interface ShareButtonProps {
 
 export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) => {
   const [isCopied, setIsCopied] = useState(false);
-  const { toast } = useToast();
 
   const handleShare = () => {
     if (!session || !sessionId) return;
@@ -22,13 +21,13 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
       time: session.totalTime,
       playerNickname: session.playerNickname,
       playerAvatar: session.playerAvatar,
-      sessionId: sessionId // Important: Include the correct sessionId
+      sessionId: sessionId
     };
     
-    // Encode the challenge data directly in the URL using base64
-    const encodedData = btoa(JSON.stringify(challengeData));
+    // Use encodeURIComponent to handle special characters
+    const encodedData = encodeURIComponent(JSON.stringify(challengeData));
     
-    // Create share URL with the correct structure
+    // Create share URL with proper encoding
     const shareUrl = `${window.location.origin}/challenge/${encodedData}`;
     
     // Copy to clipboard and show visual feedback
@@ -36,10 +35,11 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
       .then(() => {
         setIsCopied(true);
         
-        // Show toast notification
-        toast({
-          title: "Lien copié !",
-          description: "L'URL du défi a été copiée dans votre presse-papiers"
+        // Use sonner toast directly
+        toast("Lien copié !", {
+          description: "L'URL du défi a été copiée dans votre presse-papiers",
+          position: "top-right",
+          duration: 3000,
         });
         
         // Reset copied state after 2 seconds
@@ -47,10 +47,11 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
       })
       .catch((error) => {
         console.error("Erreur lors de la copie:", error);
-        toast({
-          title: "Impossible de copier",
+        toast("Impossible de copier", {
           description: "Veuillez copier l'URL manuellement",
-          variant: "destructive"
+          variant: "destructive",
+          position: "top-right",
+          duration: 3000,
         });
       });
   };

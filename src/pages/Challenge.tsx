@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 interface ChallengeData {
   movies: number[];
@@ -16,7 +16,6 @@ const Challenge = () => {
   const { id } = useParams<{ id: string }>();
   const [challengeData, setChallengeData] = useState<ChallengeData | null>(null);
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   useEffect(() => {
     if (!id) {
@@ -25,19 +24,20 @@ const Challenge = () => {
     }
 
     try {
-      // Decode the challenge data from the URL
-      const decodedData = JSON.parse(atob(id));
+      // Decode the challenge data from the URL using decodeURIComponent
+      const decodedJsonString = decodeURIComponent(id);
+      const decodedData = JSON.parse(decodedJsonString);
       setChallengeData(decodedData);
     } catch (e) {
       console.error("Error parsing challenge data:", e);
-      toast({
-        title: "Invalid Challenge",
-        description: "This challenge is no longer available or is invalid",
+      toast("Défi invalide", {
+        description: "Ce défi n'est plus disponible ou est invalide",
         variant: "destructive",
+        position: "top-right",
       });
       navigate("/");
     }
-  }, [id, navigate, toast]);
+  }, [id, navigate]);
 
   const handleAcceptChallenge = () => {
     if (challengeData && challengeData.movies) {

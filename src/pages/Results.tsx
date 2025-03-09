@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { ClipboardList, Share, Timer } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { saveGameSession, formatTime } from "@/utils/gameStorage";
 
 interface MovieData {
@@ -23,10 +22,8 @@ const Results = () => {
   const [playerAvatar, setPlayerAvatar] = useState<string>("👨‍🦰");
   const [sessionId, setSessionId] = useState<string>("");
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   useEffect(() => {
-    // Load game results from localStorage
     const time = localStorage.getItem("gameTime");
     const movies = localStorage.getItem("guessedMovies");
     const nickname = localStorage.getItem("playerNickname");
@@ -49,7 +46,6 @@ const Results = () => {
       setPlayerAvatar(avatars[avatarIndex] || "👨‍🦰");
     }
 
-    // Save the game session
     if (time && movies && nickname) {
       try {
         const parsedTime = parseInt(time);
@@ -67,34 +63,31 @@ const Results = () => {
   }, []);
 
   const handleShare = () => {
-    // Create a challenge object with the necessary data
     const challengeData = {
       movies: guessedMovies.map(movie => movie.id),
       time: gameTime,
       playerNickname,
       playerAvatar,
-      sessionId  // Include the sessionId to link back to original session
+      sessionId
     };
     
-    // Encode the challenge data directly in the URL using base64
-    const encodedData = btoa(JSON.stringify(challengeData));
-    
-    // Create share URL
+    const encodedData = encodeURIComponent(JSON.stringify(challengeData));
     const shareUrl = `${window.location.origin}/challenge/${encodedData}`;
     
-    // Copy to clipboard
     navigator.clipboard.writeText(shareUrl)
       .then(() => {
-        toast({
-          title: "Link copied!",
+        toast("Link copied!", {
           description: "Challenge URL has been copied to clipboard",
+          position: "top-right",
+          duration: 3000,
         });
       })
       .catch(() => {
-        toast({
-          title: "Unable to copy",
+        toast("Unable to copy", {
           description: "Please copy the URL manually",
           variant: "destructive",
+          position: "top-right",
+          duration: 3000,
         });
       });
   };
@@ -155,7 +148,7 @@ const Results = () => {
           </div>
 
           <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto w-full">
-            {guessedMovies.map((movie, index) => (
+            {guessedMovies.map((movie) => (
               <div 
                 key={movie.id} 
                 className="flex flex-col bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
