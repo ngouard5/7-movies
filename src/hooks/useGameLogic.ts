@@ -146,10 +146,10 @@ export const useGameLogic = () => {
       }
     };
 
-    // Very short debounce timer to make search feel responsive
+    // Small debounce timer to make search responsive without too many requests
     const debounceTimer = setTimeout(() => {
       fetchSuggestions();
-    }, 150);
+    }, 300);
 
     return () => clearTimeout(debounceTimer);
   }, [searchTerm, toast]);
