@@ -209,25 +209,14 @@ export const useGameLogic = () => {
               const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
               const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
               
-              // Get the challenge data
-              const challengeInfo = localStorage.getItem(`challenge_${challengeId}`);
-              if (challengeInfo) {
-                try {
-                  const parsedChallenge = JSON.parse(challengeInfo);
-                  if (parsedChallenge.sessionId) {
-                    // Add participant to the original session
-                    addParticipantToSession(
-                      parsedChallenge.sessionId,
-                      playerNickname,
-                      playerAvatar,
-                      timer
-                    );
-                  }
-                } catch (e) {
-                  console.error("Error parsing challenge data:", e);
-                }
-              }
-            
+              // Add participant to the session identified by the challengeId
+              addParticipantToSession(
+                challengeId,
+                playerNickname,
+                playerAvatar,
+                timer
+              );
+              
               // Clear the challenge id
               localStorage.removeItem("currentChallengeId");
             }
@@ -271,24 +260,13 @@ export const useGameLogic = () => {
             const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
             const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
             
-            // Get the challenge data
-            const challengeInfo = localStorage.getItem(`challenge_${challengeId}`);
-            if (challengeInfo) {
-              try {
-                const parsedChallenge = JSON.parse(challengeInfo);
-                if (parsedChallenge.sessionId) {
-                  // Add participant to the original session
-                  addParticipantToSession(
-                    parsedChallenge.sessionId,
-                    playerNickname,
-                    playerAvatar,
-                    timer
-                  );
-                }
-              } catch (e) {
-                console.error("Error parsing challenge data:", e);
-              }
-            }
+            // Add participant to the session identified by the challengeId
+            addParticipantToSession(
+              challengeId,
+              playerNickname,
+              playerAvatar,
+              timer
+            );
             
             // Clear the challenge id
             localStorage.removeItem("currentChallengeId");

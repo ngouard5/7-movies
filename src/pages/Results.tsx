@@ -67,19 +67,20 @@ const Results = () => {
   }, []);
 
   const handleShare = () => {
-    // Generate a unique ID for this challenge
-    const challengeId = Date.now().toString(36) + Math.random().toString(36).substring(2);
-    
-    // Store the current game results in localStorage with the challenge ID
-    localStorage.setItem(`challenge_${challengeId}`, JSON.stringify({
+    // Create a challenge object with the necessary data
+    const challengeData = {
       movies: guessedMovies.map(movie => movie.id),
       time: gameTime,
       playerNickname,
-      playerAvatar
-    }));
+      playerAvatar,
+      sessionId  // Include the sessionId to link back to original session
+    };
+    
+    // Encode the challenge data directly in the URL using base64
+    const encodedData = btoa(JSON.stringify(challengeData));
     
     // Create share URL
-    const shareUrl = `${window.location.origin}/challenge/${challengeId}`;
+    const shareUrl = `${window.location.origin}/challenge/${encodedData}`;
     
     // Copy to clipboard
     navigator.clipboard.writeText(shareUrl)

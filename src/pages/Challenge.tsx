@@ -9,7 +9,7 @@ interface ChallengeData {
   time: number;
   playerNickname: string;
   playerAvatar: string;
-  sessionId?: string; // Add sessionId to link back to original session
+  sessionId?: string;
 }
 
 const Challenge = () => {
@@ -24,26 +24,15 @@ const Challenge = () => {
       return;
     }
 
-    // Load challenge data from localStorage
-    const challengeInfo = localStorage.getItem(`challenge_${id}`);
-    
-    if (challengeInfo) {
-      try {
-        const parsedData = JSON.parse(challengeInfo);
-        setChallengeData(parsedData);
-      } catch (e) {
-        console.error("Error parsing challenge data:", e);
-        toast({
-          title: "Invalid Challenge",
-          description: "This challenge is no longer available",
-          variant: "destructive",
-        });
-        navigate("/");
-      }
-    } else {
+    try {
+      // Instead of localStorage, decode the challenge data from the URL
+      const decodedData = JSON.parse(atob(id));
+      setChallengeData(decodedData);
+    } catch (e) {
+      console.error("Error parsing challenge data:", e);
       toast({
-        title: "Challenge Not Found",
-        description: "This challenge doesn't exist or has expired",
+        title: "Invalid Challenge",
+        description: "This challenge is no longer available or is invalid",
         variant: "destructive",
       });
       navigate("/");
@@ -56,8 +45,8 @@ const Challenge = () => {
       localStorage.setItem("challengeMovies", JSON.stringify(challengeData.movies));
       
       // Store the original challenge info to update ranking later
-      if (id) {
-        localStorage.setItem("currentChallengeId", id);
+      if (challengeData.sessionId) {
+        localStorage.setItem("currentChallengeId", challengeData.sessionId);
       }
       
       // Start the game
