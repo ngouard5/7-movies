@@ -1,5 +1,5 @@
+
 import React from "react";
-import { StatusBar } from "@/components/game/StatusBar";
 import { MenuButton } from "@/components/game/MenuButton";
 import { EmojiCarousel } from "@/components/game/EmojiCarousel";
 import { PlayButton } from "@/components/game/PlayButton";
@@ -14,8 +14,6 @@ const Index = () => {
       />
 
       <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
-        <StatusBar />
-
         <div className="relative">
           <BackgroundGradients />
 
@@ -52,7 +50,7 @@ const Index = () => {
           </div>
 
           <button
-            className="absolute left-2/4 -translate-x-2/4 text-xl font-bold text-[#191919] bottom-[45px] hover:text-[#E72F2F] transition-colors"
+            className="absolute left-2/4 -translate-x-2/4 text-xl font-bold text-[#191919] top-[755px] hover:text-[#E72F2F] transition-colors"
             onClick={() => console.log("How to play clicked")}
           >
             How to play
