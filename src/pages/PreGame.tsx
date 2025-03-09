@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { MenuButton } from "@/components/game/MenuButton";
 import { AvatarSelector } from "@/components/game/AvatarSelector";
 import { useToast } from "@/hooks/use-toast";
 
@@ -52,7 +52,13 @@ const PreGame = () => {
         <BackgroundGradients />
 
         <div className="absolute left-4 top-[69px]">
-          <MenuButton />
+          <button 
+            onClick={() => navigate(-1)}
+            className="w-12 h-12 flex justify-center items-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
+            aria-label="Back"
+          >
+            <ArrowLeft className="w-6 h-6 text-[#191919]" />
+          </button>
         </div>
 
         <div

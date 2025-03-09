@@ -25,6 +25,9 @@ const Game = () => {
     answerStatus
   } = useGameLogic();
 
+  // Convert boolean to string for the MovieSearchInput component
+  const wrongGuessMessage = wrongGuess ? "That's not it. Try again!" : null;
+
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
       <BackgroundGradients />
@@ -51,7 +54,7 @@ const Game = () => {
         isLoading={isLoading}
         inputRef={inputRef}
         handleGuess={handleGuess}
-        wrongGuess={wrongGuess ? "That's not it. Try again!" : null}
+        wrongGuess={wrongGuessMessage}
       />
     </main>
   );
