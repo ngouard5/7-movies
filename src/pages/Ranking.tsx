@@ -27,8 +27,8 @@ const Ranking = () => {
     try {
       console.time('LoadSessionData');
       
-      // Strip any 'local-' prefix if it exists
-      const cleanId = id.startsWith('local-') ? id.substring(6) : id;
+      // Clean the ID (remove any 'local-' prefix)
+      const cleanId = id.replace(/^local-/, '');
       console.log("Loading session data for ID:", cleanId);
       
       // Attempt to get session data
@@ -108,7 +108,7 @@ const Ranking = () => {
     if (!id) return;
     
     // Clean the ID
-    const cleanId = id.startsWith('local-') ? id.substring(6) : id;
+    const cleanId = id.replace(/^local-/, '');
     
     // Set up real-time listener for this session
     const unsubscribe = subscribeToSession(cleanId, (updatedSession) => {

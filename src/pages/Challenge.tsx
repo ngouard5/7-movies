@@ -21,8 +21,8 @@ const Challenge = () => {
       setIsLoading(true);
       
       try {
-        // Strip any 'local-' prefix if it exists
-        const cleanId = id.startsWith('local-') ? id.substring(6) : id;
+        // Clean the ID (remove any 'local-' prefix)
+        const cleanId = id.replace(/^local-/, '');
         console.log("Challenge session ID:", cleanId);
         
         // Verify the session exists in Firestore

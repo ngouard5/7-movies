@@ -6,6 +6,7 @@ import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { ArrowLeft, Calendar, Timer, Users } from "lucide-react";
 import { formatTime, formatSessionDate } from "@/utils/gameStorage";
 import { getUserSessions } from "@/services/gameSessionService";
+import { toast } from "sonner";
 
 const History = () => {
   const [sessions, setSessions] = useState<any[]>([]);
@@ -19,7 +20,7 @@ const History = () => {
         // Try to load from Firestore first
         const firestoreSessions = await getUserSessions();
         
-        if (firestoreSessions.length > 0) {
+        if (firestoreSessions && firestoreSessions.length > 0) {
           console.log("Loaded sessions from Firestore:", firestoreSessions);
           setSessions(firestoreSessions);
         } else {
@@ -31,6 +32,11 @@ const History = () => {
         }
       } catch (error) {
         console.error("Error loading sessions:", error);
+        
+        toast.error("Could not connect to cloud storage", {
+          description: "Showing local game history only",
+          duration: 3000,
+        });
         
         // Fall back to localStorage
         const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]')

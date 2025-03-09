@@ -21,17 +21,25 @@ const auth = getAuth(app);
 // Helper function to ensure the user is authenticated (anonymously)
 export const ensureAuthenticated = async (): Promise<User> => {
   return new Promise((resolve, reject) => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      unsubscribe();
-      if (user) {
-        resolve(user);
-      } else {
-        // Anonymously sign in if no user exists
-        signInAnonymously(auth)
-          .then((userCredential) => resolve(userCredential.user))
-          .catch(reject);
-      }
-    });
+    try {
+      const unsubscribe = onAuthStateChanged(auth, (user) => {
+        unsubscribe();
+        if (user) {
+          resolve(user);
+        } else {
+          // Anonymously sign in if no user exists
+          signInAnonymously(auth)
+            .then((userCredential) => resolve(userCredential.user))
+            .catch((error) => {
+              console.error("Authentication error:", error);
+              reject(error);
+            });
+        }
+      });
+    } catch (error) {
+      console.error("Authentication setup error:", error);
+      reject(error);
+    }
   });
 };
 

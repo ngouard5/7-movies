@@ -16,9 +16,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
     if (!session || !sessionId) return;
     
     // Remove any 'local-' prefix from the ID
-    const cleanId = sessionId.startsWith('local-') ? sessionId.substring(6) : sessionId;
+    const cleanId = sessionId.replace(/^local-/, '');
     
-    // Simplified: just share the session ID directly
+    // Create the share URL
     const shareUrl = `${window.location.origin}/challenge/${cleanId}`;
     
     // Copy to clipboard and show visual feedback
