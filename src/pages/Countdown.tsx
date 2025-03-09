@@ -3,9 +3,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 
+const avatars = [
+  "👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"
+];
+
 const Countdown = () => {
   const [count, setCount] = useState<number | string>(3);
   const navigate = useNavigate();
+  const nickname = localStorage.getItem("playerNickname") || "Player";
+  const avatarIndex = parseInt(localStorage.getItem("playerAvatar") || "0");
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -27,13 +33,36 @@ const Countdown = () => {
 
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full flex items-center justify-center">
-      <div className="relative w-full h-full flex items-center justify-center">
+      <div className="relative w-full h-full flex flex-col items-center justify-center">
         <BackgroundGradients />
 
-        <div className="absolute inset-0 flex items-center justify-center">
+        {/* Avatar */}
+        <div className="absolute top-[120px] flex flex-col items-center">
+          <div className="w-[100px] h-[100px] flex items-center justify-center text-[64px] bg-[#FFF2CC] border-[#FC3] border-2 rounded-full mb-6">
+            {avatars[avatarIndex]}
+          </div>
+          
+          {/* Welcome message */}
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold mb-1">Welcome {nickname}!</h2>
+            <p className="text-gray-600">The game will start in</p>
+          </div>
+        </div>
+
+        {/* Countdown animation */}
+        <div className="absolute inset-0 flex items-center justify-center mt-[120px]">
           <div className="text-[120px] font-bold text-[#E72F2F] animate-pulse">
             {count}
           </div>
+        </div>
+        
+        {/* GIF */}
+        <div className="absolute bottom-[100px] w-full flex justify-center">
+          <img 
+            src="https://media.giphy.com/media/cmzp1CfhZRkMtlCuVj/giphy.gif" 
+            alt="Countdown animation" 
+            className="w-[200px] h-auto rounded-xl"
+          />
         </div>
       </div>
     </main>
