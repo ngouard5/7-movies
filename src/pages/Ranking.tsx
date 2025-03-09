@@ -17,21 +17,23 @@ const Ranking = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Function to load session data from Firestore
+  // Function to load session data from Firestore with optimized performance
   const loadSessionData = async () => {
     if (!id) {
       navigate("/history");
       return;
     }
 
-    setIsLoading(true);
-    
     try {
-      // Get session from Firestore
+      console.time('LoadSessionData');
+      
+      // Attempt to get session data
       const firestoreSession = await getGameSession(id);
       
+      console.timeEnd('LoadSessionData');
+      
       if (firestoreSession) {
-        console.log("Loaded session data from Firestore:", firestoreSession);
+        console.log("Loaded session data:", firestoreSession);
         
         // Ensure we have participants array properly sorted
         if (firestoreSession.participants) {
@@ -40,7 +42,7 @@ const Ranking = () => {
         
         setSession(firestoreSession);
         
-        // Fetch movie posters
+        // Fetch movie posters in parallel
         fetchMoviePosters(firestoreSession.movies);
       } else {
         console.error("Session not found:", id);
@@ -60,30 +62,40 @@ const Ranking = () => {
     }
   };
   
-  // Fetch movie posters
+  // Fetch movie posters with optimized performance
   const fetchMoviePosters = async (movies: any[]) => {
     if (!movies || movies.length === 0) return;
     
-    const posters: Record<string, string> = {};
-    
-    for (const movie of movies) {
-      if (movie.imdbID) {
-        try {
-          const movieDetails = await getMovieById(movie.imdbID);
-          if (movieDetails && movieDetails.Poster && movieDetails.Poster !== "N/A") {
-            posters[movie.id] = movieDetails.Poster;
+    try {
+      console.time('FetchMoviePosters');
+      
+      const posters: Record<string, string> = {};
+      const fetchPromises = movies.map(async (movie) => {
+        if (movie.imdbID) {
+          try {
+            const movieDetails = await getMovieById(movie.imdbID);
+            if (movieDetails && movieDetails.Poster && movieDetails.Poster !== "N/A") {
+              posters[movie.id] = movieDetails.Poster;
+            }
+          } catch (error) {
+            console.error(`Failed to fetch poster for movie ${movie.title}:`, error);
           }
-        } catch (error) {
-          console.error(`Failed to fetch poster for movie ${movie.title}:`, error);
         }
-      }
+      });
+      
+      // Wait for all poster fetches to complete
+      await Promise.all(fetchPromises);
+      
+      console.timeEnd('FetchMoviePosters');
+      setMoviePosters(posters);
+    } catch (error) {
+      console.error("Error fetching movie posters:", error);
     }
-    
-    setMoviePosters(posters);
   };
 
   // Load session data on mount and when id changes
   useEffect(() => {
+    setIsLoading(true);
     loadSessionData();
   }, [id]);
 
@@ -93,7 +105,7 @@ const Ranking = () => {
     
     // Set up real-time listener for this session
     const unsubscribe = subscribeToSession(id, (updatedSession) => {
-      console.log("Real-time update received:", updatedSession);
+      console.log("Real-time update received");
       
       // Ensure we have participants array properly sorted
       if (updatedSession.participants) {
@@ -166,3 +178,4 @@ const Ranking = () => {
 };
 
 export default Ranking;
+

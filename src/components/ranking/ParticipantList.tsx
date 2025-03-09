@@ -19,10 +19,8 @@ export const ParticipantList: React.FC<ParticipantListProps> = ({ participants }
     }
   };
 
-  // Ensure participants are sorted by time (ascending)
-  const sortedParticipants = [...participants].sort((a, b) => a.totalTime - b.totalTime);
-
-  console.log("Rendering ParticipantList with sorted participants:", sortedParticipants);
+  // Participants are already sorted by time in the parent component
+  const sortedParticipants = participants;
 
   return (
     <div className="w-full">

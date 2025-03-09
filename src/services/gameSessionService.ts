@@ -20,6 +20,10 @@ import { GameSession, Participant } from '@/utils/gameStorage';
 // Collection references
 const sessionsCollection = collection(db, 'gameSessions');
 
+// Session cache to improve performance
+const sessionCache = new Map<string, {data: GameSession, timestamp: number}>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+
 // Create a new game session
 export const createGameSession = async (
   totalTime: number,
@@ -61,6 +65,9 @@ export const createGameSession = async (
     existingSessions.unshift(session);
     localStorage.setItem('gameSessions', JSON.stringify(existingSessions));
     
+    // Update the cache
+    sessionCache.set(sessionId, {data: session, timestamp: Date.now()});
+    
     return sessionId;
   } catch (error) {
     console.error("Error creating game session:", error);
@@ -71,9 +78,17 @@ export const createGameSession = async (
   }
 };
 
-// Get a specific game session
+// Get a specific game session with caching
 export const getGameSession = async (sessionId: string): Promise<GameSession | null> => {
   try {
+    // Check cache first
+    const cachedSession = sessionCache.get(sessionId);
+    if (cachedSession && (Date.now() - cachedSession.timestamp) < CACHE_DURATION) {
+      console.log("Retrieved session from cache:", sessionId);
+      return cachedSession.data;
+    }
+    
+    console.log("Fetching session from Firestore:", sessionId);
     const sessionDoc = await getDoc(doc(sessionsCollection, sessionId));
     
     if (sessionDoc.exists()) {
@@ -96,6 +111,9 @@ export const getGameSession = async (sessionId: string): Promise<GameSession | n
           totalTime: data.totalTime
         }];
       }
+      
+      // Update cache
+      sessionCache.set(sessionId, {data: data as GameSession, timestamp: Date.now()});
       
       return data as GameSession;
     }
