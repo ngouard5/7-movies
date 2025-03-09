@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { ArrowLeft, Calendar, Timer, Trophy, Share } from "lucide-react";
+import { ArrowLeft, Calendar, Timer, Trophy, Share, Film } from "lucide-react";
 import { getGameSessionById, GameSession, formatTime, formatSessionDate } from "@/utils/gameStorage";
 import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Ranking = () => {
   const { id } = useParams<{ id: string }>();
@@ -119,7 +120,7 @@ const Ranking = () => {
         <div className="absolute w-[361px] left-4 top-[134px] text-center flex flex-col items-center">
           <div className="mb-4 w-full text-left">
             <div className="text-[22px] font-bold text-[#191919]">
-              Ranking
+              Game Session
             </div>
             <div className="flex justify-between items-center mt-1">
               <div className="text-[16px] text-gray-500 flex items-center">
@@ -137,55 +138,88 @@ const Ranking = () => {
             </div>
           </div>
 
-          {/* Movie preview */}
-          <div className="w-full p-4 bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)] mb-6">
-            <div className="text-[16px] font-bold text-[#191919] mb-2">Movies</div>
-            <div className="flex flex-wrap gap-2">
-              {session.movies.map((movie) => (
-                <div 
-                  key={movie.id} 
-                  className="text-xl bg-gray-50 rounded-md px-2 py-1"
-                >
-                  {movie.emojis.split(' ')[0]}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Ranking list */}
-          <div className="w-full">
-            <div className="text-[16px] font-bold text-[#191919] mb-2 text-left">
-              Leaderboard
-            </div>
+          <Tabs defaultValue="ranking" className="w-full">
+            <TabsList className="w-full grid grid-cols-2 mb-6">
+              <TabsTrigger value="ranking" className="data-[state=active]:bg-[#E72F2F] data-[state=active]:text-white">
+                <Trophy className="h-4 w-4 mr-2" />
+                Ranking
+              </TabsTrigger>
+              <TabsTrigger value="movies" className="data-[state=active]:bg-[#E72F2F] data-[state=active]:text-white">
+                <Film className="h-4 w-4 mr-2" />
+                Movies
+              </TabsTrigger>
+            </TabsList>
             
-            <div className="flex flex-col gap-2 max-h-[400px] overflow-y-auto w-full">
-              {participants.map((participant, index) => (
-                <div 
-                  key={participant.id}
-                  className="flex items-center p-4 bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
-                >
-                  <div className={`w-8 h-8 flex items-center justify-center ${getMedalColor(index)}`}>
-                    {index < 3 ? (
-                      <Trophy className="w-6 h-6" />
-                    ) : (
-                      <div className="font-bold text-[16px]">{index + 1}</div>
-                    )}
-                  </div>
-                  
-                  <div className="ml-3 flex-1">
-                    <div className="font-bold text-[16px] text-[#191919]">
-                      {participant.avatar} {participant.nickname}
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center text-[16px] font-bold text-[#E72F2F]">
-                    <Timer className="h-4 w-4 mr-1" />
-                    {formatTime(participant.totalTime)}
-                  </div>
+            <TabsContent value="ranking" className="mt-0">
+              <div className="w-full">
+                <div className="text-[16px] font-bold text-[#191919] mb-2 text-left">
+                  Leaderboard
                 </div>
-              ))}
-            </div>
-          </div>
+                
+                <div className="flex flex-col gap-2 max-h-[500px] overflow-y-auto w-full">
+                  {participants.map((participant, index) => (
+                    <div 
+                      key={participant.id}
+                      className="flex items-center p-4 bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
+                    >
+                      <div className={`w-8 h-8 flex items-center justify-center ${getMedalColor(index)}`}>
+                        {index < 3 ? (
+                          <Trophy className="w-6 h-6" />
+                        ) : (
+                          <div className="font-bold text-[16px]">{index + 1}</div>
+                        )}
+                      </div>
+                      
+                      <div className="ml-3 flex-1">
+                        <div className="font-bold text-[16px] text-[#191919]">
+                          {participant.avatar} {participant.nickname}
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center text-[16px] font-bold text-[#E72F2F]">
+                        <Timer className="h-4 w-4 mr-1" />
+                        {formatTime(participant.totalTime)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="movies" className="mt-0">
+              <div className="w-full">
+                <div className="text-[16px] font-bold text-[#191919] mb-2 text-left">
+                  Movie List
+                </div>
+                
+                <div className="flex flex-col gap-2 max-h-[500px] overflow-y-auto w-full">
+                  {session.movies.map((movie, index) => (
+                    <div 
+                      key={movie.id}
+                      className="flex p-4 bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
+                    >
+                      <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-gray-50 mr-3">
+                        <div className="text-2xl">{movie.emojis.split(' ')[0]}</div>
+                      </div>
+                      
+                      <div className="flex-1">
+                        <div className="font-bold text-[16px] text-[#191919] text-left">
+                          {movie.title}
+                        </div>
+                        <div className="text-[14px] text-gray-500 text-left flex items-center mt-1">
+                          <div className="flex">
+                            {movie.emojis.split(' ').map((emoji, i) => (
+                              <span key={i} className="mr-1">{emoji}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </main>
