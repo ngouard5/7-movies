@@ -129,65 +129,72 @@ const Game = () => {
 
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
-      <div className="relative h-full">
-        <BackgroundGradients />
-
-        <div className="absolute left-4 top-[69px]">
-          <MenuButton />
+      <BackgroundGradients />
+      
+      {/* Header with menu button */}
+      <div className="absolute left-4 top-[69px]">
+        <MenuButton />
+      </div>
+      
+      {/* Timer */}
+      <div className="absolute right-4 top-[69px] w-[138px] h-12 flex items-center justify-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC]">
+        <div className="text-[22px] font-bold text-[#E72F2F]">
+          {formatTime(timer)}
         </div>
-
-        <div className="absolute right-4 top-[69px] w-[138px] h-12 flex items-center justify-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC]">
-          <div className="text-[22px] font-bold text-[#E72F2F]">
-            {formatTime(timer)}
-          </div>
+      </div>
+      
+      {/* Movie counter */}
+      <div className="absolute left-1/2 -translate-x-1/2 top-[134px] text-center">
+        <div className="text-[18px] font-bold text-[#191919] mb-2">
+          Movie {currentMovieIndex + 1}/{mockMovies.length}
         </div>
-
-        <div className="absolute left-2/4 -translate-x-2/4 top-[134px] text-center">
-          <div className="text-[18px] font-bold text-[#191919] mb-2">
-            Movie {currentMovieIndex + 1}/{mockMovies.length}
-          </div>
-          <div className="text-[64px]" role="img" aria-label="Movie emojis">
-            {currentMovie.emojis}
-          </div>
+      </div>
+      
+      {/* Yellow emojis section */}
+      <div className="absolute left-0 top-[180px] w-full h-[140px] bg-[#FFF2CC] border-t border-b border-[#FFCC33] flex items-center justify-center">
+        <div className="text-[64px]" role="img" aria-label="Movie emojis">
+          {currentMovie.emojis}
         </div>
-
-        <div className="absolute w-[361px] left-4 top-[323px]">
-          <div className="relative">
-            <input
-              ref={inputRef}
-              type="text"
-              className="w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid border-[#CCC] text-[18px]"
-              placeholder="Type a movie title..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              autoComplete="off"
-            />
-            
-            {suggestions.length > 0 && (
-              <div className="absolute left-0 right-0 top-[60px] bg-white border border-[#CCC] rounded-xl shadow-lg max-h-[300px] overflow-y-auto z-10">
-                {suggestions.map((movie) => (
-                  <MovieSuggestion
-                    key={movie.id}
-                    movie={movie}
-                    onClick={() => {
-                      handleGuess(movie.title);
-                      setSearchTerm("");
-                      setSuggestions([]);
-                    }}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-
-          {wrongGuess && (
-            <div className="mt-6 p-4 bg-[#FADEDE] rounded-xl border border-[#E72F2F]">
-              <p className="text-[18px] text-[#191919]">
-                It's not "<span className="font-bold">{wrongGuess}</span>", but you're not that far, go on!
-              </p>
+      </div>
+      
+      {/* Input section */}
+      <div className="absolute left-1/2 -translate-x-1/2 top-[360px] w-[361px]">
+        <div className="relative">
+          <input
+            ref={inputRef}
+            type="text"
+            className="w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid border-[#CCC] text-[18px]"
+            placeholder="Type a movie title..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            autoComplete="off"
+          />
+          
+          {suggestions.length > 0 && (
+            <div className="absolute left-0 right-0 top-[60px] bg-white border border-[#CCC] rounded-xl shadow-lg max-h-[300px] overflow-y-auto z-10">
+              {suggestions.map((movie) => (
+                <MovieSuggestion
+                  key={movie.id}
+                  movie={movie}
+                  onClick={() => {
+                    handleGuess(movie.title);
+                    setSearchTerm("");
+                    setSuggestions([]);
+                  }}
+                />
+              ))}
             </div>
           )}
         </div>
+
+        {/* Wrong guess message */}
+        {wrongGuess && (
+          <div className="mt-6 p-4 bg-[#FADEDE] rounded-xl border border-[#E72F2F]">
+            <p className="text-[18px] text-[#191919]">
+              It's not "<span className="font-bold">{wrongGuess}</span>", but you're not that far, go on!
+            </p>
+          </div>
+        )}
       </div>
     </main>
   );
