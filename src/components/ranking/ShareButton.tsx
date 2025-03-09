@@ -16,6 +16,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
     if (!session || !sessionId) return;
     
     // Create a challenge object with the necessary data
+    // Make sure we include the movie IDs so the same movies will be used
     const challengeData = {
       movies: session.movies.map(movie => movie.id),
       time: session.totalTime,
@@ -23,6 +24,8 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
       playerAvatar: session.playerAvatar,
       sessionId: sessionId
     };
+    
+    console.log("Sharing challenge with data:", challengeData);
     
     // Use encodeURIComponent to handle special characters
     const encodedData = encodeURIComponent(JSON.stringify(challengeData));

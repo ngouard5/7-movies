@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { getGameSessionById, GameSession, Participant } from "@/utils/gameStorage";
+import { getGameSessionById, GameSession } from "@/utils/gameStorage";
 import { useToast } from "@/hooks/use-toast";
 import { getMovieById } from "@/services/movieService";
 import { BackButton } from "@/components/ranking/BackButton";
@@ -27,6 +27,7 @@ const Ranking = () => {
     const sessionData = getGameSessionById(id);
     if (sessionData) {
       console.log("Loaded session data:", sessionData);
+      console.log("Participants:", sessionData.participants || []);
       setSession(sessionData);
       
       // Fetch movie posters for each movie in the session
@@ -90,7 +91,7 @@ const Ranking = () => {
     );
   }
 
-  // Sort participants by time (ascending)
+  // Ensure participants is always an array
   const participants = session.participants || [{
     id: session.id,
     nickname: session.playerNickname,
@@ -98,9 +99,10 @@ const Ranking = () => {
     totalTime: session.totalTime
   }];
   
+  // Sort participants by time (ascending)
   participants.sort((a, b) => a.totalTime - b.totalTime);
   
-  console.log("Current participants:", participants);
+  console.log("Current participants in render:", participants);
 
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">

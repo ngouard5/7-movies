@@ -27,6 +27,7 @@ const Challenge = () => {
       // Decode the challenge data from the URL using decodeURIComponent
       const decodedJsonString = decodeURIComponent(id);
       const decodedData = JSON.parse(decodedJsonString);
+      console.log("Decoded challenge data:", decodedData);
       setChallengeData(decodedData);
     } catch (e) {
       console.error("Error parsing challenge data:", e);
@@ -42,10 +43,12 @@ const Challenge = () => {
     if (challengeData && challengeData.movies) {
       // Store the movie IDs to use for this challenge
       localStorage.setItem("challengeMovies", JSON.stringify(challengeData.movies));
+      console.log("Stored challenge movies:", challengeData.movies);
       
       // Store the original challenge info to update ranking later
       if (challengeData.sessionId) {
         localStorage.setItem("currentChallengeId", challengeData.sessionId);
+        console.log("Stored challenge session ID:", challengeData.sessionId);
       }
       
       // Start the game

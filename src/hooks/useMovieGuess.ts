@@ -6,7 +6,7 @@ import { getMovieById } from "@/services/movieService";
 import { MovieEmoji } from "@/data/movieEmojis";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
 import { MovieData } from "@/types/gameTypes";
-import { addParticipantToSession } from "@/utils/gameStorage";
+import { addParticipantToSession, getGameSessionById } from "@/utils/gameStorage";
 
 type AnswerStatus = "default" | "correct" | "wrong";
 
@@ -88,7 +88,6 @@ export const useMovieGuess = ({
             handleGameCompletion(updatedGuessedMovies);
           } else {
             // Move to next movie
-            // Fix: Pass a number directly instead of a function
             setCurrentMovieIndex(currentMovieIndex + 1);
           }
         }, 800); // Short delay to show the green color
@@ -112,7 +111,6 @@ export const useMovieGuess = ({
           handleGameCompletion(updatedGuessedMovies);
         } else {
           // Move to next movie
-          // Fix: Pass a number directly instead of a function
           setCurrentMovieIndex(currentMovieIndex + 1);
         }
       }
@@ -141,21 +139,34 @@ export const useMovieGuess = ({
   const handleGameCompletion = (updatedGuessedMovies: MovieData[]) => {
     if (timerRef.current) clearInterval(timerRef.current);
     
+    // Get player info
+    const playerNickname = localStorage.getItem("playerNickname") || "Player";
+    const avatarIndex = parseInt(localStorage.getItem("playerAvatar") || "0");
+    const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
+    const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
+    
     // Check if this was a challenge response
     if (isChallenge && challengeId) {
-      // Get player info
-      const playerNickname = localStorage.getItem("playerNickname") || "Player";
-      const avatarIndex = parseInt(localStorage.getItem("playerAvatar") || "0");
-      const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
-      const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
+      console.log(`Game completed for challenge ${challengeId} with time ${timer}`);
       
-      // Add participant to the session identified by the challengeId
-      addParticipantToSession(
-        challengeId,
-        playerNickname,
-        playerAvatar,
-        timer
-      );
+      // Get the original session to check if it exists
+      const originalSession = getGameSessionById(challengeId);
+      
+      if (originalSession) {
+        console.log("Found challenge session:", originalSession);
+        
+        // Add participant to the session identified by the challengeId
+        const added = addParticipantToSession(
+          challengeId,
+          playerNickname,
+          playerAvatar,
+          timer
+        );
+        
+        console.log(`Added participant to session ${challengeId}: ${added}`);
+      } else {
+        console.error(`Challenge session ${challengeId} not found`);
+      }
       
       // Clear the challenge id
       localStorage.removeItem("currentChallengeId");

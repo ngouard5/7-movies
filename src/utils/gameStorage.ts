@@ -88,7 +88,10 @@ export const addParticipantToSession = (
   const sessions = getGameSessions();
   const sessionIndex = sessions.findIndex(session => session.id === sessionId);
   
-  if (sessionIndex === -1) return false;
+  if (sessionIndex === -1) {
+    console.error(`Session with ID ${sessionId} not found`);
+    return false;
+  }
   
   const participantId = Date.now().toString(36) + Math.random().toString(36).substring(2);
   
@@ -96,18 +99,24 @@ export const addParticipantToSession = (
     sessions[sessionIndex].participants = [];
   }
   
-  // Check if a participant with the same nickname and avatar already exists
-  const existingParticipant = sessions[sessionIndex].participants!.find(
+  // Debug log
+  console.log("Current participants before adding new one:", 
+    sessions[sessionIndex].participants);
+  
+  // Check if a participant with the same nickname already exists
+  const existingParticipantIndex = sessions[sessionIndex].participants!.findIndex(
     p => p.nickname === nickname && p.avatar === avatar
   );
   
-  if (existingParticipant) {
+  if (existingParticipantIndex !== -1) {
     // Update the existing participant's time if the new time is better
-    if (totalTime < existingParticipant.totalTime) {
-      existingParticipant.totalTime = totalTime;
+    if (totalTime < sessions[sessionIndex].participants![existingParticipantIndex].totalTime) {
+      console.log(`Updating existing participant ${nickname}'s time from ${sessions[sessionIndex].participants![existingParticipantIndex].totalTime} to ${totalTime}`);
+      sessions[sessionIndex].participants![existingParticipantIndex].totalTime = totalTime;
     }
   } else {
     // Add new participant
+    console.log(`Adding new participant ${nickname} with time ${totalTime}`);
     sessions[sessionIndex].participants!.push({
       id: participantId,
       nickname,
@@ -119,8 +128,15 @@ export const addParticipantToSession = (
   // Sort participants by total time (ascending)
   sessions[sessionIndex].participants!.sort((a, b) => a.totalTime - b.totalTime);
   
-  // Mark this session as one the user participated in
-  sessions[sessionIndex].isParticipant = true;
+  // Debug log
+  console.log("Updated participants after adding/updating:", 
+    sessions[sessionIndex].participants);
+  
+  // Mark this session as participated in
+  // Create a deep copy to make sure the changes are detected when saving
+  const updatedSession = JSON.parse(JSON.stringify(sessions[sessionIndex]));
+  updatedSession.isParticipant = true;
+  sessions[sessionIndex] = updatedSession;
   
   // Save updated sessions
   localStorage.setItem('gameSessions', JSON.stringify(sessions));
