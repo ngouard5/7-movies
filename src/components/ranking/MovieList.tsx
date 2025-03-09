@@ -1,6 +1,6 @@
 
 import React from "react";
-import { MovieData } from "@/hooks/useGameLogic";
+import { MovieData } from "@/types/gameTypes";
 
 interface MovieListProps {
   movies: MovieData[];
