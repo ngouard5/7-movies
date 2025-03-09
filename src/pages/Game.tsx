@@ -7,7 +7,6 @@ import { MovieCounter } from "@/components/game/MovieCounter";
 import { EmojiDisplay } from "@/components/game/EmojiDisplay";
 import { MovieSearchInput } from "@/components/game/MovieSearchInput";
 import { useGameLogic } from "@/hooks/useGameLogic";
-import { movieEmojis } from "@/data/movieEmojis";
 
 const Game = () => {
   const {
@@ -21,7 +20,8 @@ const Game = () => {
     inputRef,
     currentMovie,
     handleGuess,
-    formatTime
+    formatTime,
+    totalMovies
   } = useGameLogic();
 
   return (
@@ -37,7 +37,7 @@ const Game = () => {
       <GameTimer timer={timer} formatTime={formatTime} />
       
       {/* Movie counter */}
-      <MovieCounter currentIndex={currentMovieIndex} totalMovies={movieEmojis.length} />
+      <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
       
       {/* Yellow emojis section */}
       <EmojiDisplay emojis={currentMovie.emojis} />

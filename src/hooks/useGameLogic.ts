@@ -14,7 +14,23 @@ export interface MovieData {
   guessTime?: number; // Added to track time for each movie
 }
 
+// Helper function to shuffle array
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 export const useGameLogic = () => {
+  // Get 7 random movies for this game session
+  const [gameMovies, setGameMovies] = useState<MovieEmoji[]>(() => {
+    // Shuffle the array and take the first 7 elements
+    return shuffleArray(movieEmojis).slice(0, 7);
+  });
+  
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<MovieSearchResult[]>([]);
@@ -82,7 +98,7 @@ export const useGameLogic = () => {
   }, [searchTerm, toast]);
 
   const handleGuess = async (movieTitle: string) => {
-    const currentMovie = movieEmojis[currentMovieIndex];
+    const currentMovie = gameMovies[currentMovieIndex];
     
     if (movieTitle.toLowerCase() === currentMovie.title.toLowerCase()) {
       // Correct guess
@@ -109,7 +125,7 @@ export const useGameLogic = () => {
       setSearchTerm("");
       setWrongGuess(null);
       
-      if (currentMovieIndex === movieEmojis.length - 1) {
+      if (currentMovieIndex === gameMovies.length - 1) {
         // Game completed
         if (timerRef.current) clearInterval(timerRef.current);
         
@@ -147,7 +163,7 @@ export const useGameLogic = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const currentMovie = movieEmojis[currentMovieIndex];
+  const currentMovie = gameMovies[currentMovieIndex];
 
   return {
     currentMovieIndex,
@@ -160,6 +176,7 @@ export const useGameLogic = () => {
     inputRef,
     currentMovie,
     handleGuess,
-    formatTime
+    formatTime,
+    totalMovies: gameMovies.length
   };
 };
