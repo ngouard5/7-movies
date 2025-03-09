@@ -1,0 +1,138 @@
+
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { MenuButton } from "@/components/game/MenuButton";
+import { BackgroundGradients } from "@/components/game/BackgroundGradients";
+import { Share } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+
+interface MovieData {
+  id: number;
+  emojis: string;
+  title: string;
+  year: number;
+  image: string;
+}
+
+const Results = () => {
+  const [gameTime, setGameTime] = useState<number>(0);
+  const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
+  const [playerNickname, setPlayerNickname] = useState<string>("");
+  const [playerAvatar, setPlayerAvatar] = useState<string>("👨‍🦰");
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Load game results from localStorage
+    const time = localStorage.getItem("gameTime");
+    const movies = localStorage.getItem("guessedMovies");
+    const nickname = localStorage.getItem("playerNickname");
+    const avatar = localStorage.getItem("playerAvatar");
+
+    if (time) setGameTime(parseInt(time));
+    if (movies) setGuessedMovies(JSON.parse(movies));
+    if (nickname) setPlayerNickname(nickname);
+    if (avatar) {
+      const avatarIndex = parseInt(avatar);
+      const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
+      setPlayerAvatar(avatars[avatarIndex] || "👨‍🦰");
+    }
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleShare = () => {
+    // Generate share URL (this would be a unique URL for challenging friends)
+    const shareUrl = `${window.location.origin}/challenge/${Date.now()}`;
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(shareUrl)
+      .then(() => {
+        toast({
+          title: "Link copied!",
+          description: "Challenge URL has been copied to clipboard",
+        });
+      })
+      .catch(() => {
+        toast({
+          title: "Unable to copy",
+          description: "Please copy the URL manually",
+          variant: "destructive",
+        });
+      });
+  };
+
+  const handlePlayAgain = () => {
+    navigate("/");
+  };
+
+  return (
+    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
+      <div className="relative h-full pb-8">
+        <BackgroundGradients />
+
+        <div className="absolute left-4 top-[69px]">
+          <MenuButton />
+        </div>
+
+        <div className="absolute w-[361px] left-4 top-[134px] text-center">
+          <div className="mb-6">
+            <div className="text-[22px] font-bold text-[#191919]">
+              {playerAvatar} {playerNickname}'s score
+            </div>
+            <div className="text-[64px] font-bold text-[#E72F2F] mt-2">
+              {formatTime(gameTime)}
+            </div>
+          </div>
+
+          <button
+            className="flex items-center justify-center mx-auto mb-6 px-4 h-12 border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
+            onClick={handleShare}
+          >
+            <Share className="w-5 h-5 mr-2 text-[#E72F2F]" />
+            <span className="text-[16px] font-bold text-[#191919]">
+              Challenge your friends
+            </span>
+          </button>
+
+          <div className="text-[18px] font-bold text-[#191919] mb-4 text-left">
+            The movies you guessed:
+          </div>
+
+          <div className="flex flex-col gap-4 max-h-[350px] overflow-y-auto">
+            {guessedMovies.map((movie, index) => (
+              <div 
+                key={movie.id} 
+                className="flex items-center p-3 bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
+              >
+                <img
+                  src={movie.image || "/placeholder.svg"}
+                  alt={movie.title}
+                  className="w-12 h-[68px] rounded object-cover mr-3"
+                />
+                <div className="flex-1 text-left">
+                  <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
+                  <div className="text-[14px] text-gray-500">{movie.year}</div>
+                </div>
+                <div className="text-2xl">{movie.emojis.split(" ")[0]}</div>
+              </div>
+            ))}
+          </div>
+
+          <button
+            className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors mt-8"
+            onClick={handlePlayAgain}
+          >
+            Play again
+          </button>
+        </div>
+      </div>
+    </main>
+  );
+};
+
+export default Results;
