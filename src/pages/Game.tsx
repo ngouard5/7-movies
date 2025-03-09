@@ -28,7 +28,7 @@ const Game = () => {
   const wrongGuessMessage = wrongGuess ? "That's not it. Try again!" : null;
 
   return (
-    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
+    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0">
       <BackgroundGradients />
       
       {/* Timer */}
