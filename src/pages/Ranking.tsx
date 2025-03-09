@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { ArrowLeft, Calendar, Timer, Trophy, Share, Film } from "lucide-react";
+import { ArrowLeft, Calendar, Timer, Trophy, Share, Film, Check, ClipboardCopy } from "lucide-react";
 import { getGameSessionById, GameSession, formatTime, formatSessionDate } from "@/utils/gameStorage";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,6 +13,7 @@ const Ranking = () => {
   const { id } = useParams<{ id: string }>();
   const [session, setSession] = useState<GameSession | null>(null);
   const [moviePosters, setMoviePosters] = useState<Record<string, string>>({});
+  const [isCopied, setIsCopied] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -80,18 +81,24 @@ const Ranking = () => {
     // Create share URL
     const shareUrl = `${window.location.origin}/challenge/${encodedData}`;
     
-    // Copy to clipboard
+    // Copy to clipboard and show visual feedback
     navigator.clipboard.writeText(shareUrl)
       .then(() => {
+        setIsCopied(true);
+        
+        // Show toast notification
         toast({
-          title: "Link copied!",
-          description: "Challenge URL has been copied to clipboard",
+          title: "Lien copié !",
+          description: "L'URL du défi a été copiée dans votre presse-papiers",
         });
+        
+        // Reset copied state after 2 seconds
+        setTimeout(() => setIsCopied(false), 2000);
       })
       .catch(() => {
         toast({
-          title: "Unable to copy",
-          description: "Please copy the URL manually",
+          title: "Impossible de copier",
+          description: "Veuillez copier l'URL manuellement",
           variant: "destructive",
         });
       });
@@ -155,10 +162,19 @@ const Ranking = () => {
               
               <button
                 onClick={handleShare}
-                className="flex items-center text-[#E72F2F] text-[14px] font-medium"
+                className="flex items-center text-[#E72F2F] text-[14px] font-medium px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors"
               >
-                <Share className="h-4 w-4 mr-1" />
-                Share Challenge
+                {isCopied ? (
+                  <>
+                    <Check className="h-4 w-4 mr-1" />
+                    Copié !
+                  </>
+                ) : (
+                  <>
+                    <ClipboardCopy className="h-4 w-4 mr-1" />
+                    Partager le défi
+                  </>
+                )}
               </button>
             </div>
           </div>
