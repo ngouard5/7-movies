@@ -1,9 +1,11 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { Share, Timer } from "lucide-react";
+import { ClipboardList, Share, Timer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { saveGameSession, formatTime } from "@/utils/gameStorage";
 
 interface MovieData {
   id: number;
@@ -19,6 +21,7 @@ const Results = () => {
   const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
   const [playerNickname, setPlayerNickname] = useState<string>("");
   const [playerAvatar, setPlayerAvatar] = useState<string>("👨‍🦰");
+  const [sessionId, setSessionId] = useState<string>("");
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -45,14 +48,23 @@ const Results = () => {
       const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
       setPlayerAvatar(avatars[avatarIndex] || "👨‍🦰");
     }
-  }, []);
 
-  const formatTime = (seconds: number | undefined) => {
-    if (seconds === undefined || isNaN(seconds)) return "00:00";
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
+    // Save the game session
+    if (time && movies && nickname) {
+      try {
+        const parsedTime = parseInt(time);
+        const parsedMovies = JSON.parse(movies);
+        const avatarEmoji = avatar 
+          ? (["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"][parseInt(avatar)] || "👨‍🦰")
+          : "👨‍🦰";
+        
+        const newSessionId = saveGameSession(parsedTime, parsedMovies, nickname, avatarEmoji);
+        setSessionId(newSessionId);
+      } catch (e) {
+        console.error("Error saving game session:", e);
+      }
+    }
+  }, []);
 
   const handleShare = () => {
     // Generate a unique ID for this challenge
@@ -84,13 +96,20 @@ const Results = () => {
           variant: "destructive",
         });
       });
-    
-    // Remove the navigation to the challenge page
-    // navigate(`/challenge/${challengeId}`); <-- This line is removed
   };
 
   const handlePlayAgain = () => {
     navigate("/");
+  };
+
+  const handleViewHistory = () => {
+    navigate("/history");
+  };
+
+  const handleViewRanking = () => {
+    if (sessionId) {
+      navigate(`/ranking/${sessionId}`);
+    }
   };
 
   return (
@@ -112,15 +131,27 @@ const Results = () => {
             </div>
           </div>
 
-          <button
-            className="flex items-center justify-center w-full mb-6 px-4 h-12 border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
-            onClick={handleShare}
-          >
-            <Share className="w-5 h-5 mr-2 text-[#E72F2F]" />
-            <span className="text-[16px] font-bold text-[#191919]">
-              Challenge your friends
-            </span>
-          </button>
+          <div className="flex gap-2 w-full mb-6">
+            <button
+              className="flex-1 flex items-center justify-center px-4 h-12 border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
+              onClick={handleShare}
+            >
+              <Share className="w-5 h-5 mr-2 text-[#E72F2F]" />
+              <span className="text-[16px] font-bold text-[#191919]">
+                Challenge
+              </span>
+            </button>
+            
+            <button
+              className="flex-1 flex items-center justify-center px-4 h-12 border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
+              onClick={handleViewRanking}
+            >
+              <ClipboardList className="w-5 h-5 mr-2 text-[#E72F2F]" />
+              <span className="text-[16px] font-bold text-[#191919]">
+                Ranking
+              </span>
+            </button>
+          </div>
 
           <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto w-full">
             {guessedMovies.map((movie, index) => (
@@ -138,7 +169,7 @@ const Results = () => {
                     <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
                     <div className="flex items-center text-[14px] text-gray-500">
                       <Timer className="h-3.5 w-3.5 mr-1 inline" />
-                      {formatTime(movie.guessTime)}
+                      {formatTime(movie.guessTime || 0)}
                     </div>
                   </div>
                 </div>
@@ -149,12 +180,21 @@ const Results = () => {
             ))}
           </div>
 
-          <button
-            className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors mt-8"
-            onClick={handlePlayAgain}
-          >
-            Play again
-          </button>
+          <div className="flex w-full gap-2 mt-8">
+            <button
+              className="flex-1 h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors"
+              onClick={handlePlayAgain}
+            >
+              Play again
+            </button>
+            
+            <button
+              className="flex-1 h-14 border text-[#191919] text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-2xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
+              onClick={handleViewHistory}
+            >
+              History
+            </button>
+          </div>
         </div>
       </div>
     </main>

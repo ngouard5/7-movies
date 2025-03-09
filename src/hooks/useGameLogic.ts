@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { searchMovies, MovieSearchResult, getMovieById } from "@/services/movieService";
 import { movieEmojis, MovieEmoji } from "@/data/movieEmojis";
+import { addParticipantToSession } from "@/utils/gameStorage";
 
 export interface MovieData {
   id: number;
@@ -60,10 +61,22 @@ export const useGameLogic = () => {
   const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
   const [wrongGuess, setWrongGuess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isChallenge, setIsChallenge] = useState(false);
+  const [challengeId, setChallengeId] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Check if this is a challenge response
+  useEffect(() => {
+    const currentChallengeId = localStorage.getItem("currentChallengeId");
+    if (currentChallengeId) {
+      setIsChallenge(true);
+      setChallengeId(currentChallengeId);
+      // Don't remove it yet, we'll need it when the game is over
+    }
+  }, []);
 
   // Start timer when component mounts
   useEffect(() => {
@@ -155,6 +168,37 @@ export const useGameLogic = () => {
           // Game completed
           if (timerRef.current) clearInterval(timerRef.current);
           
+          // Check if this was a challenge response
+          if (isChallenge && challengeId) {
+            // Get player info
+            const playerNickname = localStorage.getItem("playerNickname") || "Player";
+            const avatarIndex = parseInt(localStorage.getItem("playerAvatar") || "0");
+            const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
+            const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
+            
+            // Get the challenge data
+            const challengeInfo = localStorage.getItem(`challenge_${challengeId}`);
+            if (challengeInfo) {
+              try {
+                const parsedChallenge = JSON.parse(challengeInfo);
+                if (parsedChallenge.sessionId) {
+                  // Add participant to the original session
+                  addParticipantToSession(
+                    parsedChallenge.sessionId,
+                    playerNickname,
+                    playerAvatar,
+                    timer
+                  );
+                }
+              } catch (e) {
+                console.error("Error parsing challenge data:", e);
+              }
+            }
+            
+            // Clear the challenge id
+            localStorage.removeItem("currentChallengeId");
+          }
+          
           // Save results to localStorage
           localStorage.setItem("gameTime", timer.toString());
           localStorage.setItem("guessedMovies", JSON.stringify(updatedGuessedMovies));
@@ -183,6 +227,37 @@ export const useGameLogic = () => {
         if (currentMovieIndex === gameMovies.length - 1) {
           // Game completed
           if (timerRef.current) clearInterval(timerRef.current);
+          
+          // Check if this was a challenge response
+          if (isChallenge && challengeId) {
+            // Get player info
+            const playerNickname = localStorage.getItem("playerNickname") || "Player";
+            const avatarIndex = parseInt(localStorage.getItem("playerAvatar") || "0");
+            const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
+            const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
+            
+            // Get the challenge data
+            const challengeInfo = localStorage.getItem(`challenge_${challengeId}`);
+            if (challengeInfo) {
+              try {
+                const parsedChallenge = JSON.parse(challengeInfo);
+                if (parsedChallenge.sessionId) {
+                  // Add participant to the original session
+                  addParticipantToSession(
+                    parsedChallenge.sessionId,
+                    playerNickname,
+                    playerAvatar,
+                    timer
+                  );
+                }
+              } catch (e) {
+                console.error("Error parsing challenge data:", e);
+              }
+            }
+            
+            // Clear the challenge id
+            localStorage.removeItem("currentChallengeId");
+          }
           
           // Save results to localStorage
           localStorage.setItem("gameTime", timer.toString());

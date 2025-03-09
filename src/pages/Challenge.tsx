@@ -9,6 +9,7 @@ interface ChallengeData {
   time: number;
   playerNickname: string;
   playerAvatar: string;
+  sessionId?: string; // Add sessionId to link back to original session
 }
 
 const Challenge = () => {
@@ -53,6 +54,11 @@ const Challenge = () => {
     if (challengeData && challengeData.movies) {
       // Store the movie IDs to use for this challenge
       localStorage.setItem("challengeMovies", JSON.stringify(challengeData.movies));
+      
+      // Store the original challenge info to update ranking later
+      if (id) {
+        localStorage.setItem("currentChallengeId", id);
+      }
       
       // Start the game
       navigate("/pregame");
