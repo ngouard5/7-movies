@@ -11,7 +11,7 @@ export type { MovieData } from "@/types/gameTypes";
 export const useGameLogic = () => {
   const [gameMovies, setGameMovies] = useState<any[]>(() => {
     // Always get random movies
-    return getGameMovies(movieEmojis, 1);
+    return getGameMovies(movieEmojis, 7);
   });
   
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
@@ -34,7 +34,9 @@ export const useGameLogic = () => {
   const { 
     wrongGuess, 
     answerStatus, 
-    handleGuess 
+    handleGuess,
+    showHint,
+    hint
   } = useMovieGuess({
     gameMovies,
     currentMovieIndex,
@@ -85,6 +87,8 @@ export const useGameLogic = () => {
     handleGuess,
     formatTime: formatGameTime,
     totalMovies: gameMovies.length,
-    answerStatus
+    answerStatus,
+    showHint,
+    hint
   };
 };

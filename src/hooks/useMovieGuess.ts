@@ -1,6 +1,7 @@
 
 import { useState, useCallback } from "react";
 import { MovieData } from "@/types/gameTypes";
+import { getRandomErrorMessage } from "@/utils/movieUtils";
 
 interface UseMovieGuessProps {
   gameMovies: MovieData[];
@@ -25,6 +26,21 @@ export const useMovieGuess = ({
 }: UseMovieGuessProps) => {
   const [wrongGuess, setWrongGuess] = useState(false);
   const [answerStatus, setAnswerStatus] = useState<"wrong" | "correct" | null>(null);
+  const [showHint, setShowHint] = useState(false);
+  const [errorCount, setErrorCount] = useState(0);
+  const [hint, setHint] = useState("");
+
+  // Generate a hint for the current movie
+  const generateHint = useCallback((title: string) => {
+    // Extract first letter of the movie
+    const firstLetter = title.charAt(0);
+    
+    // Count total words
+    const wordCount = title.split(" ").length;
+    
+    // Create hint text
+    return `Hint: Title starts with "${firstLetter}" and has ${wordCount} word${wordCount > 1 ? 's' : ''}.`;
+  }, []);
 
   // Functions
   const handleGuess = useCallback(
@@ -43,8 +59,10 @@ export const useMovieGuess = ({
         setAnswerStatus("correct");
         setGuessedMovies((prev) => [...prev, updatedMovie]);
 
-        // Reset wrong guess state
+        // Reset wrong guess state and hint
         setWrongGuess(false);
+        setShowHint(false);
+        setErrorCount(0);
 
         // Move to next movie or finish game
         if (currentMovieIndex < gameMovies.length - 1) {
@@ -74,6 +92,20 @@ export const useMovieGuess = ({
         // Wrong guess
         setWrongGuess(true);
         setAnswerStatus("wrong");
+        
+        // Increment error count
+        const newErrorCount = errorCount + 1;
+        setErrorCount(newErrorCount);
+        
+        // Show hint after first error
+        if (newErrorCount === 1) {
+          setShowHint(true);
+          setHint(generateHint(currentMovie.title));
+        } else {
+          // Generate a random error message for subsequent errors
+          setWrongGuess(true);
+          setHint(getRandomErrorMessage(currentMovie.title));
+        }
 
         // Reset the answer status after a short delay
         setTimeout(() => {
@@ -89,7 +121,9 @@ export const useMovieGuess = ({
       movieStartTime,
       guessedMovies,
       setGuessedMovies,
-      timerRef
+      timerRef,
+      errorCount,
+      generateHint
     ]
   );
 
@@ -97,5 +131,7 @@ export const useMovieGuess = ({
     wrongGuess,
     answerStatus,
     handleGuess,
+    showHint,
+    hint
   };
 };

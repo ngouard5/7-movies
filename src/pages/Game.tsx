@@ -21,11 +21,13 @@ const Game = () => {
     handleGuess,
     formatTime,
     totalMovies,
-    answerStatus
+    answerStatus,
+    showHint,
+    hint
   } = useGameLogic();
 
   // Convert boolean to string for the MovieSearchInput component
-  const wrongGuessMessage = wrongGuess ? "That's not it. Try again!" : null;
+  const wrongGuessMessage = wrongGuess ? hint || "That's not it. Try again!" : null;
 
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0">
@@ -49,6 +51,7 @@ const Game = () => {
         inputRef={inputRef}
         handleGuess={handleGuess}
         wrongGuess={wrongGuessMessage}
+        showHint={showHint}
       />
     </main>
   );

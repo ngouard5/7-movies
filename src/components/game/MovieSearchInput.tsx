@@ -11,6 +11,7 @@ interface MovieSearchInputProps {
   inputRef: React.RefObject<HTMLInputElement>;
   handleGuess: (movieTitle: string) => void;
   wrongGuess: string | null;
+  showHint?: boolean;
 }
 
 export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
@@ -21,6 +22,7 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
   inputRef,
   handleGuess,
   wrongGuess,
+  showHint = false,
 }) => {
   return (
     <div className="absolute left-1/2 -translate-x-1/2 top-[360px] w-[361px]">
@@ -62,9 +64,9 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
         )}
       </div>
 
-      {/* Wrong guess message */}
+      {/* Wrong guess message or hint */}
       {wrongGuess && (
-        <div className="mt-6 p-4 bg-[#FADEDE] rounded-xl border border-[#E72F2F]">
+        <div className={`mt-6 p-4 rounded-xl border ${showHint ? 'bg-[#FFF8E0] border-[#F0C000]' : 'bg-[#FADEDE] border-[#E72F2F]'}`}>
           <p className="text-[18px] text-[#191919]">{wrongGuess}</p>
         </div>
       )}
