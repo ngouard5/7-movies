@@ -17,7 +17,8 @@ export const getRandomErrorMessage = (movieTitle: string): string => {
 };
 
 // Function to get a subset of movies for the game
-export const getGameMovies = (allMovies: any[], count: number = 5) => {
+// Changed default from 5 to 1
+export const getGameMovies = (allMovies: any[], count: number = 1) => {
   // Shuffle the array of movies
   const shuffled = [...allMovies].sort(() => 0.5 - Math.random());
   

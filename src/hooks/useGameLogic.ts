@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { movieEmojis } from "@/data/movieEmojis";
 import { MovieData } from "@/types/gameTypes";
@@ -36,7 +35,8 @@ export const useGameLogic = () => {
     }
     
     // Default to random movies if no challenge or if there was an error
-    return getGameMovies(movieEmojis, 5);
+    // Changed from 5 to 1 movie
+    return getGameMovies(movieEmojis, 1);
   });
   
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
