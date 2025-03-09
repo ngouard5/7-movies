@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { toast } from "sonner";
+import { saveSharedGameSession } from "@/utils/gameStorage";
 
 interface ChallengeData {
   movies: number[];
@@ -29,6 +30,37 @@ const Challenge = () => {
       const decodedData = JSON.parse(decodedJsonString);
       console.log("Decoded challenge data:", decodedData);
       setChallengeData(decodedData);
+      
+      // Check if we have a shared session in sessionStorage
+      const sharedSession = sessionStorage.getItem(`shared_session_${decodedData.sessionId}`);
+      if (!sharedSession) {
+        // Fetch the original session data if available (e.g., from a database in a real app)
+        // Here we're using a mock approach since we don't have a real backend
+        console.log("No shared session found, creating a new one");
+        
+        // Create a blank session stub with the challenge data
+        // We'll fill in more details as we go
+        const sessionStub = {
+          id: decodedData.sessionId,
+          date: new Date().toISOString(),
+          totalTime: decodedData.time,
+          movies: [], // We'll populate these when we load the actual movies
+          playerNickname: decodedData.playerNickname,
+          playerAvatar: decodedData.playerAvatar,
+          participants: [{
+            id: decodedData.sessionId,
+            nickname: decodedData.playerNickname,
+            avatar: decodedData.playerAvatar,
+            totalTime: decodedData.time
+          }]
+        };
+        
+        // Save this stub to sessionStorage
+        saveSharedGameSession(sessionStub);
+      } else {
+        console.log("Found shared session in sessionStorage:", JSON.parse(sharedSession));
+      }
+      
     } catch (e) {
       console.error("Error parsing challenge data:", e);
       toast.error("Défi invalide", {

@@ -4,7 +4,13 @@ import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { ClipboardList, Share, Timer } from "lucide-react";
 import { toast } from "sonner";
-import { saveGameSession, formatTime, addParticipantToSession, getGameSessionById } from "@/utils/gameStorage";
+import { 
+  saveGameSession, 
+  formatTime, 
+  addParticipantToSession, 
+  getGameSessionById,
+  saveSharedGameSession
+} from "@/utils/gameStorage";
 
 interface MovieData {
   id: number;
@@ -48,7 +54,7 @@ const Results = () => {
     if (nickname) setPlayerNickname(nickname);
     if (avatar) {
       const avatarIndex = parseInt(avatar);
-      const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
+      const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👨‍🦳", "👨‍🦲", "👩‍🦲"];
       setPlayerAvatar(avatars[avatarIndex] || "👨‍🦰");
     }
 
@@ -62,6 +68,69 @@ const Results = () => {
         
         // Check if this was a challenge response
         if (challengeId) {
+          console.log("This was a challenge response for session:", challengeId);
+          
+          // First, check if we have this session in sessionStorage (from the shared URL)
+          const sharedSession = sessionStorage.getItem(`shared_session_${challengeId}`);
+          
+          if (sharedSession) {
+            console.log("Found shared session in sessionStorage:", JSON.parse(sharedSession));
+            
+            // Add the current player as a participant
+            const parsedSession = JSON.parse(sharedSession);
+            
+            // First, check if the movies array is empty (stub) and fill it
+            if (!parsedSession.movies || parsedSession.movies.length === 0) {
+              parsedSession.movies = parsedMovies;
+            }
+            
+            // Make sure we have a participants array
+            if (!parsedSession.participants) {
+              parsedSession.participants = [];
+            }
+            
+            // Add or update the current player
+            const existingParticipantIndex = parsedSession.participants.findIndex(
+              (p: any) => p.nickname === nickname && p.avatar === avatarEmoji
+            );
+            
+            if (existingParticipantIndex !== -1) {
+              // Update if time is better
+              if (parsedTime < parsedSession.participants[existingParticipantIndex].totalTime) {
+                parsedSession.participants[existingParticipantIndex].totalTime = parsedTime;
+              }
+            } else {
+              // Add new participant
+              parsedSession.participants.push({
+                id: Date.now().toString(36) + Math.random().toString(36).substring(2),
+                nickname,
+                avatar: avatarEmoji,
+                totalTime: parsedTime
+              });
+            }
+            
+            // Sort participants
+            parsedSession.participants.sort((a: any, b: any) => a.totalTime - b.totalTime);
+            
+            // Update shared session
+            saveSharedGameSession(parsedSession);
+            
+            // Mark as participant in local session storage too
+            parsedSession.isParticipant = true;
+            
+            // Add to local storage
+            const existingSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+            const sessionIndex = existingSessions.findIndex((s: any) => s.id === challengeId);
+            
+            if (sessionIndex !== -1) {
+              existingSessions[sessionIndex] = parsedSession;
+            } else {
+              existingSessions.unshift(parsedSession);
+            }
+            
+            localStorage.setItem('gameSessions', JSON.stringify(existingSessions));
+          }
+          
           // Add participant to the challenge session
           addParticipantToSession(
             challengeId,
@@ -79,6 +148,12 @@ const Results = () => {
           // Create a new session
           const newSessionId = saveGameSession(parsedTime, parsedMovies, nickname, avatarEmoji);
           setSessionId(newSessionId);
+          
+          // Also save as a shared session for potential challenges
+          const newSession = getGameSessionById(newSessionId);
+          if (newSession) {
+            saveSharedGameSession(newSession);
+          }
         }
       } catch (e) {
         console.error("Error saving game session:", e);

@@ -23,10 +23,59 @@ const Ranking = () => {
       return;
     }
 
-    // Load session data
+    // Check first in sessionStorage (for shared sessions)
+    const sharedSession = sessionStorage.getItem(`shared_session_${id}`);
+    if (sharedSession) {
+      try {
+        const parsedSession = JSON.parse(sharedSession);
+        console.log("Loaded shared session data from sessionStorage:", parsedSession);
+        
+        // Make sure we have participants array
+        if (!parsedSession.participants) {
+          parsedSession.participants = [{
+            id: parsedSession.id,
+            nickname: parsedSession.playerNickname,
+            avatar: parsedSession.playerAvatar,
+            totalTime: parsedSession.totalTime
+          }];
+        }
+        
+        setSession(parsedSession);
+        
+        // Fetch movie posters for each movie in the session
+        if (parsedSession.movies && parsedSession.movies.length > 0) {
+          const fetchMoviePosters = async () => {
+            const posters: Record<string, string> = {};
+            
+            for (const movie of parsedSession.movies) {
+              if (movie.imdbID) {
+                try {
+                  const movieDetails = await getMovieById(movie.imdbID);
+                  if (movieDetails && movieDetails.Poster && movieDetails.Poster !== "N/A") {
+                    posters[movie.id] = movieDetails.Poster;
+                  }
+                } catch (error) {
+                  console.error(`Failed to fetch poster for movie ${movie.title}:`, error);
+                }
+              }
+            }
+            
+            setMoviePosters(posters);
+          };
+          
+          fetchMoviePosters();
+        }
+        
+        return;
+      } catch (error) {
+        console.error("Error parsing shared session:", error);
+      }
+    }
+
+    // If no shared session, load from localStorage
     const sessionData = getGameSessionById(id);
     if (sessionData) {
-      console.log("Loaded session data:", sessionData);
+      console.log("Loaded session data from localStorage:", sessionData);
       console.log("Participants:", sessionData.participants || []);
       setSession(sessionData);
       
@@ -64,7 +113,7 @@ const Ranking = () => {
   // Load session data on mount and when id changes
   useEffect(() => {
     loadSessionData();
-  }, [id, navigate, toast]);
+  }, [id, navigate]);
 
   // Set up periodic refresh to check for new participants
   useEffect(() => {

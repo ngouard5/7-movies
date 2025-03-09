@@ -90,6 +90,47 @@ export const addParticipantToSession = (
   
   if (sessionIndex === -1) {
     console.error(`Session with ID ${sessionId} not found`);
+    
+    // Special case: try to reload from sessionStorage to get the latest data
+    const sharedSession = sessionStorage.getItem(`shared_session_${sessionId}`);
+    if (sharedSession) {
+      try {
+        const parsedSession = JSON.parse(sharedSession);
+        
+        // Add to local sessions and mark as participated
+        parsedSession.isParticipant = true;
+        
+        // Make sure it has participants array
+        if (!parsedSession.participants) {
+          parsedSession.participants = [];
+        }
+        
+        // Add the new participant
+        const participantId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+        parsedSession.participants.push({
+          id: participantId,
+          nickname,
+          avatar,
+          totalTime
+        });
+        
+        // Sort participants
+        parsedSession.participants.sort((a: Participant, b: Participant) => a.totalTime - b.totalTime);
+        
+        // Add to sessions
+        sessions.unshift(parsedSession);
+        localStorage.setItem('gameSessions', JSON.stringify(sessions));
+        
+        // Update session storage too
+        sessionStorage.setItem(`shared_session_${sessionId}`, JSON.stringify(parsedSession));
+        
+        return true;
+      } catch (e) {
+        console.error('Error parsing shared session:', e);
+        return false;
+      }
+    }
+    
     return false;
   }
   
@@ -141,6 +182,9 @@ export const addParticipantToSession = (
   // Save updated sessions
   localStorage.setItem('gameSessions', JSON.stringify(sessions));
   
+  // Also save in sessionStorage for cross-device access
+  sessionStorage.setItem(`shared_session_${sessionId}`, JSON.stringify(updatedSession));
+  
   return true;
 };
 
@@ -168,4 +212,15 @@ export const formatTime = (seconds: number): string => {
   const mins = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+};
+
+// Save game session to SessionStorage to share across devices (using the same URL)
+export const saveSharedGameSession = (session: GameSession): void => {
+  try {
+    // Store in sessionStorage for cross-device access using the same URL
+    sessionStorage.setItem(`shared_session_${session.id}`, JSON.stringify(session));
+    console.log(`Saved shared session ${session.id} to sessionStorage`);
+  } catch (e) {
+    console.error('Error saving shared session:', e);
+  }
 };
