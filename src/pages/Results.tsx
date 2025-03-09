@@ -363,6 +363,19 @@ const Results = () => {
     }
   };
 
+  // Helper function to format time or return an empty string if time is 0
+  const displayTime = (time?: number) => {
+    if (!time || time === 0) {
+      return "";
+    }
+    return (
+      <div className="flex items-center text-[14px] text-gray-500">
+        <Timer className="h-3.5 w-3.5 mr-1 inline" />
+        {formatTime(time)}
+      </div>
+    );
+  };
+
   if (isLoading) {
     return (
       <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
@@ -429,10 +442,7 @@ const Results = () => {
                   />
                   <div className="flex-1 text-left">
                     <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
-                    <div className="flex items-center text-[14px] text-gray-500">
-                      <Timer className="h-3.5 w-3.5 mr-1 inline" />
-                      {formatTime(movie.guessTime || 0)}
-                    </div>
+                    {displayTime(movie.guessTime)}
                   </div>
                 </div>
                 <div className="px-3 pb-3 text-left">
