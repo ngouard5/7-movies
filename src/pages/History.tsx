@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { ArrowLeft, Calendar, Timer } from "lucide-react";
+import { ArrowLeft, Calendar, Timer, Users } from "lucide-react";
 import { getGameSessions, GameSession, formatTime, formatSessionDate } from "@/utils/gameStorage";
 
 const History = () => {
@@ -71,7 +71,8 @@ const History = () => {
                     {formatSessionDate(session.date)}
                   </div>
                   
-                  <div className="mt-2 text-[14px] text-gray-700">
+                  <div className="mt-2 text-[14px] text-gray-700 flex items-center">
+                    <Users className="h-4 w-4 mr-1 inline" />
                     {session.participants?.length || 1} participant{(session.participants?.length || 1) > 1 ? 's' : ''}
                   </div>
                   

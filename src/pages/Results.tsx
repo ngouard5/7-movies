@@ -5,7 +5,7 @@ import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { ClipboardList, Share, Timer } from "lucide-react";
 import { toast } from "sonner";
-import { saveGameSession, formatTime, addParticipantToSession } from "@/utils/gameStorage";
+import { saveGameSession, formatTime, addParticipantToSession, getGameSessionById } from "@/utils/gameStorage";
 
 interface MovieData {
   id: number;
@@ -88,12 +88,16 @@ const Results = () => {
   }, []);
 
   const handleShare = () => {
+    // Determine which session ID to use
+    const currentSessionId = challengeSessionId || sessionId;
+    
+    // If we have a challenge session, we want to share that
     const challengeData = {
       movies: guessedMovies.map(movie => movie.id),
       time: gameTime,
       playerNickname,
       playerAvatar,
-      sessionId: challengeSessionId || sessionId
+      sessionId: currentSessionId
     };
     
     const encodedData = encodeURIComponent(JSON.stringify(challengeData));

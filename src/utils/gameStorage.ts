@@ -94,12 +94,25 @@ export const addParticipantToSession = (
     sessions[sessionIndex].participants = [];
   }
   
-  sessions[sessionIndex].participants!.push({
-    id: participantId,
-    nickname,
-    avatar,
-    totalTime
-  });
+  // Check if a participant with the same nickname and avatar already exists
+  const existingParticipant = sessions[sessionIndex].participants!.find(
+    p => p.nickname === nickname && p.avatar === avatar
+  );
+  
+  if (existingParticipant) {
+    // Update the existing participant's time if the new time is better
+    if (totalTime < existingParticipant.totalTime) {
+      existingParticipant.totalTime = totalTime;
+    }
+  } else {
+    // Add new participant
+    sessions[sessionIndex].participants!.push({
+      id: participantId,
+      nickname,
+      avatar,
+      totalTime
+    });
+  }
   
   // Sort participants by total time (ascending)
   sessions[sessionIndex].participants!.sort((a, b) => a.totalTime - b.totalTime);
