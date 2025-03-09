@@ -132,6 +132,12 @@ const Ranking = () => {
     // Set up real-time listener for this session
     const unsubscribe = subscribeToSession(id, (updatedSession) => {
       console.log("Real-time update received:", updatedSession);
+      
+      // Ensure we have participants array properly sorted
+      if (updatedSession.participants) {
+        updatedSession.participants.sort((a, b) => a.totalTime - b.totalTime);
+      }
+      
       setSession(updatedSession);
     });
     

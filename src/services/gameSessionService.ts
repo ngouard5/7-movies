@@ -75,6 +75,12 @@ export const getGameSession = async (sessionId: string): Promise<GameSession | n
         data.date = data.createdAt.toDate().toISOString();
         delete data.createdAt;
       }
+      
+      // Ensure participants are sorted by time
+      if (data.participants) {
+        data.participants.sort((a, b) => a.totalTime - b.totalTime);
+      }
+      
       return data as GameSession;
     }
     
@@ -103,31 +109,34 @@ export const addParticipantToSession = async (
     }
     
     const sessionData = sessionDoc.data() as GameSession;
-    const participants = sessionData.participants || [];
+    let participants = sessionData.participants || [];
+    
+    // Deep copy the participants array to avoid reference issues
+    participants = JSON.parse(JSON.stringify(participants));
+    
+    console.log("Original participants:", participants);
     
     // Check if this user has already participated
     const existingParticipantIndex = participants.findIndex(
       p => p.id === user.uid || (p.nickname === nickname && p.avatar === avatar)
     );
     
+    let participantUpdated = false;
+    
     if (existingParticipantIndex !== -1) {
       // If existing time is better, don't update
       if (participants[existingParticipantIndex].totalTime <= totalTime) {
+        console.log("Existing participant has better time, not updating");
         return true;
       }
       
       // Update existing participant's time
+      console.log("Updating existing participant's time");
       participants[existingParticipantIndex].totalTime = totalTime;
-      
-      // Sort participants by total time
-      participants.sort((a, b) => a.totalTime - b.totalTime);
-      
-      // Update in Firestore
-      await updateDoc(sessionRef, {
-        participants
-      });
+      participantUpdated = true;
     } else {
       // Add new participant
+      console.log("Adding new participant");
       const newParticipant: Participant = {
         id: user.uid,
         nickname,
@@ -135,23 +144,22 @@ export const addParticipantToSession = async (
         totalTime
       };
       
-      // Add to Firestore using arrayUnion to avoid duplicates
+      participants.push(newParticipant);
+      participantUpdated = true;
+    }
+    
+    if (participantUpdated) {
+      // Sort participants by total time
+      participants.sort((a, b) => a.totalTime - b.totalTime);
+      
+      console.log("Updated participants array:", participants);
+      
+      // Update in Firestore with the complete, sorted array
       await updateDoc(sessionRef, {
-        participants: arrayUnion(newParticipant)
+        participants: participants
       });
       
-      // Then retrieve the updated document to get the properly sorted list
-      const updatedDoc = await getDoc(sessionRef);
-      if (updatedDoc.exists()) {
-        const updatedData = updatedDoc.data() as GameSession;
-        const updatedParticipants = updatedData.participants || [];
-        
-        // Sort and update
-        updatedParticipants.sort((a, b) => a.totalTime - b.totalTime);
-        await updateDoc(sessionRef, {
-          participants: updatedParticipants
-        });
-      }
+      console.log("Firestore document updated successfully");
     }
     
     return true;
@@ -175,6 +183,12 @@ export const subscribeToSession = (
         data.date = data.createdAt.toDate().toISOString();
         delete data.createdAt;
       }
+      
+      // Ensure participants are sorted
+      if (data.participants) {
+        data.participants.sort((a, b) => a.totalTime - b.totalTime);
+      }
+      
       callback(data as GameSession);
     }
   });
