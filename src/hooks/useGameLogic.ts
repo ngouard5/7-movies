@@ -109,42 +109,70 @@ export const useGameLogic = () => {
       
       // Calculate time taken to guess this movie
       const guessTime = timer - movieStartTime;
+      console.log(`Movie ${currentMovie.title} guessed in ${guessTime} seconds`);
       
-      // Fetch movie details to get the poster
-      const movieDetails = await getMovieById(currentMovie.imdbID);
-      
-      setGuessedMovies(prev => [...prev, {
-        id: currentMovie.id,
-        emojis: currentMovie.emojis,
-        title: currentMovie.title,
-        imdbID: currentMovie.imdbID,
-        image: movieDetails?.Poster,
-        guessTime: guessTime
-      }]);
-      
-      setSearchTerm("");
-      setWrongGuess(null);
-      
-      if (currentMovieIndex === gameMovies.length - 1) {
-        // Game completed
-        if (timerRef.current) clearInterval(timerRef.current);
+      try {
+        // Fetch movie details to get the poster
+        const movieDetails = await getMovieById(currentMovie.imdbID);
         
-        // Save results to localStorage
-        localStorage.setItem("gameTime", timer.toString());
-        localStorage.setItem("guessedMovies", JSON.stringify([...guessedMovies, {
+        const newGuessedMovie = {
           id: currentMovie.id,
           emojis: currentMovie.emojis,
           title: currentMovie.title,
           imdbID: currentMovie.imdbID,
           image: movieDetails?.Poster,
           guessTime: guessTime
-        }]));
+        };
         
-        // Navigate to results page
-        navigate("/results");
-      } else {
-        // Move to next movie
-        setCurrentMovieIndex(prev => prev + 1);
+        const updatedGuessedMovies = [...guessedMovies, newGuessedMovie];
+        setGuessedMovies(updatedGuessedMovies);
+        
+        setSearchTerm("");
+        setWrongGuess(null);
+        
+        if (currentMovieIndex === gameMovies.length - 1) {
+          // Game completed
+          if (timerRef.current) clearInterval(timerRef.current);
+          
+          // Save results to localStorage
+          localStorage.setItem("gameTime", timer.toString());
+          localStorage.setItem("guessedMovies", JSON.stringify(updatedGuessedMovies));
+          console.log("Saving guessed movies to localStorage:", updatedGuessedMovies);
+          
+          // Navigate to results page
+          navigate("/results");
+        } else {
+          // Move to next movie
+          setCurrentMovieIndex(prev => prev + 1);
+        }
+      } catch (error) {
+        console.error("Error fetching movie details:", error);
+        // Continue even if there's an error fetching details
+        const newGuessedMovie = {
+          id: currentMovie.id,
+          emojis: currentMovie.emojis,
+          title: currentMovie.title,
+          imdbID: currentMovie.imdbID,
+          guessTime: guessTime
+        };
+        
+        const updatedGuessedMovies = [...guessedMovies, newGuessedMovie];
+        setGuessedMovies(updatedGuessedMovies);
+        
+        if (currentMovieIndex === gameMovies.length - 1) {
+          // Game completed
+          if (timerRef.current) clearInterval(timerRef.current);
+          
+          // Save results to localStorage
+          localStorage.setItem("gameTime", timer.toString());
+          localStorage.setItem("guessedMovies", JSON.stringify(updatedGuessedMovies));
+          
+          // Navigate to results page
+          navigate("/results");
+        } else {
+          // Move to next movie
+          setCurrentMovieIndex(prev => prev + 1);
+        }
       }
     } else {
       // Wrong guess

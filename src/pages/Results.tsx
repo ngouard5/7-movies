@@ -31,7 +31,11 @@ const Results = () => {
     const avatar = localStorage.getItem("playerAvatar");
 
     if (time) setGameTime(parseInt(time));
-    if (movies) setGuessedMovies(JSON.parse(movies));
+    if (movies) {
+      const parsedMovies = JSON.parse(movies);
+      console.log("Loaded movies from localStorage:", parsedMovies);
+      setGuessedMovies(parsedMovies);
+    }
     if (nickname) setPlayerNickname(nickname);
     if (avatar) {
       const avatarIndex = parseInt(avatar);
@@ -40,7 +44,8 @@ const Results = () => {
     }
   }, []);
 
-  const formatTime = (seconds: number) => {
+  const formatTime = (seconds: number | undefined) => {
+    if (seconds === undefined) return "00:00";
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
@@ -114,12 +119,10 @@ const Results = () => {
                   />
                   <div className="flex-1 text-left">
                     <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
-                    {movie.guessTime !== undefined && (
-                      <div className="flex items-center text-[14px] text-gray-500">
-                        <Timer className="h-3.5 w-3.5 mr-1 inline" />
-                        {formatTime(movie.guessTime)}
-                      </div>
-                    )}
+                    <div className="flex items-center text-[14px] text-gray-500">
+                      <Timer className="h-3.5 w-3.5 mr-1 inline" />
+                      {formatTime(movie.guessTime)}
+                    </div>
                   </div>
                 </div>
                 <div className="px-3 pb-3 text-left">
