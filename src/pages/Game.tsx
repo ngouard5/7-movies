@@ -21,7 +21,8 @@ const Game = () => {
     currentMovie,
     handleGuess,
     formatTime,
-    totalMovies
+    totalMovies,
+    answerStatus
   } = useGameLogic();
 
   return (
@@ -40,7 +41,7 @@ const Game = () => {
       <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
       
       {/* Yellow emojis section */}
-      <EmojiDisplay emojis={currentMovie.emojis} />
+      <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
       
       {/* Input section */}
       <MovieSearchInput 

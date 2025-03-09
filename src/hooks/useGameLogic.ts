@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -25,8 +24,27 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return shuffled;
 };
 
+// Error messages for wrong guesses
+const errorMessages = [
+  "That's not it! Try another movie.",
+  "Not quite right, but you're on the right track!",
+  "Good try, but not the movie we're looking for!",
+  "Hmm, not that one. Keep guessing!",
+  "Close, but not close enough. Try again!",
+  "That's not the correct movie, try another one!",
+  "Nice attempt, but that's not it!",
+  "I'm thinking of a different movie. Try again!",
+  "That's not right, but don't give up!",
+  "Not that one, but you can do this!"
+];
+
+// Get random error message
+const getRandomErrorMessage = (movieTitle: string) => {
+  const randomIndex = Math.floor(Math.random() * errorMessages.length);
+  return `${errorMessages[randomIndex]} "${movieTitle}" is not the answer.`;
+};
+
 export const useGameLogic = () => {
-  // Check if there's a challenge to play
   const [gameMovies, setGameMovies] = useState<MovieEmoji[]>(() => {
     const challengeMoviesStr = localStorage.getItem("challengeMovies");
     
@@ -57,16 +75,19 @@ export const useGameLogic = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<MovieSearchResult[]>([]);
   const [timer, setTimer] = useState(0);
-  const [movieStartTime, setMovieStartTime] = useState(0); // Track when user started guessing current movie
+  const [movieStartTime, setMovieStartTime] = useState(0);
   const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
   const [wrongGuess, setWrongGuess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isChallenge, setIsChallenge] = useState(false);
   const [challengeId, setChallengeId] = useState<string | null>(null);
+  const [answerStatus, setAnswerStatus] = useState<"default" | "correct" | "wrong">("default");
+  
   const navigate = useNavigate();
   const { toast } = useToast();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const statusResetTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Check if this is a challenge response
   useEffect(() => {
@@ -136,6 +157,8 @@ export const useGameLogic = () => {
     
     if (movieTitle.toLowerCase() === currentMovie.title.toLowerCase()) {
       // Correct guess
+      setAnswerStatus("correct");
+      
       toast({
         title: "Correct!",
         description: `You found "${currentMovie.title}"!`,
@@ -164,52 +187,62 @@ export const useGameLogic = () => {
         setSearchTerm("");
         setWrongGuess(null);
         
-        if (currentMovieIndex === gameMovies.length - 1) {
-          // Game completed
-          if (timerRef.current) clearInterval(timerRef.current);
+        // Reset status after a delay before moving to next movie
+        if (statusResetTimerRef.current) {
+          clearTimeout(statusResetTimerRef.current);
+        }
+        
+        statusResetTimerRef.current = setTimeout(() => {
+          setAnswerStatus("default");
           
-          // Check if this was a challenge response
-          if (isChallenge && challengeId) {
-            // Get player info
-            const playerNickname = localStorage.getItem("playerNickname") || "Player";
-            const avatarIndex = parseInt(localStorage.getItem("playerAvatar") || "0");
-            const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
-            const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
+          if (currentMovieIndex === gameMovies.length - 1) {
+            // Game completed
+            if (timerRef.current) clearInterval(timerRef.current);
             
-            // Get the challenge data
-            const challengeInfo = localStorage.getItem(`challenge_${challengeId}`);
-            if (challengeInfo) {
-              try {
-                const parsedChallenge = JSON.parse(challengeInfo);
-                if (parsedChallenge.sessionId) {
-                  // Add participant to the original session
-                  addParticipantToSession(
-                    parsedChallenge.sessionId,
-                    playerNickname,
-                    playerAvatar,
-                    timer
-                  );
+            // Check if this was a challenge response
+            if (isChallenge && challengeId) {
+              // Get player info
+              const playerNickname = localStorage.getItem("playerNickname") || "Player";
+              const avatarIndex = parseInt(localStorage.getItem("playerAvatar") || "0");
+              const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
+              const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
+              
+              // Get the challenge data
+              const challengeInfo = localStorage.getItem(`challenge_${challengeId}`);
+              if (challengeInfo) {
+                try {
+                  const parsedChallenge = JSON.parse(challengeInfo);
+                  if (parsedChallenge.sessionId) {
+                    // Add participant to the original session
+                    addParticipantToSession(
+                      parsedChallenge.sessionId,
+                      playerNickname,
+                      playerAvatar,
+                      timer
+                    );
+                  }
+                } catch (e) {
+                  console.error("Error parsing challenge data:", e);
                 }
-              } catch (e) {
-                console.error("Error parsing challenge data:", e);
               }
+            
+              // Clear the challenge id
+              localStorage.removeItem("currentChallengeId");
             }
             
-            // Clear the challenge id
-            localStorage.removeItem("currentChallengeId");
+            // Save results to localStorage
+            localStorage.setItem("gameTime", timer.toString());
+            localStorage.setItem("guessedMovies", JSON.stringify(updatedGuessedMovies));
+            console.log("Saving guessed movies to localStorage:", updatedGuessedMovies);
+            
+            // Navigate to results page
+            navigate("/results");
+          } else {
+            // Move to next movie
+            setCurrentMovieIndex(prev => prev + 1);
           }
-          
-          // Save results to localStorage
-          localStorage.setItem("gameTime", timer.toString());
-          localStorage.setItem("guessedMovies", JSON.stringify(updatedGuessedMovies));
-          console.log("Saving guessed movies to localStorage:", updatedGuessedMovies);
-          
-          // Navigate to results page
-          navigate("/results");
-        } else {
-          // Move to next movie
-          setCurrentMovieIndex(prev => prev + 1);
-        }
+        }, 800); // Short delay to show the green color
+        
       } catch (error) {
         console.error("Error fetching movie details:", error);
         // Continue even if there's an error fetching details
@@ -272,12 +305,23 @@ export const useGameLogic = () => {
       }
     } else {
       // Wrong guess
-      setWrongGuess(movieTitle);
+      setAnswerStatus("wrong");
+      setWrongGuess(getRandomErrorMessage(movieTitle));
+      
       toast({
         title: "Not quite!",
         description: `It's not "${movieTitle}", but you're not that far, go on!`,
         variant: "destructive",
       });
+      
+      // Reset status after a delay
+      if (statusResetTimerRef.current) {
+        clearTimeout(statusResetTimerRef.current);
+      }
+      
+      statusResetTimerRef.current = setTimeout(() => {
+        setAnswerStatus("default");
+      }, 800); // Short delay to show the red color
     }
   };
 
@@ -301,6 +345,7 @@ export const useGameLogic = () => {
     currentMovie,
     handleGuess,
     formatTime,
-    totalMovies: gameMovies.length
+    totalMovies: gameMovies.length,
+    answerStatus
   };
 };

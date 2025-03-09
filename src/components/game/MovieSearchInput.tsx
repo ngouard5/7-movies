@@ -65,9 +65,7 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
       {/* Wrong guess message */}
       {wrongGuess && (
         <div className="mt-6 p-4 bg-[#FADEDE] rounded-xl border border-[#E72F2F]">
-          <p className="text-[18px] text-[#191919]">
-            It's not "<span className="font-bold">{wrongGuess}</span>", but you're not that far, go on!
-          </p>
+          <p className="text-[18px] text-[#191919]">{wrongGuess}</p>
         </div>
       )}
     </div>
