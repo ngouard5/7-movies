@@ -16,7 +16,8 @@ const Ranking = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  useEffect(() => {
+  // Function to load session data
+  const loadSessionData = () => {
     if (!id) {
       navigate("/history");
       return;
@@ -56,7 +57,22 @@ const Ranking = () => {
       });
       navigate("/history");
     }
+  };
+
+  // Load session data on mount and when id changes
+  useEffect(() => {
+    loadSessionData();
   }, [id, navigate, toast]);
+
+  // Set up periodic refresh to check for new participants
+  useEffect(() => {
+    // Refresh every 5 seconds to check for new participants
+    const refreshInterval = setInterval(() => {
+      loadSessionData();
+    }, 5000);
+    
+    return () => clearInterval(refreshInterval);
+  }, [id]);
 
   const handleBack = () => {
     navigate(-1);

@@ -5,7 +5,7 @@ import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { ClipboardList, Share, Timer } from "lucide-react";
 import { toast } from "sonner";
-import { saveGameSession, formatTime } from "@/utils/gameStorage";
+import { saveGameSession, formatTime, addParticipantToSession } from "@/utils/gameStorage";
 
 interface MovieData {
   id: number;
@@ -22,6 +22,7 @@ const Results = () => {
   const [playerNickname, setPlayerNickname] = useState<string>("");
   const [playerAvatar, setPlayerAvatar] = useState<string>("👨‍🦰");
   const [sessionId, setSessionId] = useState<string>("");
+  const [challengeSessionId, setChallengeSessionId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +30,11 @@ const Results = () => {
     const movies = localStorage.getItem("guessedMovies");
     const nickname = localStorage.getItem("playerNickname");
     const avatar = localStorage.getItem("playerAvatar");
+    const challengeId = localStorage.getItem("currentChallengeId");
+
+    if (challengeId) {
+      setChallengeSessionId(challengeId);
+    }
 
     if (time) setGameTime(parseInt(time));
     if (movies) {
@@ -55,8 +61,26 @@ const Results = () => {
           ? (["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"][parseInt(avatar)] || "👨‍🦰")
           : "👨‍🦰";
         
-        const newSessionId = saveGameSession(parsedTime, parsedMovies, nickname, avatarEmoji);
-        setSessionId(newSessionId);
+        // Check if this was a challenge response
+        if (challengeId) {
+          // Add participant to the challenge session
+          addParticipantToSession(
+            challengeId,
+            nickname,
+            avatarEmoji,
+            parsedTime
+          );
+          
+          // Clear the challenge ID
+          localStorage.removeItem("currentChallengeId");
+          
+          // Don't create a new session, use the existing one
+          setSessionId(challengeId);
+        } else {
+          // Create a new session
+          const newSessionId = saveGameSession(parsedTime, parsedMovies, nickname, avatarEmoji);
+          setSessionId(newSessionId);
+        }
       } catch (e) {
         console.error("Error saving game session:", e);
       }
@@ -69,7 +93,7 @@ const Results = () => {
       time: gameTime,
       playerNickname,
       playerAvatar,
-      sessionId
+      sessionId: challengeSessionId || sessionId
     };
     
     const encodedData = encodeURIComponent(JSON.stringify(challengeData));
@@ -101,8 +125,10 @@ const Results = () => {
   };
 
   const handleViewRanking = () => {
-    if (sessionId) {
-      navigate(`/ranking/${sessionId}`);
+    // Use the challenge session ID if available, otherwise use the new session ID
+    const rankingSessionId = challengeSessionId || sessionId;
+    if (rankingSessionId) {
+      navigate(`/ranking/${rankingSessionId}`);
     }
   };
 

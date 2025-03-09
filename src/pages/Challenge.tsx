@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
@@ -8,7 +9,7 @@ interface ChallengeData {
   time: number;
   playerNickname: string;
   playerAvatar: string;
-  sessionId?: string;
+  sessionId: string;
 }
 
 const Challenge = () => {
