@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { X, Play, BookOpen, BarChart3, Clock } from "lucide-react";
+import { X, Play, BookOpen } from "lucide-react";
 
 interface NavigationMenuProps {
   isOpen: boolean;
@@ -44,11 +44,6 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
               icon={<BookOpen className="text-[#E72F2F]" size={24} />} 
               label="How to play"
               onClick={() => handleNavigation('/how-to-play')}
-            />
-            <NavItem 
-              icon={<BarChart3 className="text-[#E72F2F]" size={24} />} 
-              label="Your games"
-              onClick={() => handleNavigation('/history')}
             />
           </nav>
         </div>
