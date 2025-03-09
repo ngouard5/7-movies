@@ -88,7 +88,8 @@ export const useMovieGuess = ({
             handleGameCompletion(updatedGuessedMovies);
           } else {
             // Move to next movie
-            setCurrentMovieIndex(prev => prev + 1);
+            // Fix: Pass a number directly instead of a function
+            setCurrentMovieIndex(currentMovieIndex + 1);
           }
         }, 800); // Short delay to show the green color
         
@@ -111,7 +112,8 @@ export const useMovieGuess = ({
           handleGameCompletion(updatedGuessedMovies);
         } else {
           // Move to next movie
-          setCurrentMovieIndex(prev => prev + 1);
+          // Fix: Pass a number directly instead of a function
+          setCurrentMovieIndex(currentMovieIndex + 1);
         }
       }
     } else {

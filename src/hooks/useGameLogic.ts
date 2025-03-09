@@ -6,7 +6,8 @@ import { getGameMovies, formatGameTime } from "@/utils/movieUtils";
 import { useMovieGuess } from "@/hooks/useMovieGuess";
 import { useMovieSearch } from "@/hooks/useMovieSearch";
 
-export { MovieData } from "@/types/gameTypes";
+// Change the re-export to use 'export type'
+export type { MovieData } from "@/types/gameTypes";
 
 export const useGameLogic = () => {
   const [gameMovies, setGameMovies] = useState(() => getGameMovies(movieEmojis));
