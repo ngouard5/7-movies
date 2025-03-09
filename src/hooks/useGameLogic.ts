@@ -67,8 +67,8 @@ export const useGameLogic = () => {
       }
     }
     
-    // Regular game - get 7 random movies
-    return shuffleArray(movieEmojis).slice(0, 7);
+    // Regular game - get 1 random movie for testing (changed from 7 to 1)
+    return shuffleArray(movieEmojis).slice(0, 1);
   });
   
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
