@@ -6,7 +6,7 @@ import { getMovieById } from "@/services/movieService";
 import { MovieEmoji } from "@/data/movieEmojis";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
 import { MovieData } from "@/types/gameTypes";
-import { addParticipantToSession, getGameSessionById } from "@/utils/gameStorage";
+import { createGameSession, addParticipantToSession } from "@/services/gameSessionService";
 
 type AnswerStatus = "default" | "correct" | "wrong";
 
@@ -100,7 +100,7 @@ export const useMovieGuess = ({
           emojis: currentMovie.emojis,
           title: currentMovie.title,
           imdbID: currentMovie.imdbID,
-          guessTime: timer - movieStartTime
+          guessTime: guessTime
         };
         
         const updatedGuessedMovies = [...guessedMovies, newGuessedMovie];
@@ -136,7 +136,7 @@ export const useMovieGuess = ({
     }
   };
 
-  const handleGameCompletion = (updatedGuessedMovies: MovieData[]) => {
+  const handleGameCompletion = async (updatedGuessedMovies: MovieData[]) => {
     if (timerRef.current) clearInterval(timerRef.current);
     
     // Get player info
@@ -145,36 +145,41 @@ export const useMovieGuess = ({
     const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
     const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
     
+    let sessionId = "";
+    
     // Check if this was a challenge response
     if (isChallenge && challengeId) {
       console.log(`Game completed for challenge ${challengeId} with time ${timer}`);
       
-      // Get the original session to check if it exists
-      const originalSession = getGameSessionById(challengeId);
+      // Add participant to the existing challenge session
+      const added = await addParticipantToSession(
+        challengeId,
+        playerNickname,
+        playerAvatar,
+        timer
+      );
       
-      if (originalSession) {
-        console.log("Found challenge session:", originalSession);
-        
-        // Add participant to the session identified by the challengeId
-        const added = addParticipantToSession(
-          challengeId,
-          playerNickname,
-          playerAvatar,
-          timer
-        );
-        
-        console.log(`Added participant to session ${challengeId}: ${added}`);
-      } else {
-        console.error(`Challenge session ${challengeId} not found`);
-      }
+      console.log(`Added participant to challenge session ${challengeId}: ${added}`);
+      sessionId = challengeId;
       
       // Clear the challenge id
       localStorage.removeItem("currentChallengeId");
+    } else {
+      // Create a new game session
+      sessionId = await createGameSession(
+        timer,
+        updatedGuessedMovies,
+        playerNickname,
+        playerAvatar
+      );
+      
+      console.log(`Created new game session: ${sessionId}`);
     }
     
     // Save results to localStorage
     localStorage.setItem("gameTime", timer.toString());
     localStorage.setItem("guessedMovies", JSON.stringify(updatedGuessedMovies));
+    localStorage.setItem("lastSessionId", sessionId);
     console.log("Saving guessed movies to localStorage:", updatedGuessedMovies);
     
     // Navigate to results page

@@ -15,32 +15,16 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
   const handleShare = () => {
     if (!session || !sessionId) return;
     
-    // Create a challenge object with the necessary data
-    // Make sure we include the movie IDs so the same movies will be used
-    const challengeData = {
-      movies: session.movies.map(movie => movie.id),
-      time: session.totalTime,
-      playerNickname: session.playerNickname,
-      playerAvatar: session.playerAvatar,
-      sessionId: sessionId
-    };
-    
-    console.log("Sharing challenge with data:", challengeData);
-    
-    // Use encodeURIComponent to handle special characters
-    const encodedData = encodeURIComponent(JSON.stringify(challengeData));
-    
-    // Create share URL with proper encoding
-    const shareUrl = `${window.location.origin}/challenge/${encodedData}`;
+    // Simplified: just share the session ID directly
+    const shareUrl = `${window.location.origin}/challenge/${sessionId}`;
     
     // Copy to clipboard and show visual feedback
     navigator.clipboard.writeText(shareUrl)
       .then(() => {
         setIsCopied(true);
         
-        // Use sonner toast directly
-        toast("Lien copié !", {
-          description: "L'URL du défi a été copiée dans votre presse-papiers",
+        toast("Link copied!", {
+          description: "Challenge link has been copied to your clipboard",
           position: "top-right",
           duration: 3000,
         });
@@ -49,9 +33,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
         setTimeout(() => setIsCopied(false), 2000);
       })
       .catch((error) => {
-        console.error("Erreur lors de la copie:", error);
-        toast.error("Impossible de copier", {
-          description: "Veuillez copier l'URL manuellement",
+        console.error("Error copying to clipboard:", error);
+        toast.error("Couldn't copy link", {
+          description: "Please copy the URL manually",
           position: "top-right",
           duration: 3000,
         });
@@ -66,12 +50,12 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
       {isCopied ? (
         <>
           <Check className="h-4 w-4 mr-1" />
-          Copié !
+          Copied!
         </>
       ) : (
         <>
           <ClipboardCopy className="h-4 w-4 mr-1" />
-          Partager le défi
+          Share Challenge
         </>
       )}
     </button>

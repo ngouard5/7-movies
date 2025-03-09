@@ -27,40 +27,48 @@ export const createGameSession = async (
   playerNickname: string,
   playerAvatar: string
 ): Promise<string> => {
-  const user = await ensureAuthenticated();
-  
-  const sessionId = Date.now().toString(36) + Math.random().toString(36).substring(2);
-  const participant: Participant = {
-    id: user.uid,
-    nickname: playerNickname,
-    avatar: playerAvatar,
-    totalTime
-  };
-  
-  const session: GameSession = {
-    id: sessionId,
-    date: new Date().toISOString(),
-    totalTime,
-    movies,
-    playerNickname,
-    playerAvatar,
-    participants: [participant],
-    isParticipant: true
-  };
-  
-  // Save to Firestore
-  await setDoc(doc(sessionsCollection, sessionId), {
-    ...session,
-    createdAt: Timestamp.now(),
-    createdBy: user.uid
-  });
-  
-  // Also save to localStorage for offline access
-  const existingSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
-  existingSessions.unshift(session);
-  localStorage.setItem('gameSessions', JSON.stringify(existingSessions));
-  
-  return sessionId;
+  try {
+    const user = await ensureAuthenticated();
+    
+    const sessionId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+    const participant: Participant = {
+      id: user.uid,
+      nickname: playerNickname,
+      avatar: playerAvatar,
+      totalTime
+    };
+    
+    const session: GameSession = {
+      id: sessionId,
+      date: new Date().toISOString(),
+      totalTime,
+      movies,
+      playerNickname,
+      playerAvatar,
+      participants: [participant],
+      isParticipant: true
+    };
+    
+    // Save to Firestore
+    await setDoc(doc(sessionsCollection, sessionId), {
+      ...session,
+      createdAt: Timestamp.now(),
+      createdBy: user.uid
+    });
+    
+    // Also save to localStorage for offline access
+    const existingSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+    existingSessions.unshift(session);
+    localStorage.setItem('gameSessions', JSON.stringify(existingSessions));
+    
+    return sessionId;
+  } catch (error) {
+    console.error("Error creating game session:", error);
+    
+    // Generate a local ID for offline fallback
+    const localId = "local-" + Date.now().toString(36);
+    return localId;
+  }
 };
 
 // Get a specific game session
@@ -79,6 +87,14 @@ export const getGameSession = async (sessionId: string): Promise<GameSession | n
       // Ensure participants are sorted by time
       if (data.participants) {
         data.participants.sort((a, b) => a.totalTime - b.totalTime);
+      } else {
+        // If no participants array, create one with the original player
+        data.participants = [{
+          id: data.id,
+          nickname: data.playerNickname,
+          avatar: data.playerAvatar,
+          totalTime: data.totalTime
+        }];
       }
       
       return data as GameSession;
@@ -99,7 +115,16 @@ export const addParticipantToSession = async (
   totalTime: number
 ): Promise<boolean> => {
   try {
-    const user = await ensureAuthenticated();
+    // Generate a unique participant ID if not authenticated
+    let participantId;
+    try {
+      const user = await ensureAuthenticated();
+      participantId = user.uid;
+    } catch (error) {
+      // If authentication fails, generate a random ID
+      participantId = "anon-" + Date.now().toString(36) + Math.random().toString(36).substring(2);
+    }
+    
     const sessionRef = doc(sessionsCollection, sessionId);
     const sessionDoc = await getDoc(sessionRef);
     
@@ -118,10 +143,15 @@ export const addParticipantToSession = async (
     
     // Check if this user has already participated
     const existingParticipantIndex = participants.findIndex(
-      p => p.id === user.uid || (p.nickname === nickname && p.avatar === avatar)
+      p => p.id === participantId || (p.nickname === nickname && p.avatar === avatar)
     );
     
-    let participantUpdated = false;
+    const newParticipant: Participant = {
+      id: participantId,
+      nickname,
+      avatar,
+      totalTime
+    };
     
     if (existingParticipantIndex !== -1) {
       // If existing time is better, don't update
@@ -133,38 +163,72 @@ export const addParticipantToSession = async (
       // Update existing participant's time
       console.log("Updating existing participant's time");
       participants[existingParticipantIndex].totalTime = totalTime;
-      participantUpdated = true;
     } else {
       // Add new participant
       console.log("Adding new participant");
-      const newParticipant: Participant = {
-        id: user.uid,
-        nickname,
-        avatar,
-        totalTime
-      };
-      
       participants.push(newParticipant);
-      participantUpdated = true;
     }
     
-    if (participantUpdated) {
-      // Sort participants by total time
-      participants.sort((a, b) => a.totalTime - b.totalTime);
-      
-      console.log("Updated participants array:", participants);
-      
-      // Update in Firestore with the complete, sorted array
-      await updateDoc(sessionRef, {
-        participants: participants
-      });
-      
-      console.log("Firestore document updated successfully");
-    }
+    // Sort participants by total time
+    participants.sort((a, b) => a.totalTime - b.totalTime);
     
+    console.log("Updated participants array:", participants);
+    
+    // Update in Firestore with the complete, sorted array
+    await updateDoc(sessionRef, {
+      participants: participants
+    });
+    
+    console.log("Firestore document updated successfully");
     return true;
   } catch (error) {
     console.error("Error adding participant to session:", error);
+    
+    // If Firestore fails, try to update locally
+    try {
+      // Get the session from localStorage
+      const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+      const sessionIndex = localSessions.findIndex((s: GameSession) => s.id === sessionId);
+      
+      if (sessionIndex !== -1) {
+        const session = localSessions[sessionIndex];
+        
+        // Add or update participant
+        const participantId = "local-" + Date.now().toString(36);
+        const participants = session.participants || [];
+        
+        const existingParticipantIndex = participants.findIndex(
+          (p: Participant) => p.nickname === nickname && p.avatar === avatar
+        );
+        
+        if (existingParticipantIndex !== -1) {
+          if (participants[existingParticipantIndex].totalTime > totalTime) {
+            participants[existingParticipantIndex].totalTime = totalTime;
+          }
+        } else {
+          participants.push({
+            id: participantId,
+            nickname,
+            avatar,
+            totalTime
+          });
+        }
+        
+        // Sort participants
+        participants.sort((a: Participant, b: Participant) => a.totalTime - b.totalTime);
+        
+        // Update the session
+        session.participants = participants;
+        localSessions[sessionIndex] = session;
+        
+        // Save back to localStorage
+        localStorage.setItem('gameSessions', JSON.stringify(localSessions));
+        return true;
+      }
+    } catch (localError) {
+      console.error("Error updating local session:", localError);
+    }
+    
     return false;
   }
 };
@@ -187,10 +251,20 @@ export const subscribeToSession = (
       // Ensure participants are sorted
       if (data.participants) {
         data.participants.sort((a, b) => a.totalTime - b.totalTime);
+      } else {
+        // If no participants array, create one with the original player
+        data.participants = [{
+          id: data.id,
+          nickname: data.playerNickname,
+          avatar: data.playerAvatar,
+          totalTime: data.totalTime
+        }];
       }
       
       callback(data as GameSession);
     }
+  }, (error) => {
+    console.error("Error in session subscription:", error);
   });
 };
 
@@ -223,6 +297,16 @@ export const getUserSessions = async (): Promise<GameSession[]> => {
     );
   } catch (error) {
     console.error("Error fetching user sessions:", error);
-    return [];
+    
+    // Fallback to localStorage
+    try {
+      const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+      return localSessions.sort((a: GameSession, b: GameSession) => 
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+    } catch (localError) {
+      console.error("Error fetching local sessions:", localError);
+      return [];
+    }
   }
 };

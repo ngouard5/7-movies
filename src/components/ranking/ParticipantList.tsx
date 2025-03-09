@@ -19,8 +19,10 @@ export const ParticipantList: React.FC<ParticipantListProps> = ({ participants }
     }
   };
 
-  // Debug logging
-  console.log("Rendering ParticipantList with participants:", participants);
+  // Ensure participants are sorted by time (ascending)
+  const sortedParticipants = [...participants].sort((a, b) => a.totalTime - b.totalTime);
+
+  console.log("Rendering ParticipantList with sorted participants:", sortedParticipants);
 
   return (
     <div className="w-full">
@@ -29,8 +31,8 @@ export const ParticipantList: React.FC<ParticipantListProps> = ({ participants }
       </div>
       
       <div className="flex flex-col gap-2 max-h-[500px] overflow-y-auto w-full">
-        {participants && participants.length > 0 ? (
-          participants.map((participant, index) => (
+        {sortedParticipants && sortedParticipants.length > 0 ? (
+          sortedParticipants.map((participant, index) => (
             <div 
               key={participant.id || `participant-${index}`}
               className="flex items-center p-4 bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"

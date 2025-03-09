@@ -2,8 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { getGameSessionById, GameSession } from "@/utils/gameStorage";
-import { useToast } from "@/hooks/use-toast";
+import { GameSession } from "@/utils/gameStorage";
 import { getMovieById } from "@/services/movieService";
 import { BackButton } from "@/components/ranking/BackButton";
 import { SessionHeader } from "@/components/ranking/SessionHeader";
@@ -17,7 +16,6 @@ const Ranking = () => {
   const [moviePosters, setMoviePosters] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   // Function to load session data from Firestore
   const loadSessionData = async () => {
@@ -29,79 +27,43 @@ const Ranking = () => {
     setIsLoading(true);
     
     try {
-      // Try to get session from Firestore
+      // Get session from Firestore
       const firestoreSession = await getGameSession(id);
       
       if (firestoreSession) {
         console.log("Loaded session data from Firestore:", firestoreSession);
+        
+        // Ensure we have participants array properly sorted
+        if (firestoreSession.participants) {
+          firestoreSession.participants.sort((a, b) => a.totalTime - b.totalTime);
+        }
+        
         setSession(firestoreSession);
         
         // Fetch movie posters
         fetchMoviePosters(firestoreSession.movies);
       } else {
-        // Fall back to localStorage/sessionStorage if needed
-        fallbackToLocalStorage();
+        console.error("Session not found:", id);
+        toast.error("Session not found", {
+          description: "Could not find this game session"
+        });
+        navigate("/history");
       }
     } catch (error) {
-      console.error("Error loading Firestore session:", error);
-      fallbackToLocalStorage();
+      console.error("Error loading session:", error);
+      toast.error("Error loading session", {
+        description: "There was a problem loading this game session"
+      });
+      navigate("/history");
     } finally {
       setIsLoading(false);
     }
   };
   
-  // Fallback to localStorage if Firestore fails
-  const fallbackToLocalStorage = () => {
-    // Check first in sessionStorage (for shared sessions)
-    const sharedSession = sessionStorage.getItem(`shared_session_${id}`);
-    if (sharedSession) {
-      try {
-        const parsedSession = JSON.parse(sharedSession);
-        console.log("Loaded shared session data from sessionStorage:", parsedSession);
-        
-        // Make sure we have participants array
-        if (!parsedSession.participants) {
-          parsedSession.participants = [{
-            id: parsedSession.id,
-            nickname: parsedSession.playerNickname,
-            avatar: parsedSession.playerAvatar,
-            totalTime: parsedSession.totalTime
-          }];
-        }
-        
-        setSession(parsedSession);
-        
-        // Fetch movie posters
-        if (parsedSession.movies && parsedSession.movies.length > 0) {
-          fetchMoviePosters(parsedSession.movies);
-        }
-        
-        return;
-      } catch (error) {
-        console.error("Error parsing shared session:", error);
-      }
-    }
-
-    // If no shared session, load from localStorage
-    const sessionData = getGameSessionById(id);
-    if (sessionData) {
-      console.log("Loaded session data from localStorage:", sessionData);
-      setSession(sessionData);
-      
-      // Fetch movie posters
-      fetchMoviePosters(sessionData.movies);
-    } else {
-      toast({
-        title: "Session not found",
-        description: "Could not find this game session",
-        variant: "destructive",
-      });
-      navigate("/history");
-    }
-  };
-  
   // Fetch movie posters
   const fetchMoviePosters = async (movies: any[]) => {
+    if (!movies || movies.length === 0) return;
+    
     const posters: Record<string, string> = {};
     
     for (const movie of movies) {
@@ -123,7 +85,7 @@ const Ranking = () => {
   // Load session data on mount and when id changes
   useEffect(() => {
     loadSessionData();
-  }, [id, navigate]);
+  }, [id]);
 
   // Subscribe to real-time updates from Firestore
   useEffect(() => {
@@ -178,9 +140,6 @@ const Ranking = () => {
     avatar: session.playerAvatar,
     totalTime: session.totalTime
   }];
-  
-  // Sort participants by time (ascending)
-  participants.sort((a, b) => a.totalTime - b.totalTime);
   
   console.log("Current participants in render:", participants);
 
