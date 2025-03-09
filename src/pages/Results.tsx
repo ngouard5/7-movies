@@ -315,20 +315,20 @@ const Results = () => {
   };
 
   const handleShare = () => {
-    // Determine which session ID to use
-    const currentSessionId = challengeSessionId || sessionId;
+    // Use the current session ID for sharing
+    const currentSessionId = sessionId;
     
-    // If we have a challenge session, we want to share that
-    const challengeData = {
-      movies: guessedMovies.map(movie => movie.id),
-      time: gameTime,
-      playerNickname,
-      playerAvatar,
-      sessionId: currentSessionId
-    };
+    if (!currentSessionId) {
+      toast.error("Cannot share challenge", {
+        description: "Session ID not available",
+        position: "top-right",
+        duration: 3000,
+      });
+      return;
+    }
     
-    const encodedData = encodeURIComponent(JSON.stringify(challengeData));
-    const shareUrl = `${window.location.origin}/challenge/${encodedData}`;
+    // Simply share the session ID directly
+    const shareUrl = `${window.location.origin}/challenge/${currentSessionId}`;
     
     navigator.clipboard.writeText(shareUrl)
       .then(() => {
