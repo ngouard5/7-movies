@@ -60,8 +60,7 @@ export const ensureAuthenticated = async (): Promise<User | null> => {
 
 // Helper function to check if we're in online mode
 export const isOnlineMode = (): boolean => {
-  return ONLINE_MODE_ENABLED;
+  return ONLINE_MODE_ENABLED && navigator.onLine;
 };
 
 export { db, auth };
-

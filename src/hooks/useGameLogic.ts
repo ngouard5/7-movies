@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { movieEmojis } from "@/data/movieEmojis";
 import { MovieData } from "@/types/gameTypes";
@@ -108,7 +109,7 @@ export const useGameLogic = () => {
     }
   }, [currentMovieIndex]);
 
-  // Get current movie
+  // Get current movie with safety check
   const currentMovie = gameMovies[currentMovieIndex] || gameMovies[0];
 
   return {

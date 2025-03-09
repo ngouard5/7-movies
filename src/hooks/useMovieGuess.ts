@@ -6,7 +6,6 @@ import { getMovieById } from "@/services/movieService";
 import { MovieEmoji } from "@/data/movieEmojis";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
 import { MovieData } from "@/types/gameTypes";
-import { createGameSession, addParticipantToSession } from "@/services/gameSessionService";
 import { saveGameSession } from "@/utils/gameStorage";
 
 type AnswerStatus = "default" | "correct" | "wrong";
@@ -43,6 +42,12 @@ export const useMovieGuess = ({
   const statusResetTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleGuess = async (movieTitle: string) => {
+    // Ensure we have a valid current movie to compare against
+    if (!gameMovies || gameMovies.length === 0 || currentMovieIndex >= gameMovies.length) {
+      console.error("Invalid game state: No current movie available");
+      return;
+    }
+
     const currentMovie = gameMovies[currentMovieIndex];
     
     if (movieTitle.toLowerCase() === currentMovie.title.toLowerCase()) {
@@ -85,8 +90,8 @@ export const useMovieGuess = ({
           setAnswerStatus("default");
           
           if (currentMovieIndex === gameMovies.length - 1) {
-            // Game completed
-            handleGameCompletion(updatedGuessedMovies);
+            // Game completed - handle without relying on Firebase first
+            handleGameCompletionSafely(updatedGuessedMovies);
           } else {
             // Move to next movie
             setCurrentMovieIndex(currentMovieIndex + 1);
@@ -109,7 +114,7 @@ export const useMovieGuess = ({
         
         if (currentMovieIndex === gameMovies.length - 1) {
           // Game completed
-          handleGameCompletion(updatedGuessedMovies);
+          handleGameCompletionSafely(updatedGuessedMovies);
         } else {
           // Move to next movie
           setCurrentMovieIndex(currentMovieIndex + 1);
@@ -137,7 +142,11 @@ export const useMovieGuess = ({
     }
   };
 
-  const handleGameCompletion = async (updatedGuessedMovies: MovieData[]) => {
+  // Safe game completion method that doesn't rely on Firebase being available
+  const handleGameCompletionSafely = (updatedGuessedMovies: MovieData[]) => {
+    console.log("Game completed, handling completion safely");
+    
+    // Stop the timer first
     if (timerRef.current) clearInterval(timerRef.current);
     
     // Get player info
@@ -146,65 +155,31 @@ export const useMovieGuess = ({
     const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
     const playerAvatar = avatars[avatarIndex] || "👨‍🦰";
     
-    let sessionId = "";
-    
-    // First, always save to localStorage to ensure we have a local copy
+    // Always save to localStorage first to ensure we have the data
     const localSessionId = saveGameSession(
       timer,
       updatedGuessedMovies,
       playerNickname,
       playerAvatar
     );
-    
-    // If this was a challenge response
+
+    // If this is a challenge, store the challenge ID
     if (isChallenge && challengeId) {
-      console.log(`Game completed for challenge ${challengeId} with time ${timer}`);
-      
-      try {
-        // Add participant to the existing challenge session
-        const added = await addParticipantToSession(
-          challengeId,
-          playerNickname,
-          playerAvatar,
-          timer
-        );
-        
-        console.log(`Added participant to challenge session ${challengeId}: ${added}`);
-        sessionId = challengeId;
-      } catch (error) {
-        console.error("Error adding participant to challenge:", error);
-        // Fallback to local session ID if adding to Firebase failed
-        sessionId = localSessionId;
-      }
-      
-      // Clear the challenge id
-      localStorage.removeItem("currentChallengeId");
-    } else {
-      try {
-        // Try to create a new game session in Firestore
-        sessionId = await createGameSession(
-          timer,
-          updatedGuessedMovies,
-          playerNickname,
-          playerAvatar
-        );
-        
-        console.log(`Created new game session: ${sessionId}`);
-      } catch (error) {
-        console.error("Error creating game session in Firestore:", error);
-        // Use the local session ID as fallback
-        sessionId = localSessionId;
-      }
+      localStorage.setItem("currentChallengeId", challengeId);
     }
     
-    // Save results to localStorage
+    // Save results to localStorage for the results page to use
     localStorage.setItem("gameTime", timer.toString());
     localStorage.setItem("guessedMovies", JSON.stringify(updatedGuessedMovies));
-    localStorage.setItem("lastSessionId", sessionId);
+    localStorage.setItem("lastSessionId", localSessionId);
     console.log("Saving guessed movies to localStorage:", updatedGuessedMovies);
     
-    // Navigate to results page
-    navigate("/results");
+    // Use a short timeout to ensure all state updates have completed
+    setTimeout(() => {
+      console.log("Navigating to results page");
+      // Force navigation to results page
+      window.location.href = "/results";
+    }, 300);
   };
 
   return {
