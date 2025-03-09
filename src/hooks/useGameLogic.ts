@@ -5,7 +5,6 @@ import { getGameMovies, formatGameTime } from "@/utils/movieUtils";
 import { useMovieGuess } from "@/hooks/useMovieGuess";
 import { useMovieSearch } from "@/hooks/useMovieSearch";
 
-// Change the re-export to use 'export type'
 export type { MovieData } from "@/types/gameTypes";
 
 export const useGameLogic = () => {
@@ -57,7 +56,7 @@ export const useGameLogic = () => {
     isLoading 
   } = useMovieSearch();
 
-  // Import guess handling functionality
+  // Import guess handling functionality with correct navigation handling
   const { 
     wrongGuess, 
     answerStatus, 
@@ -97,7 +96,7 @@ export const useGameLogic = () => {
     };
   }, []);
 
-  // Set movie start time when movie changes
+  // Update movie start time when movie changes
   useEffect(() => {
     setMovieStartTime(timer);
   }, [currentMovieIndex, timer]);
@@ -109,7 +108,8 @@ export const useGameLogic = () => {
     }
   }, [currentMovieIndex]);
 
-  const currentMovie = gameMovies[currentMovieIndex];
+  // Get current movie
+  const currentMovie = gameMovies[currentMovieIndex] || gameMovies[0];
 
   return {
     currentMovieIndex,

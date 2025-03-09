@@ -1,6 +1,6 @@
 
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, enableIndexedDbPersistence } from 'firebase/firestore';
 import { getAuth, signInAnonymously, onAuthStateChanged, User } from 'firebase/auth';
 
 // Firebase configuration
@@ -18,16 +18,20 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// Flag to control whether online mode is enabled
+// Enable offline persistence
+enableIndexedDbPersistence(db).catch((err) => {
+  console.error("Firestore persistence error:", err);
+});
+
 // Set to true to allow data to be stored in Firestore when possible
 const ONLINE_MODE_ENABLED = true;
-// Set to false to prevent authentication attempts, which cause 400 errors
+// Set to false to prevent authentication attempts
 const AUTH_REQUIRED = false;
 
 // Helper function to ensure the user is authenticated (anonymously) if needed
 export const ensureAuthenticated = async (): Promise<User | null> => {
   // If authentication is not required, return null
-  if (!AUTH_REQUIRED || !ONLINE_MODE_ENABLED) {
+  if (!AUTH_REQUIRED) {
     return null;
   }
 
@@ -60,3 +64,4 @@ export const isOnlineMode = (): boolean => {
 };
 
 export { db, auth };
+
