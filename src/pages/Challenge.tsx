@@ -16,7 +16,25 @@ interface ChallengeData {
 const Challenge = () => {
   const { id } = useParams<{ id: string }>();
   const [challengeData, setChallengeData] = useState<ChallengeData | null>(null);
+  const [userNickname, setUserNickname] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
   const navigate = useNavigate();
+
+  // Load user data when component mounts
+  useEffect(() => {
+    const savedNickname = localStorage.getItem("playerNickname");
+    const savedAvatar = localStorage.getItem("playerAvatar");
+    
+    if (savedNickname) {
+      setUserNickname(savedNickname);
+    }
+    
+    if (savedAvatar) {
+      const avatarIndex = parseInt(savedAvatar);
+      const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
+      setUserAvatar(avatars[avatarIndex] || "👨‍🦰");
+    }
+  }, []);
 
   useEffect(() => {
     if (!id) {
