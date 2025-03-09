@@ -24,13 +24,6 @@ export const SessionHeader: React.FC<SessionHeaderProps> = ({ session, sessionId
         
         <ShareButton session={session} sessionId={sessionId} />
       </div>
-      
-      {/* Database recommendation message */}
-      {session.participants && session.participants.length > 1 && (
-        <div className="mt-3 text-xs text-amber-600 bg-amber-50 p-2 rounded-md">
-          Note: For reliable cross-device rankings, consider integrating a database.
-        </div>
-      )}
     </div>
   );
 };

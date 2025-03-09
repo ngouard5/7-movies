@@ -4,16 +4,45 @@ import { useNavigate } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { ArrowLeft, Calendar, Timer, Users } from "lucide-react";
-import { getUserGameSessions, GameSession, formatTime, formatSessionDate } from "@/utils/gameStorage";
+import { formatTime, formatSessionDate } from "@/utils/gameStorage";
+import { getUserSessions } from "@/services/gameSessionService";
 
 const History = () => {
-  const [sessions, setSessions] = useState<GameSession[]>([]);
+  const [sessions, setSessions] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load user's game sessions (both created and participated)
-    const userSessions = getUserGameSessions();
-    setSessions(userSessions);
+    const fetchSessions = async () => {
+      setIsLoading(true);
+      try {
+        // Try to load from Firestore first
+        const firestoreSessions = await getUserSessions();
+        
+        if (firestoreSessions.length > 0) {
+          console.log("Loaded sessions from Firestore:", firestoreSessions);
+          setSessions(firestoreSessions);
+        } else {
+          // Fall back to localStorage
+          const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]')
+            .filter((s: any) => s.isParticipant === true);
+          console.log("Loaded sessions from localStorage:", localSessions);
+          setSessions(localSessions);
+        }
+      } catch (error) {
+        console.error("Error loading sessions:", error);
+        
+        // Fall back to localStorage
+        const localSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]')
+          .filter((s: any) => s.isParticipant === true);
+        console.log("Loaded sessions from localStorage:", localSessions);
+        setSessions(localSessions);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchSessions();
   }, []);
 
   const handleBack = () => {
@@ -23,6 +52,17 @@ const History = () => {
   const handleViewSession = (sessionId: string) => {
     navigate(`/ranking/${sessionId}`);
   };
+
+  if (isLoading) {
+    return (
+      <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
+        <BackgroundGradients />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-xl">Loading your history...</div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
@@ -77,7 +117,7 @@ const History = () => {
                   </div>
                   
                   <div className="mt-2 flex gap-2 overflow-x-auto pb-1">
-                    {session.movies.slice(0, 4).map((movie) => (
+                    {session.movies.slice(0, 4).map((movie: any) => (
                       <div key={movie.id} className="text-xl flex-shrink-0">
                         {movie.emojis.split(' ')[0]}
                       </div>

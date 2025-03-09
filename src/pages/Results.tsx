@@ -5,12 +5,14 @@ import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { ClipboardList, Share, Timer } from "lucide-react";
 import { toast } from "sonner";
 import { 
-  saveGameSession, 
   formatTime, 
-  addParticipantToSession, 
-  getGameSessionById,
-  saveSharedGameSession
+  getGameSessionById
 } from "@/utils/gameStorage";
+import { 
+  createGameSession, 
+  addParticipantToSession, 
+  getGameSession 
+} from "@/services/gameSessionService";
 
 interface MovieData {
   id: number;
@@ -28,6 +30,7 @@ const Results = () => {
   const [playerAvatar, setPlayerAvatar] = useState<string>("👨‍🦰");
   const [sessionId, setSessionId] = useState<string>("");
   const [challengeSessionId, setChallengeSessionId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,107 +62,257 @@ const Results = () => {
     }
 
     if (time && movies && nickname) {
-      try {
-        const parsedTime = parseInt(time);
-        const parsedMovies = JSON.parse(movies);
-        const avatarEmoji = avatar 
-          ? (["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"][parseInt(avatar)] || "👨‍🦰")
-          : "👨‍🦰";
+      handleSaveResults(parseInt(time), JSON.parse(movies), nickname, avatar);
+    }
+  }, []);
+
+  const handleSaveResults = async (
+    parsedTime: number, 
+    parsedMovies: any[], 
+    nickname: string, 
+    avatarStr: string
+  ) => {
+    setIsLoading(true);
+    
+    try {
+      const avatarIndex = parseInt(avatarStr || "0");
+      const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
+      const avatarEmoji = avatars[avatarIndex] || "👨‍🦰";
+      
+      // Check if this was a challenge response
+      if (challengeSessionId) {
+        console.log("This was a challenge response for session:", challengeSessionId);
         
-        // Check if this was a challenge response
-        if (challengeId) {
-          console.log("This was a challenge response for session:", challengeId);
+        // Try to get the session from Firestore first
+        const firestoreSession = await getGameSession(challengeSessionId);
+        
+        if (firestoreSession) {
+          console.log("Found challenge session in Firestore:", firestoreSession);
           
-          // First, check if we have this session in sessionStorage (from the shared URL)
-          const sharedSession = sessionStorage.getItem(`shared_session_${challengeId}`);
-          
-          if (sharedSession) {
-            console.log("Found shared session in sessionStorage:", JSON.parse(sharedSession));
-            
-            // Add the current player as a participant
-            const parsedSession = JSON.parse(sharedSession);
-            
-            // First, check if the movies array is empty (stub) and fill it
-            if (!parsedSession.movies || parsedSession.movies.length === 0) {
-              parsedSession.movies = parsedMovies;
-            }
-            
-            // Make sure we have a participants array
-            if (!parsedSession.participants) {
-              parsedSession.participants = [];
-            }
-            
-            // Add or update the current player
-            const existingParticipantIndex = parsedSession.participants.findIndex(
-              (p: any) => p.nickname === nickname && p.avatar === avatarEmoji
-            );
-            
-            if (existingParticipantIndex !== -1) {
-              // Update if time is better
-              if (parsedTime < parsedSession.participants[existingParticipantIndex].totalTime) {
-                parsedSession.participants[existingParticipantIndex].totalTime = parsedTime;
-              }
-            } else {
-              // Add new participant
-              parsedSession.participants.push({
-                id: Date.now().toString(36) + Math.random().toString(36).substring(2),
-                nickname,
-                avatar: avatarEmoji,
-                totalTime: parsedTime
-              });
-            }
-            
-            // Sort participants
-            parsedSession.participants.sort((a: any, b: any) => a.totalTime - b.totalTime);
-            
-            // Update shared session
-            saveSharedGameSession(parsedSession);
-            
-            // Mark as participant in local session storage too
-            parsedSession.isParticipant = true;
-            
-            // Add to local storage
-            const existingSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
-            const sessionIndex = existingSessions.findIndex((s: any) => s.id === challengeId);
-            
-            if (sessionIndex !== -1) {
-              existingSessions[sessionIndex] = parsedSession;
-            } else {
-              existingSessions.unshift(parsedSession);
-            }
-            
-            localStorage.setItem('gameSessions', JSON.stringify(existingSessions));
-          }
-          
-          // Add participant to the challenge session
-          addParticipantToSession(
-            challengeId,
+          // Add participant to the Firestore session
+          const added = await addParticipantToSession(
+            challengeSessionId,
             nickname,
             avatarEmoji,
             parsedTime
           );
           
-          // Clear the challenge ID
-          localStorage.removeItem("currentChallengeId");
-          
-          // Don't create a new session, use the existing one
-          setSessionId(challengeId);
+          console.log(`Added participant to Firestore session ${challengeSessionId}: ${added}`);
+          setSessionId(challengeSessionId);
         } else {
-          // Create a new session
-          const newSessionId = saveGameSession(parsedTime, parsedMovies, nickname, avatarEmoji);
-          setSessionId(newSessionId);
+          // Fall back to local session if Firestore fails
+          console.log("Challenge session not found in Firestore, checking local storage");
           
-          // Also save as a shared session for potential challenges
-          const newSession = getGameSessionById(newSessionId);
-          if (newSession) {
-            saveSharedGameSession(newSession);
+          // Check sessionStorage and localStorage
+          const sharedSession = sessionStorage.getItem(`shared_session_${challengeSessionId}`);
+          
+          if (sharedSession) {
+            console.log("Found shared session in sessionStorage:", JSON.parse(sharedSession));
+            
+            // Try to create this session in Firestore
+            try {
+              const parsedSession = JSON.parse(sharedSession);
+              
+              // Add the current player as a participant
+              if (!parsedSession.participants) {
+                parsedSession.participants = [];
+              }
+              
+              // Create this session in Firestore
+              const newSessionId = await createGameSession(
+                parsedSession.totalTime,
+                parsedSession.movies.length > 0 ? parsedSession.movies : parsedMovies, 
+                parsedSession.playerNickname,
+                parsedSession.playerAvatar
+              );
+              
+              // Add the current player as a participant if they're not the original creator
+              if (parsedSession.playerNickname !== nickname || parsedSession.playerAvatar !== avatarEmoji) {
+                await addParticipantToSession(
+                  newSessionId,
+                  nickname,
+                  avatarEmoji,
+                  parsedTime
+                );
+              }
+              
+              setSessionId(newSessionId);
+            } catch (error) {
+              console.error("Error creating Firestore session from shared session:", error);
+            }
+          } else {
+            // Fallback to localStorage
+            const added = addParticipantToLocalSession(
+              challengeSessionId,
+              nickname,
+              avatarEmoji,
+              parsedTime
+            );
+            
+            console.log(`Added participant to local session ${challengeSessionId}: ${added}`);
+            setSessionId(challengeSessionId);
           }
         }
-      } catch (e) {
-        console.error("Error saving game session:", e);
+        
+        // Clear the challenge ID
+        localStorage.removeItem("currentChallengeId");
+      } else {
+        // Create a new session in Firestore
+        try {
+          const newSessionId = await createGameSession(
+            parsedTime, 
+            parsedMovies, 
+            nickname, 
+            avatarEmoji
+          );
+          
+          console.log("Created new Firestore session:", newSessionId);
+          setSessionId(newSessionId);
+        } catch (error) {
+          console.error("Error creating Firestore session:", error);
+          
+          // Fallback to local storage
+          const localSessionId = saveGameSessionToLocalStorage(
+            parsedTime, 
+            parsedMovies, 
+            nickname, 
+            avatarEmoji
+          );
+          
+          setSessionId(localSessionId);
+        }
       }
+    } catch (error) {
+      console.error("Error saving game results:", error);
+      toast("Error saving results", {
+        description: "Your results have been saved locally only",
+        position: "top-right",
+      });
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  };
+  
+  // Fallback functions for localStorage
+  const saveGameSessionToLocalStorage = (
+    totalTime: number,
+    movies: any[],
+    playerNickname: string,
+    playerAvatar: string
+  ): string => {
+    const sessionId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+    const today = new Date();
+    
+    const session = {
+      id: sessionId,
+      date: today.toISOString(),
+      totalTime,
+      movies,
+      playerNickname,
+      playerAvatar,
+      participants: [
+        {
+          id: sessionId,
+          nickname: playerNickname,
+          avatar: playerAvatar,
+          totalTime,
+        }
+      ],
+      isParticipant: true
+    };
+    
+    // Get existing sessions
+    const existingSessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+    
+    // Add new session
+    existingSessions.unshift(session);
+    
+    // Save updated sessions
+    localStorage.setItem('gameSessions', JSON.stringify(existingSessions));
+    
+    // Also save to sessionStorage for shared challenges
+    sessionStorage.setItem(`shared_session_${sessionId}`, JSON.stringify(session));
+    
+    return sessionId;
+  };
+  
+  const addParticipantToLocalSession = (
+    sessionId: string,
+    nickname: string,
+    avatar: string,
+    totalTime: number
+  ): boolean => {
+    // Get from localStorage
+    const sessions = JSON.parse(localStorage.getItem('gameSessions') || '[]');
+    const sessionIndex = sessions.findIndex((s: any) => s.id === sessionId);
+    
+    if (sessionIndex === -1) {
+      // Check sessionStorage
+      const sharedSession = sessionStorage.getItem(`shared_session_${sessionId}`);
+      if (sharedSession) {
+        try {
+          const parsedSession = JSON.parse(sharedSession);
+          if (!parsedSession.participants) {
+            parsedSession.participants = [];
+          }
+          
+          const participantId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+          parsedSession.participants.push({
+            id: participantId,
+            nickname,
+            avatar,
+            totalTime
+          });
+          
+          parsedSession.participants.sort((a: any, b: any) => a.totalTime - b.totalTime);
+          parsedSession.isParticipant = true;
+          
+          // Add to localStorage
+          sessions.unshift(parsedSession);
+          localStorage.setItem('gameSessions', JSON.stringify(sessions));
+          
+          // Update sessionStorage
+          sessionStorage.setItem(`shared_session_${sessionId}`, JSON.stringify(parsedSession));
+          return true;
+        } catch (e) {
+          console.error("Error processing shared session:", e);
+          return false;
+        }
+      }
+      return false;
+    }
+    
+    // Add participant to existing session
+    if (!sessions[sessionIndex].participants) {
+      sessions[sessionIndex].participants = [];
+    }
+    
+    const participantId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+    const existingIndex = sessions[sessionIndex].participants.findIndex(
+      (p: any) => p.nickname === nickname && p.avatar === avatar
+    );
+    
+    if (existingIndex !== -1) {
+      if (totalTime < sessions[sessionIndex].participants[existingIndex].totalTime) {
+        sessions[sessionIndex].participants[existingIndex].totalTime = totalTime;
+      }
+    } else {
+      sessions[sessionIndex].participants.push({
+        id: participantId,
+        nickname,
+        avatar,
+        totalTime
+      });
+    }
+    
+    sessions[sessionIndex].participants.sort((a: any, b: any) => a.totalTime - b.totalTime);
+    sessions[sessionIndex].isParticipant = true;
+    
+    localStorage.setItem('gameSessions', JSON.stringify(sessions));
+    sessionStorage.setItem(`shared_session_${sessionId}`, JSON.stringify(sessions[sessionIndex]));
+    
+    return true;
+  };
 
   const handleShare = () => {
     // Determine which session ID to use
@@ -209,6 +362,17 @@ const Results = () => {
       navigate(`/ranking/${rankingSessionId}`);
     }
   };
+
+  if (isLoading) {
+    return (
+      <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
+        <BackgroundGradients />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-xl">Saving your results...</div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">

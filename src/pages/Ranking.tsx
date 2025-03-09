@@ -8,21 +8,50 @@ import { getMovieById } from "@/services/movieService";
 import { BackButton } from "@/components/ranking/BackButton";
 import { SessionHeader } from "@/components/ranking/SessionHeader";
 import { SessionTabs } from "@/components/ranking/SessionTabs";
+import { getGameSession, subscribeToSession } from "@/services/gameSessionService";
+import { toast } from "sonner";
 
 const Ranking = () => {
   const { id } = useParams<{ id: string }>();
   const [session, setSession] = useState<GameSession | null>(null);
   const [moviePosters, setMoviePosters] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Function to load session data
-  const loadSessionData = () => {
+  // Function to load session data from Firestore
+  const loadSessionData = async () => {
     if (!id) {
       navigate("/history");
       return;
     }
 
+    setIsLoading(true);
+    
+    try {
+      // Try to get session from Firestore
+      const firestoreSession = await getGameSession(id);
+      
+      if (firestoreSession) {
+        console.log("Loaded session data from Firestore:", firestoreSession);
+        setSession(firestoreSession);
+        
+        // Fetch movie posters
+        fetchMoviePosters(firestoreSession.movies);
+      } else {
+        // Fall back to localStorage/sessionStorage if needed
+        fallbackToLocalStorage();
+      }
+    } catch (error) {
+      console.error("Error loading Firestore session:", error);
+      fallbackToLocalStorage();
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  // Fallback to localStorage if Firestore fails
+  const fallbackToLocalStorage = () => {
     // Check first in sessionStorage (for shared sessions)
     const sharedSession = sessionStorage.getItem(`shared_session_${id}`);
     if (sharedSession) {
@@ -42,28 +71,9 @@ const Ranking = () => {
         
         setSession(parsedSession);
         
-        // Fetch movie posters for each movie in the session
+        // Fetch movie posters
         if (parsedSession.movies && parsedSession.movies.length > 0) {
-          const fetchMoviePosters = async () => {
-            const posters: Record<string, string> = {};
-            
-            for (const movie of parsedSession.movies) {
-              if (movie.imdbID) {
-                try {
-                  const movieDetails = await getMovieById(movie.imdbID);
-                  if (movieDetails && movieDetails.Poster && movieDetails.Poster !== "N/A") {
-                    posters[movie.id] = movieDetails.Poster;
-                  }
-                } catch (error) {
-                  console.error(`Failed to fetch poster for movie ${movie.title}:`, error);
-                }
-              }
-            }
-            
-            setMoviePosters(posters);
-          };
-          
-          fetchMoviePosters();
+          fetchMoviePosters(parsedSession.movies);
         }
         
         return;
@@ -76,30 +86,10 @@ const Ranking = () => {
     const sessionData = getGameSessionById(id);
     if (sessionData) {
       console.log("Loaded session data from localStorage:", sessionData);
-      console.log("Participants:", sessionData.participants || []);
       setSession(sessionData);
       
-      // Fetch movie posters for each movie in the session
-      const fetchMoviePosters = async () => {
-        const posters: Record<string, string> = {};
-        
-        for (const movie of sessionData.movies) {
-          if (movie.imdbID) {
-            try {
-              const movieDetails = await getMovieById(movie.imdbID);
-              if (movieDetails && movieDetails.Poster && movieDetails.Poster !== "N/A") {
-                posters[movie.id] = movieDetails.Poster;
-              }
-            } catch (error) {
-              console.error(`Failed to fetch poster for movie ${movie.title}:`, error);
-            }
-          }
-        }
-        
-        setMoviePosters(posters);
-      };
-      
-      fetchMoviePosters();
+      // Fetch movie posters
+      fetchMoviePosters(sessionData.movies);
     } else {
       toast({
         title: "Session not found",
@@ -109,32 +99,67 @@ const Ranking = () => {
       navigate("/history");
     }
   };
+  
+  // Fetch movie posters
+  const fetchMoviePosters = async (movies: any[]) => {
+    const posters: Record<string, string> = {};
+    
+    for (const movie of movies) {
+      if (movie.imdbID) {
+        try {
+          const movieDetails = await getMovieById(movie.imdbID);
+          if (movieDetails && movieDetails.Poster && movieDetails.Poster !== "N/A") {
+            posters[movie.id] = movieDetails.Poster;
+          }
+        } catch (error) {
+          console.error(`Failed to fetch poster for movie ${movie.title}:`, error);
+        }
+      }
+    }
+    
+    setMoviePosters(posters);
+  };
 
   // Load session data on mount and when id changes
   useEffect(() => {
     loadSessionData();
   }, [id, navigate]);
 
-  // Set up periodic refresh to check for new participants
+  // Subscribe to real-time updates from Firestore
   useEffect(() => {
-    // Refresh every 5 seconds to check for new participants
-    const refreshInterval = setInterval(() => {
-      loadSessionData();
-    }, 5000);
+    if (!id) return;
     
-    return () => clearInterval(refreshInterval);
+    // Set up real-time listener for this session
+    const unsubscribe = subscribeToSession(id, (updatedSession) => {
+      console.log("Real-time update received:", updatedSession);
+      setSession(updatedSession);
+    });
+    
+    // Clean up subscription when component unmounts
+    return () => unsubscribe();
   }, [id]);
 
   const handleBack = () => {
     navigate(-1);
   };
 
-  if (!session) {
+  if (isLoading) {
     return (
       <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
         <BackgroundGradients />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-xl">Loading session data...</div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!session) {
+    return (
+      <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
+        <BackgroundGradients />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-xl">Session not found</div>
         </div>
       </main>
     );
