@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
@@ -86,8 +85,8 @@ const Results = () => {
         });
       });
     
-    // Navigate to the challenge page
-    navigate(`/challenge/${challengeId}`);
+    // Remove the navigation to the challenge page
+    // navigate(`/challenge/${challengeId}`); <-- This line is removed
   };
 
   const handlePlayAgain = () => {

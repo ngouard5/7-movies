@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { Timer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { movieEmojis } from "@/data/movieEmojis";
 
 interface ChallengeData {
   movies: number[];
@@ -16,7 +14,6 @@ interface ChallengeData {
 const Challenge = () => {
   const { id } = useParams<{ id: string }>();
   const [challengeData, setChallengeData] = useState<ChallengeData | null>(null);
-  const [challengeMovies, setChallengeMovies] = useState<any[]>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -33,15 +30,6 @@ const Challenge = () => {
       try {
         const parsedData = JSON.parse(challengeInfo);
         setChallengeData(parsedData);
-        
-        // Get the movie data for the challenge
-        if (parsedData.movies && Array.isArray(parsedData.movies)) {
-          const movies = parsedData.movies.map((movieId: number) => 
-            movieEmojis.find(m => m.id === movieId)
-          ).filter(Boolean);
-          
-          setChallengeMovies(movies);
-        }
       } catch (e) {
         console.error("Error parsing challenge data:", e);
         toast({
@@ -60,12 +48,6 @@ const Challenge = () => {
       navigate("/");
     }
   }, [id, navigate, toast]);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
 
   const handleAcceptChallenge = () => {
     if (challengeData && challengeData.movies) {
@@ -98,27 +80,9 @@ const Challenge = () => {
             <div className="text-[22px] font-bold text-[#191919]">
               {challengeData.playerAvatar} {challengeData.playerNickname} challenges you!
             </div>
-            <div className="text-[18px] text-gray-700 mt-2">
-              They completed this in:
+            <div className="text-xl mt-12 mb-20 px-4">
+              Can you guess all the movie emojis faster?
             </div>
-            <div className="text-[64px] font-bold text-[#E72F2F] mt-2">
-              {formatTime(challengeData.time)}
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto w-full mb-6">
-            <div className="text-lg font-bold mb-2">Movie list:</div>
-            {challengeMovies.map((movie, index) => (
-              <div 
-                key={movie.id} 
-                className="flex flex-col bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
-              >
-                <div className="p-3">
-                  <div className="font-bold text-[16px] text-[#191919]">Movie {index + 1}</div>
-                  <div className="text-2xl mt-2">{movie.emojis}</div>
-                </div>
-              </div>
-            ))}
           </div>
 
           <button
