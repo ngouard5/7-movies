@@ -44,6 +44,11 @@ const PreGame = () => {
     navigate("/countdown");
   };
 
+  const handleBackClick = () => {
+    // Always navigate to index page
+    navigate("/");
+  };
+
   const isChallengeMode = localStorage.getItem("challengeMovies") !== null;
 
   return (
@@ -53,11 +58,11 @@ const PreGame = () => {
 
         <div className="absolute left-4 top-[69px]">
           <button 
-            onClick={() => navigate(-1)}
+            onClick={handleBackClick}
             className="w-12 h-12 flex justify-center items-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
             aria-label="Back"
           >
-            <ArrowLeft className="w-6 h-6 text-[#191919]" />
+            <ArrowLeft className="w-6 h-6 text-[#E72F2F]" />
           </button>
         </div>
 

@@ -13,7 +13,7 @@ export const PhoneMockup: React.FC<PhoneMockupProps> = ({ children }) => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150px] h-[30px] bg-gray-800 rounded-b-xl z-10"></div>
         
         {/* Content */}
-        <div className="w-full h-full overflow-hidden">
+        <div className="w-full h-full overflow-auto">
           {children}
         </div>
         

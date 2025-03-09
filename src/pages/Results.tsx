@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { Timer } from "lucide-react";
-import { toast } from "sonner";
 import { formatTime } from "@/utils/gameStorage";
 
 interface MovieData {
@@ -50,7 +49,7 @@ const Results = () => {
   }, []);
 
   const handlePlayAgain = () => {
-    navigate("/");
+    navigate("/pregame");
   };
 
   // Helper function to format time or return an empty string if time is 0
@@ -107,6 +106,9 @@ const Results = () => {
                     src={movie.image || "/placeholder.svg"}
                     alt={movie.title}
                     className="w-12 h-[68px] rounded object-cover mr-3"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "/placeholder.svg";
+                    }}
                   />
                   <div className="flex-1 text-left">
                     <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
