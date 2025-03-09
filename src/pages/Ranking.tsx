@@ -9,7 +9,6 @@ import { SessionHeader } from "@/components/ranking/SessionHeader";
 import { SessionTabs } from "@/components/ranking/SessionTabs";
 import { getGameSession, subscribeToSession } from "@/services/gameSessionService";
 import { toast } from "sonner";
-import { isOnlineMode } from "@/services/firebase";
 
 const Ranking = () => {
   const { id } = useParams<{ id: string }>();
@@ -61,7 +60,7 @@ const Ranking = () => {
         }
       }
       
-      // Attempt to get session data from Firestore or localStorage
+      // Attempt to get session data from localStorage
       const sessionData = await getGameSession(cleanId);
       
       console.timeEnd('LoadSessionData');
@@ -146,19 +145,19 @@ const Ranking = () => {
     loadSessionData();
   }, [id]);
 
-  // Subscribe to real-time updates from Firestore
+  // Subscribe to local storage updates
   useEffect(() => {
-    if (!id || !isOnlineMode() || subscriptionActive || !session) return;
+    if (!id || subscriptionActive || !session) return;
     
     // Clean the ID
     const cleanId = id.replace(/^local-/, '');
     
     try {
-      console.log("Setting up real-time subscription for session:", cleanId);
+      console.log("Setting up subscription for session:", cleanId);
       
-      // Set up real-time listener for this session
+      // Set up listener
       const unsubscribe = subscribeToSession(cleanId, (updatedSession) => {
-        console.log("Real-time update received");
+        console.log("Session update received");
         
         // Ensure we have participants array properly sorted
         if (updatedSession.participants) {
