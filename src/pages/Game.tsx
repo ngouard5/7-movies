@@ -5,40 +5,25 @@ import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { MovieSuggestion } from "@/components/game/MovieSuggestion";
 import { useToast } from "@/hooks/use-toast";
-
-// Mock movie data (we'll replace this with API calls)
-const mockMovies = [
-  { id: 1, emojis: "🚀 👽 🌌 👾", title: "Star Wars", year: 1977, image: "https://m.media-amazon.com/images/M/MV5BYmU1NDRjNDgtMzhiMi00NjZmLTg5NGItZDNiZjU5NTU4OTE0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg" },
-  { id: 2, emojis: "🧙‍♂️ 💍 🏔️ 🌋", title: "The Lord of the Rings", year: 2001, image: "https://m.media-amazon.com/images/M/MV5BN2EyZjM3NzUtNWUzMi00MTgxLWI0NTctMzY4M2VlOTdjZWRiXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_SX300.jpg" },
-  { id: 3, emojis: "🌊 🚢 💎 💔", title: "Titanic", year: 1997, image: "https://m.media-amazon.com/images/M/MV5BMDdmZGU3NDQtY2E5My00ZTliLWIzOTUtMTY4ZGI1YjdiNjk3XkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_SX300.jpg" },
-  { id: 4, emojis: "🤖 👦 ❤️", title: "WALL·E", year: 2008, image: "https://m.media-amazon.com/images/M/MV5BMjExMTg5OTU0NF5BMl5BanBnXkFtZTcwMjMxMzMzMw@@._V1_SX300.jpg" },
-  { id: 5, emojis: "🦁 👑 🌍", title: "The Lion King", year: 1994, image: "https://m.media-amazon.com/images/M/MV5BYTYxNGMyZTYtMjE3MS00MzNjLWFjNmYtMDk3N2FmM2JiM2M1XkEyXkFqcGdeQXVyNjY5NDU4NzI@._V1_SX300.jpg" },
-  { id: 6, emojis: "🏝️ 🏐 🤔", title: "Cast Away", year: 2000, image: "https://m.media-amazon.com/images/M/MV5BN2Y5ZTU4YjctMDRmMC00MTg4LWE1M2MtMjk4MzVmOTE4YjkzXkEyXkFqcGdeQXVyNTc1NTQxODI@._V1_SX300.jpg" },
-  { id: 7, emojis: "🧠 💭 😴", title: "Inception", year: 2010, image: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg" },
-];
+import { searchMovies, MovieSearchResult } from "@/services/movieService";
+import { movieEmojis, MovieEmoji } from "@/data/movieEmojis";
 
 interface MovieData {
   id: number;
   emojis: string;
   title: string;
-  year: number;
-  image: string;
-}
-
-interface MovieSuggestionType {
-  id: string;
-  title: string;
-  year: string;
-  poster: string;
+  imdbID: string;
+  image?: string;
 }
 
 const Game = () => {
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
-  const [suggestions, setSuggestions] = useState<MovieSuggestionType[]>([]);
+  const [suggestions, setSuggestions] = useState<MovieSearchResult[]>([]);
   const [timer, setTimer] = useState(0);
   const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
   const [wrongGuess, setWrongGuess] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -55,33 +40,45 @@ const Game = () => {
     };
   }, []);
 
-  // Focus input when component mounts
+  // Focus input when component mounts or movie changes
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, [currentMovieIndex]);
 
-  // Fetch movie suggestions (mock implementation for now)
+  // Fetch movie suggestions from OMDb API
   useEffect(() => {
-    if (searchTerm.length >= 2) {
-      // Simulating API call with mock data
-      const filteredMovies = [
-        { id: "tt0076759", title: "Star Wars", year: "1977", poster: "https://m.media-amazon.com/images/M/MV5BYmU1NDRjNDgtMzhiMi00NjZmLTg5NGItZDNiZjU5NTU4OTE0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg" },
-        { id: "tt0080684", title: "Star Wars: Episode V - The Empire Strikes Back", year: "1980", poster: "https://m.media-amazon.com/images/M/MV5BYmU1NDRjNDgtMzhiMi00NjZmLTg5NGItZDNiZjU5NTU4OTE0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg" },
-        { id: "tt0086190", title: "Star Wars: Episode VI - Return of the Jedi", year: "1983", poster: "https://m.media-amazon.com/images/M/MV5BYmU1NDRjNDgtMzhiMi00NjZmLTg5NGItZDNiZjU5NTU4OTE0XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg" },
-      ].filter(movie => 
-        movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      
-      setSuggestions(filteredMovies);
-    } else {
-      setSuggestions([]);
-    }
-  }, [searchTerm]);
+    const fetchSuggestions = async () => {
+      if (searchTerm.length >= 2) {
+        setIsLoading(true);
+        try {
+          const results = await searchMovies(searchTerm);
+          setSuggestions(results);
+        } catch (error) {
+          console.error("Error fetching suggestions:", error);
+          toast({
+            title: "Error",
+            description: "Failed to fetch movie suggestions",
+            variant: "destructive",
+          });
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setSuggestions([]);
+      }
+    };
+
+    const debounceTimer = setTimeout(() => {
+      fetchSuggestions();
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm, toast]);
 
   const handleGuess = (movieTitle: string) => {
-    const currentMovie = mockMovies[currentMovieIndex];
+    const currentMovie = movieEmojis[currentMovieIndex];
     
     if (movieTitle.toLowerCase() === currentMovie.title.toLowerCase()) {
       // Correct guess
@@ -90,17 +87,28 @@ const Game = () => {
         description: `You found "${currentMovie.title}"!`,
       });
       
-      setGuessedMovies(prev => [...prev, currentMovie]);
+      setGuessedMovies(prev => [...prev, {
+        id: currentMovie.id,
+        emojis: currentMovie.emojis,
+        title: currentMovie.title,
+        imdbID: currentMovie.imdbID,
+      }]);
+      
       setSearchTerm("");
       setWrongGuess(null);
       
-      if (currentMovieIndex === mockMovies.length - 1) {
+      if (currentMovieIndex === movieEmojis.length - 1) {
         // Game completed
         if (timerRef.current) clearInterval(timerRef.current);
         
         // Save results to localStorage
         localStorage.setItem("gameTime", timer.toString());
-        localStorage.setItem("guessedMovies", JSON.stringify([...guessedMovies, currentMovie]));
+        localStorage.setItem("guessedMovies", JSON.stringify([...guessedMovies, {
+          id: currentMovie.id,
+          emojis: currentMovie.emojis,
+          title: currentMovie.title,
+          imdbID: currentMovie.imdbID,
+        }]));
         
         // Navigate to results page
         navigate("/results");
@@ -125,7 +133,7 @@ const Game = () => {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const currentMovie = mockMovies[currentMovieIndex];
+  const currentMovie = movieEmojis[currentMovieIndex];
 
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
@@ -146,7 +154,7 @@ const Game = () => {
       {/* Movie counter */}
       <div className="absolute left-1/2 -translate-x-1/2 top-[134px] text-center">
         <div className="text-[18px] font-bold text-[#191919] mb-2">
-          Movie {currentMovieIndex + 1}/{mockMovies.length}
+          Movie {currentMovieIndex + 1}/{movieEmojis.length}
         </div>
       </div>
       
@@ -170,14 +178,25 @@ const Game = () => {
             autoComplete="off"
           />
           
+          {isLoading && (
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              <div className="w-5 h-5 border-2 border-gray-300 border-t-[#E72F2F] rounded-full animate-spin"></div>
+            </div>
+          )}
+          
           {suggestions.length > 0 && (
             <div className="absolute left-0 right-0 top-[60px] bg-white border border-[#CCC] rounded-xl shadow-lg max-h-[300px] overflow-y-auto z-10">
               {suggestions.map((movie) => (
                 <MovieSuggestion
-                  key={movie.id}
-                  movie={movie}
+                  key={movie.imdbID}
+                  movie={{
+                    id: movie.imdbID,
+                    title: movie.Title,
+                    year: movie.Year,
+                    poster: movie.Poster
+                  }}
                   onClick={() => {
-                    handleGuess(movie.title);
+                    handleGuess(movie.Title);
                     setSearchTerm("");
                     setSuggestions([]);
                   }}
