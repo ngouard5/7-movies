@@ -5,8 +5,6 @@ import { MovieData } from "@/types/gameTypes";
 import { getGameMovies, formatGameTime } from "@/utils/movieUtils";
 import { useMovieGuess } from "@/hooks/useMovieGuess";
 import { useMovieSearch } from "@/hooks/useMovieSearch";
-import { isFirestoreWorking } from "@/services/firebase";
-import { toast } from "sonner";
 
 export type { MovieData } from "@/types/gameTypes";
 
@@ -37,7 +35,6 @@ export const useGameLogic = () => {
     }
     
     // Default to random movies if no challenge or if there was an error
-    // Changed from 5 to 1 movie
     return getGameMovies(movieEmojis, 1);
   });
   
@@ -47,38 +44,9 @@ export const useGameLogic = () => {
   const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
   const [isChallenge, setIsChallenge] = useState(false);
   const [challengeId, setChallengeId] = useState<string | null>(null);
-  const [firebaseConnected, setFirebaseConnected] = useState(isFirestoreWorking());
   
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Monitor Firebase connection status
-  useEffect(() => {
-    const checkFirebaseStatus = () => {
-      const isConnected = isFirestoreWorking() && navigator.onLine;
-      setFirebaseConnected(isConnected);
-    };
-    
-    // Check immediately
-    checkFirebaseStatus();
-    
-    // Then check whenever the online status changes
-    window.addEventListener('online', checkFirebaseStatus);
-    window.addEventListener('offline', checkFirebaseStatus);
-    
-    // If Firebase isn't working on start, show a toast
-    if (!isFirestoreWorking()) {
-      toast.warning("Firebase connection issue", {
-        description: "The app will work offline, but data won't sync with the server",
-        duration: 5000
-      });
-    }
-    
-    return () => {
-      window.removeEventListener('online', checkFirebaseStatus);
-      window.removeEventListener('offline', checkFirebaseStatus);
-    };
-  }, []);
 
   // Import search functionality
   const { 
@@ -88,7 +56,7 @@ export const useGameLogic = () => {
     isLoading 
   } = useMovieSearch();
 
-  // Import guess handling functionality with correct navigation handling
+  // Import guess handling functionality
   const { 
     wrongGuess, 
     answerStatus, 
@@ -156,7 +124,6 @@ export const useGameLogic = () => {
     handleGuess,
     formatTime: formatGameTime,
     totalMovies: gameMovies.length,
-    answerStatus,
-    firebaseConnected
+    answerStatus
   };
 };
