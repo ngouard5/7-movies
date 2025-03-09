@@ -12,6 +12,7 @@ import Results from "./pages/Results";
 import Challenge from "./pages/Challenge";
 import History from "./pages/History";
 import Ranking from "./pages/Ranking";
+import HowToPlay from "./pages/HowToPlay";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/challenge/:id" element={<Challenge />} />
           <Route path="/history" element={<History />} />
           <Route path="/ranking/:id" element={<Ranking />} />
+          <Route path="/how-to-play" element={<HowToPlay />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
