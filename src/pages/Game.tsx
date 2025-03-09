@@ -1,6 +1,5 @@
 
 import React from "react";
-import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { GameTimer } from "@/components/game/GameTimer";
 import { MovieCounter } from "@/components/game/MovieCounter";
@@ -29,13 +28,8 @@ const Game = () => {
   const wrongGuessMessage = wrongGuess ? "That's not it. Try again!" : null;
 
   return (
-    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
+    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
       <BackgroundGradients />
-      
-      {/* Header with menu button */}
-      <div className="absolute left-4 top-[69px]">
-        <MenuButton />
-      </div>
       
       {/* Timer */}
       <GameTimer timer={timer} formatTime={formatTime} />

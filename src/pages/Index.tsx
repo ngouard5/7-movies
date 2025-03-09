@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EmojiCarousel } from "@/components/game/EmojiCarousel";
@@ -17,14 +18,13 @@ const Index = () => {
         rel="stylesheet"
       />
 
-      <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0">
-        <div className="relative px-4">
+      <main className="relative w-full max-w-[393px] min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
+        <div className="relative flex flex-col items-center px-4">
           <BackgroundGradients />
 
-          <div className="absolute left-0 top-[69px] px-4">
+          <div className="absolute left-4 top-[69px]">
             <button 
               onClick={() => setMenuOpen(true)}
-              className="w-12 h-12 flex justify-center items-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
               aria-label="Menu"
             >
               <MenuButton />
@@ -32,18 +32,18 @@ const Index = () => {
           </div>
 
           <div
-            className="absolute text-[64px] left-[165px] top-[117px]"
+            className="absolute text-[64px] left-1/2 -translate-x-1/2 top-[117px]"
             role="img"
             aria-label="Popcorn emoji"
           >
             🍿
           </div>
 
-          <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-4 top-[229px] max-sm:text-[32px] max-sm:leading-10">
+          <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-1/2 -translate-x-1/2 top-[229px] max-sm:text-[32px] max-sm:leading-10">
             Find 7 movies with emojis
           </h1>
 
-          <div className="absolute w-full top-[365px]">
+          <div className="absolute w-full left-0 top-[365px]">
             <EmojiCarousel />
           </div>
 
@@ -55,12 +55,12 @@ const Index = () => {
             <p className="mt-6">Challenge your friends to beat your record!</p>
           </section>
 
-          <div className="absolute left-4 right-4 top-[703px]">
+          <div className="absolute left-1/2 -translate-x-1/2 w-[361px] top-[703px]">
             <PlayButton />
           </div>
 
           <button
-            className="absolute left-2/4 -translate-x-2/4 text-xl font-bold text-[#191919] top-[755px] mt-4 hover:text-[#E72F2F] transition-colors"
+            className="absolute left-1/2 -translate-x-1/2 text-xl font-bold text-[#191919] top-[755px] mt-4 hover:text-[#E72F2F] transition-colors"
             onClick={() => navigate("/how-to-play")}
           >
             How to play

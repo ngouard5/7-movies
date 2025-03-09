@@ -52,8 +52,8 @@ const PreGame = () => {
   const isChallengeMode = localStorage.getItem("challengeMovies") !== null;
 
   return (
-    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
-      <div className="relative">
+    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
+      <div className="relative flex flex-col items-center">
         <BackgroundGradients />
 
         <div className="absolute left-4 top-[69px]">
@@ -67,18 +67,18 @@ const PreGame = () => {
         </div>
 
         <div
-          className="absolute text-[64px] left-[165px] top-[117px]"
+          className="absolute text-[64px] left-1/2 -translate-x-1/2 top-[117px]"
           role="img"
           aria-label="Popcorn emoji"
         >
           🍿
         </div>
 
-        <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-4 top-[229px] max-sm:text-[32px] max-sm:leading-10">
+        <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-1/2 -translate-x-1/2 top-[229px] max-sm:text-[32px] max-sm:leading-10">
           {isChallengeMode ? "Accept the challenge!" : "Before we start..."}
         </h1>
 
-        <div className="absolute left-4 top-[323px] w-[361px]">
+        <div className="absolute left-1/2 -translate-x-1/2 max-w-[361px] w-full top-[323px] px-4">
           <div className="mb-6">
             <label htmlFor="nickname" className="block text-[18px] font-bold text-[#191919] mb-2">
               Your nickname
@@ -98,10 +98,12 @@ const PreGame = () => {
             <label className="block text-[18px] font-bold text-[#191919] mb-2">
               Choose your avatar
             </label>
-            <AvatarSelector 
-              selectedAvatar={selectedAvatar} 
-              onSelect={setSelectedAvatar} 
-            />
+            <div className="flex justify-center">
+              <AvatarSelector 
+                selectedAvatar={selectedAvatar} 
+                onSelect={setSelectedAvatar} 
+              />
+            </div>
           </div>
 
           <button

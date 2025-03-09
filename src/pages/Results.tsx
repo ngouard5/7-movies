@@ -67,7 +67,7 @@ const Results = () => {
 
   if (isLoading) {
     return (
-      <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
+      <main className="relative w-full max-w-[393px] min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
         <BackgroundGradients />
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-xl">Saving your results...</div>
@@ -77,15 +77,20 @@ const Results = () => {
   }
 
   return (
-    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
-      <div className="relative h-full pb-8">
+    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
+      <div className="relative h-full pb-8 flex flex-col items-center">
         <BackgroundGradients />
 
         <div className="absolute left-4 top-[69px]">
-          <MenuButton />
+          <button 
+            onClick={() => navigate("/")}
+            className="w-12 h-12 flex justify-center items-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
+          >
+            <MenuButton />
+          </button>
         </div>
 
-        <div className="absolute w-[361px] left-4 top-[134px] text-center flex flex-col items-center">
+        <div className="absolute w-full max-w-[361px] left-1/2 -translate-x-1/2 top-[134px] text-center flex flex-col items-center">
           <div className="mb-6 w-full">
             <div className="text-[22px] font-bold text-[#191919]">
               {playerAvatar} {playerNickname}'s score
