@@ -20,7 +20,7 @@ export interface MovieDetail {
 }
 
 // API Key for OMDb API (free tier)
-const API_KEY = "8d96c8bb";
+const API_KEY = "f9ac4ddb";  // Updated API key
 const BASE_URL = "https://www.omdbapi.com/";
 
 export const searchMovies = async (searchTerm: string): Promise<MovieSearchResult[]> => {
