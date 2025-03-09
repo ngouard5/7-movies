@@ -25,7 +25,7 @@ const Challenge = () => {
     }
 
     try {
-      // Instead of localStorage, decode the challenge data from the URL
+      // Decode the challenge data from the URL
       const decodedData = JSON.parse(atob(id));
       setChallengeData(decodedData);
     } catch (e) {

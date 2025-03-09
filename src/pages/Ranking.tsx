@@ -65,19 +65,20 @@ const Ranking = () => {
   const handleShare = () => {
     if (!session) return;
     
-    // Generate challenge URL (same as in Results.tsx)
-    const challengeId = Date.now().toString(36) + Math.random().toString(36).substring(2);
-    
-    // Store the game results in localStorage with the challenge ID
-    localStorage.setItem(`challenge_${challengeId}`, JSON.stringify({
+    // Create a challenge object with the necessary data
+    const challengeData = {
       movies: session.movies.map(movie => movie.id),
       time: session.totalTime,
       playerNickname: session.playerNickname,
-      playerAvatar: session.playerAvatar
-    }));
+      playerAvatar: session.playerAvatar,
+      sessionId: id  // Include the sessionId to link back to original session
+    };
+    
+    // Encode the challenge data directly in the URL using base64
+    const encodedData = btoa(JSON.stringify(challengeData));
     
     // Create share URL
-    const shareUrl = `${window.location.origin}/challenge/${challengeId}`;
+    const shareUrl = `${window.location.origin}/challenge/${encodedData}`;
     
     // Copy to clipboard
     navigator.clipboard.writeText(shareUrl)
