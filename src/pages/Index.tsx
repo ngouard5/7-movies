@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EmojiCarousel } from "@/components/game/EmojiCarousel";
@@ -19,10 +18,10 @@ const Index = () => {
       />
 
       <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0">
-        <div className="relative">
+        <div className="relative px-4">
           <BackgroundGradients />
 
-          <div className="absolute left-4 top-[69px]">
+          <div className="absolute left-0 top-[69px] px-4">
             <button 
               onClick={() => setMenuOpen(true)}
               className="w-12 h-12 flex justify-center items-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
@@ -48,7 +47,7 @@ const Index = () => {
             <EmojiCarousel />
           </div>
 
-          <section className="absolute w-[361px] text-[22px] leading-[30px] text-[#191919] left-4 top-[521px] max-sm:text-lg max-sm:leading-[26px]">
+          <section className="absolute w-full max-w-[361px] text-[22px] leading-[30px] text-[#191919] left-1/2 -translate-x-1/2 top-[521px] max-sm:text-lg max-sm:leading-[26px]">
             <p>
               Guess <strong>7 movie titles</strong> based on emojis, in the
               shortest period of time!
