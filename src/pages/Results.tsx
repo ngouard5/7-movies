@@ -3,15 +3,16 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { Share } from "lucide-react";
+import { Share, Timer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface MovieData {
   id: number;
   emojis: string;
   title: string;
-  year: number;
-  image: string;
+  imdbID: string;
+  image?: string;
+  guessTime?: number;
 }
 
 const Results = () => {
@@ -79,8 +80,8 @@ const Results = () => {
           <MenuButton />
         </div>
 
-        <div className="absolute w-[361px] left-4 top-[134px] text-center">
-          <div className="mb-6">
+        <div className="absolute w-[361px] left-4 top-[134px] text-center flex flex-col items-center">
+          <div className="mb-6 w-full">
             <div className="text-[22px] font-bold text-[#191919]">
               {playerAvatar} {playerNickname}'s score
             </div>
@@ -90,7 +91,7 @@ const Results = () => {
           </div>
 
           <button
-            className="flex items-center justify-center mx-auto mb-6 px-4 h-12 border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
+            className="flex items-center justify-center w-full mb-6 px-4 h-12 border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
             onClick={handleShare}
           >
             <Share className="w-5 h-5 mr-2 text-[#E72F2F]" />
@@ -99,26 +100,31 @@ const Results = () => {
             </span>
           </button>
 
-          <div className="text-[18px] font-bold text-[#191919] mb-4 text-left">
-            The movies you guessed:
-          </div>
-
-          <div className="flex flex-col gap-4 max-h-[350px] overflow-y-auto">
+          <div className="flex flex-col gap-4 max-h-[400px] overflow-y-auto w-full">
             {guessedMovies.map((movie, index) => (
               <div 
                 key={movie.id} 
-                className="flex items-center p-3 bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
+                className="flex flex-col bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
               >
-                <img
-                  src={movie.image || "/placeholder.svg"}
-                  alt={movie.title}
-                  className="w-12 h-[68px] rounded object-cover mr-3"
-                />
-                <div className="flex-1 text-left">
-                  <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
-                  <div className="text-[14px] text-gray-500">{movie.year}</div>
+                <div className="flex items-center p-3">
+                  <img
+                    src={movie.image || "/placeholder.svg"}
+                    alt={movie.title}
+                    className="w-12 h-[68px] rounded object-cover mr-3"
+                  />
+                  <div className="flex-1 text-left">
+                    <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
+                    {movie.guessTime !== undefined && (
+                      <div className="flex items-center text-[14px] text-gray-500">
+                        <Timer className="h-3.5 w-3.5 mr-1 inline" />
+                        {formatTime(movie.guessTime)}
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <div className="text-2xl">{movie.emojis.split(" ")[0]}</div>
+                <div className="px-3 pb-3 text-left">
+                  <div className="text-2xl">{movie.emojis}</div>
+                </div>
               </div>
             ))}
           </div>

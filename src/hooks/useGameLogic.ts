@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { searchMovies, MovieSearchResult } from "@/services/movieService";
+import { searchMovies, MovieSearchResult, getMovieById } from "@/services/movieService";
 import { movieEmojis, MovieEmoji } from "@/data/movieEmojis";
 
 export interface MovieData {
@@ -11,6 +11,7 @@ export interface MovieData {
   title: string;
   imdbID: string;
   image?: string;
+  guessTime?: number; // Added to track time for each movie
 }
 
 export const useGameLogic = () => {
@@ -18,6 +19,7 @@ export const useGameLogic = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [suggestions, setSuggestions] = useState<MovieSearchResult[]>([]);
   const [timer, setTimer] = useState(0);
+  const [movieStartTime, setMovieStartTime] = useState(0); // Track when user started guessing current movie
   const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
   const [wrongGuess, setWrongGuess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +38,11 @@ export const useGameLogic = () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, []);
+
+  // Set movie start time when movie changes
+  useEffect(() => {
+    setMovieStartTime(timer);
+  }, [currentMovieIndex, timer]);
 
   // Focus input when component mounts or movie changes
   useEffect(() => {
@@ -74,7 +81,7 @@ export const useGameLogic = () => {
     return () => clearTimeout(debounceTimer);
   }, [searchTerm, toast]);
 
-  const handleGuess = (movieTitle: string) => {
+  const handleGuess = async (movieTitle: string) => {
     const currentMovie = movieEmojis[currentMovieIndex];
     
     if (movieTitle.toLowerCase() === currentMovie.title.toLowerCase()) {
@@ -84,11 +91,19 @@ export const useGameLogic = () => {
         description: `You found "${currentMovie.title}"!`,
       });
       
+      // Calculate time taken to guess this movie
+      const guessTime = timer - movieStartTime;
+      
+      // Fetch movie details to get the poster
+      const movieDetails = await getMovieById(currentMovie.imdbID);
+      
       setGuessedMovies(prev => [...prev, {
         id: currentMovie.id,
         emojis: currentMovie.emojis,
         title: currentMovie.title,
         imdbID: currentMovie.imdbID,
+        image: movieDetails?.Poster,
+        guessTime: guessTime
       }]);
       
       setSearchTerm("");
@@ -105,6 +120,8 @@ export const useGameLogic = () => {
           emojis: currentMovie.emojis,
           title: currentMovie.title,
           imdbID: currentMovie.imdbID,
+          image: movieDetails?.Poster,
+          guessTime: guessTime
         }]));
         
         // Navigate to results page
