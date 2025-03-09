@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { MenuButton } from "@/components/game/MenuButton";
@@ -11,6 +11,20 @@ const PreGame = () => {
   const [selectedAvatar, setSelectedAvatar] = useState(0);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Load saved user data when component mounts
+  useEffect(() => {
+    const savedNickname = localStorage.getItem("playerNickname");
+    const savedAvatar = localStorage.getItem("playerAvatar");
+    
+    if (savedNickname) {
+      setNickname(savedNickname);
+    }
+    
+    if (savedAvatar) {
+      setSelectedAvatar(parseInt(savedAvatar));
+    }
+  }, []);
 
   const handleStartGame = () => {
     if (!nickname.trim()) {
@@ -30,6 +44,8 @@ const PreGame = () => {
     navigate("/countdown");
   };
 
+  const isChallengeMode = localStorage.getItem("challengeMovies") !== null;
+
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">
       <div className="relative">
@@ -48,7 +64,7 @@ const PreGame = () => {
         </div>
 
         <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-4 top-[229px] max-sm:text-[32px] max-sm:leading-10">
-          Before we start...
+          {isChallengeMode ? "Accept the challenge!" : "Before we start..."}
         </h1>
 
         <div className="absolute left-4 top-[323px] w-[361px]">
@@ -81,7 +97,7 @@ const PreGame = () => {
             className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors"
             onClick={handleStartGame}
           >
-            Start the game!
+            {isChallengeMode ? "Accept Challenge" : "Start the game!"}
           </button>
         </div>
       </div>
