@@ -1,66 +1,25 @@
+// utils/movieUtils.ts
 
-import { MovieEmoji } from "@/data/movieEmojis";
+import { movieErrorMessages } from "@/data/movieErrorMessages";
 
-// Helper function to shuffle array
-export const shuffleArray = <T,>(array: T[]): T[] => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
+// Function to format time in seconds to mm:ss format
+export const formatGameTime = (timeInSeconds: number): string => {
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = timeInSeconds % 60;
+  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 };
 
-// Error messages for wrong guesses
-const errorMessages = [
-  "That's not it! Try another movie.",
-  "Not quite right, but you're on the right track!",
-  "Good try, but not the movie we're looking for!",
-  "Hmm, not that one. Keep guessing!",
-  "Close, but not close enough. Try again!",
-  "That's not the correct movie, try another one!",
-  "Nice attempt, but that's not it!",
-  "I'm thinking of a different movie. Try again!",
-  "That's not right, but don't give up!",
-  "Not that one, but you can do this!"
-];
-
-// Get random error message
-export const getRandomErrorMessage = (movieTitle: string) => {
-  const randomIndex = Math.floor(Math.random() * errorMessages.length);
-  return `${errorMessages[randomIndex]} "${movieTitle}" is not the answer.`;
+// Function to get a random error message for wrong guesses
+export const getRandomErrorMessage = (movieTitle: string): string => {
+  const randomIndex = Math.floor(Math.random() * movieErrorMessages.length);
+  return movieErrorMessages[randomIndex].replace("{movieTitle}", movieTitle);
 };
 
-// Format time to MM:SS
-export const formatGameTime = (seconds: number) => {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-};
-
-// Get game movies - either from challenge or random selection
-export const getGameMovies = (movieEmojis: MovieEmoji[]): MovieEmoji[] => {
-  const challengeMoviesStr = localStorage.getItem("challengeMovies");
+// Function to get a subset of movies for the game
+export const getGameMovies = (allMovies: any[], count: number = 5) => {
+  // Shuffle the array of movies
+  const shuffled = [...allMovies].sort(() => 0.5 - Math.random());
   
-  if (challengeMoviesStr) {
-    try {
-      // This is a challenge game
-      const challengeMovieIds = JSON.parse(challengeMoviesStr);
-      const moviesForChallenge = challengeMovieIds
-        .map((id: number) => movieEmojis.find(movie => movie.id === id))
-        .filter(Boolean);
-      
-      // Clear the challenge data after loading
-      localStorage.removeItem("challengeMovies");
-      
-      if (moviesForChallenge.length > 0) {
-        return moviesForChallenge;
-      }
-    } catch (e) {
-      console.error("Error parsing challenge movies:", e);
-    }
-  }
-  
-  // Regular game - get 1 random movie for testing (changed from 7 to 1)
-  return shuffleArray(movieEmojis).slice(0, 1);
+  // Take the first n elements
+  return shuffled.slice(0, count);
 };

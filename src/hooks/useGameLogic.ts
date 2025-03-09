@@ -10,7 +10,7 @@ import { useMovieSearch } from "@/hooks/useMovieSearch";
 export type { MovieData } from "@/types/gameTypes";
 
 export const useGameLogic = () => {
-  const [gameMovies, setGameMovies] = useState(() => getGameMovies(movieEmojis));
+  const [gameMovies, setGameMovies] = useState(() => getGameMovies(movieEmojis, 1)); // Reduced to 1 for testing
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
   const [timer, setTimer] = useState(0);
   const [movieStartTime, setMovieStartTime] = useState(0);

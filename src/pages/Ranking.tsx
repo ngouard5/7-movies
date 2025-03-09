@@ -26,6 +26,7 @@ const Ranking = () => {
     // Load session data
     const sessionData = getGameSessionById(id);
     if (sessionData) {
+      console.log("Loaded session data:", sessionData);
       setSession(sessionData);
       
       // Fetch movie posters for each movie in the session
@@ -98,6 +99,8 @@ const Ranking = () => {
   }];
   
   participants.sort((a, b) => a.totalTime - b.totalTime);
+  
+  console.log("Current participants:", participants);
 
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full">

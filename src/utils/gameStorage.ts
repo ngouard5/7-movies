@@ -9,6 +9,7 @@ export interface GameSession {
   playerNickname: string;
   playerAvatar: string;
   participants?: Participant[];
+  isParticipant?: boolean; // Flag to identify if user participated in this session
 }
 
 export interface Participant {
@@ -42,7 +43,8 @@ export const saveGameSession = (
         avatar: playerAvatar,
         totalTime: totalTime,
       }
-    ]
+    ],
+    isParticipant: true // This is the user's own session
   };
   
   // Get existing sessions
@@ -117,10 +119,19 @@ export const addParticipantToSession = (
   // Sort participants by total time (ascending)
   sessions[sessionIndex].participants!.sort((a, b) => a.totalTime - b.totalTime);
   
+  // Mark this session as one the user participated in
+  sessions[sessionIndex].isParticipant = true;
+  
   // Save updated sessions
   localStorage.setItem('gameSessions', JSON.stringify(sessions));
   
   return true;
+};
+
+// Get the user's game sessions (includes created sessions and participated sessions)
+export const getUserGameSessions = (): GameSession[] => {
+  const sessions = getGameSessions();
+  return sessions.filter(session => session.isParticipant === true);
 };
 
 // Format date for display

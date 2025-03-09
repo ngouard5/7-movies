@@ -4,16 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { ArrowLeft, Calendar, Timer, Users } from "lucide-react";
-import { getGameSessions, GameSession, formatTime, formatSessionDate } from "@/utils/gameStorage";
+import { getUserGameSessions, GameSession, formatTime, formatSessionDate } from "@/utils/gameStorage";
 
 const History = () => {
   const [sessions, setSessions] = useState<GameSession[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load all game sessions
-    const allSessions = getGameSessions();
-    setSessions(allSessions);
+    // Load user's game sessions (both created and participated)
+    const userSessions = getUserGameSessions();
+    setSessions(userSessions);
   }, []);
 
   const handleBack = () => {
