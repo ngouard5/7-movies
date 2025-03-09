@@ -32,11 +32,7 @@ export const useMovieGuess = ({
       const currentMovie = gameMovies[currentMovieIndex];
       if (!currentMovie) return;
 
-      if (
-        guess.toLowerCase() === currentMovie.title.toLowerCase() ||
-        (currentMovie.alternateTitle &&
-          guess.toLowerCase() === currentMovie.alternateTitle.toLowerCase())
-      ) {
+      if (guess.toLowerCase() === currentMovie.title.toLowerCase()) {
         // Correct guess
         const guessTimeMs = (timer - movieStartTime) * 1000;
         const updatedMovie = {

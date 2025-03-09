@@ -51,7 +51,7 @@ const Game = () => {
         isLoading={isLoading}
         inputRef={inputRef}
         handleGuess={handleGuess}
-        wrongGuess={wrongGuess}
+        wrongGuess={wrongGuess ? "That's not it. Try again!" : null}
       />
     </main>
   );
