@@ -25,6 +25,11 @@ const BASE_URL = "https://www.omdbapi.com/";
 
 export const searchMovies = async (searchTerm: string): Promise<MovieSearchResult[]> => {
   try {
+    // Only search if we have at least 2 characters
+    if (searchTerm.length < 2) {
+      return [];
+    }
+    
     const response = await fetch(`${BASE_URL}?apikey=${API_KEY}&s=${encodeURIComponent(searchTerm)}&type=movie`);
     const data: SearchResponse = await response.json();
     

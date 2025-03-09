@@ -125,6 +125,7 @@ export const useGameLogic = () => {
   // Fetch movie suggestions from OMDb API
   useEffect(() => {
     const fetchSuggestions = async () => {
+      // Reduced minimum character limit to 2 characters for search
       if (searchTerm.length >= 2) {
         setIsLoading(true);
         try {
@@ -145,9 +146,10 @@ export const useGameLogic = () => {
       }
     };
 
+    // Reduced debounce timer to make search more responsive
     const debounceTimer = setTimeout(() => {
       fetchSuggestions();
-    }, 300);
+    }, 200);
 
     return () => clearTimeout(debounceTimer);
   }, [searchTerm, toast]);
