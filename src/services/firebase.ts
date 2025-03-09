@@ -19,7 +19,9 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Flag to control whether online mode is enabled
-const ONLINE_MODE_ENABLED = false;
+// Set to true to allow data to be stored in Firestore when possible
+const ONLINE_MODE_ENABLED = true;
+// Set to false to prevent authentication attempts, which cause 400 errors
 const AUTH_REQUIRED = false;
 
 // Helper function to ensure the user is authenticated (anonymously) if needed

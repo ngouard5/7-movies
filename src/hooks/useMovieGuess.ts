@@ -7,6 +7,7 @@ import { MovieEmoji } from "@/data/movieEmojis";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
 import { MovieData } from "@/types/gameTypes";
 import { createGameSession, addParticipantToSession } from "@/services/gameSessionService";
+import { saveGameSession } from "@/utils/gameStorage";
 
 type AnswerStatus = "default" | "correct" | "wrong";
 
@@ -147,33 +148,53 @@ export const useMovieGuess = ({
     
     let sessionId = "";
     
-    // Check if this was a challenge response
+    // First, always save to localStorage to ensure we have a local copy
+    const localSessionId = saveGameSession(
+      timer,
+      updatedGuessedMovies,
+      playerNickname,
+      playerAvatar
+    );
+    
+    // If this was a challenge response
     if (isChallenge && challengeId) {
       console.log(`Game completed for challenge ${challengeId} with time ${timer}`);
       
-      // Add participant to the existing challenge session
-      const added = await addParticipantToSession(
-        challengeId,
-        playerNickname,
-        playerAvatar,
-        timer
-      );
-      
-      console.log(`Added participant to challenge session ${challengeId}: ${added}`);
-      sessionId = challengeId;
+      try {
+        // Add participant to the existing challenge session
+        const added = await addParticipantToSession(
+          challengeId,
+          playerNickname,
+          playerAvatar,
+          timer
+        );
+        
+        console.log(`Added participant to challenge session ${challengeId}: ${added}`);
+        sessionId = challengeId;
+      } catch (error) {
+        console.error("Error adding participant to challenge:", error);
+        // Fallback to local session ID if adding to Firebase failed
+        sessionId = localSessionId;
+      }
       
       // Clear the challenge id
       localStorage.removeItem("currentChallengeId");
     } else {
-      // Create a new game session
-      sessionId = await createGameSession(
-        timer,
-        updatedGuessedMovies,
-        playerNickname,
-        playerAvatar
-      );
-      
-      console.log(`Created new game session: ${sessionId}`);
+      try {
+        // Try to create a new game session in Firestore
+        sessionId = await createGameSession(
+          timer,
+          updatedGuessedMovies,
+          playerNickname,
+          playerAvatar
+        );
+        
+        console.log(`Created new game session: ${sessionId}`);
+      } catch (error) {
+        console.error("Error creating game session in Firestore:", error);
+        // Use the local session ID as fallback
+        sessionId = localSessionId;
+      }
     }
     
     // Save results to localStorage

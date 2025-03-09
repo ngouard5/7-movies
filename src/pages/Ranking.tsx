@@ -19,7 +19,7 @@ const Ranking = () => {
   const [subscriptionActive, setSubscriptionActive] = useState(false);
   const navigate = useNavigate();
 
-  // Function to load session data from Firestore with optimized performance
+  // Function to load session data with optimized performance
   const loadSessionData = async () => {
     if (!id) {
       navigate("/history");
@@ -33,23 +33,58 @@ const Ranking = () => {
       const cleanId = id.replace(/^local-/, '');
       console.log("Loading session data for ID:", cleanId);
       
-      // Attempt to get session data
-      const firestoreSession = await getGameSession(cleanId);
+      // Check if we have it in sessionStorage first (for shared challenges)
+      const cachedSession = sessionStorage.getItem(`shared_session_${cleanId}`);
+      if (cachedSession) {
+        try {
+          const parsedSession = JSON.parse(cachedSession);
+          console.log("Found session in sessionStorage:", parsedSession);
+          
+          // Ensure we have participants array properly sorted
+          if (parsedSession.participants) {
+            parsedSession.participants.sort((a, b) => a.totalTime - b.totalTime);
+          } else {
+            parsedSession.participants = [{
+              id: parsedSession.id,
+              nickname: parsedSession.playerNickname,
+              avatar: parsedSession.playerAvatar,
+              totalTime: parsedSession.totalTime
+            }];
+          }
+          
+          setSession(parsedSession);
+          fetchMoviePosters(parsedSession.movies);
+          setIsLoading(false);
+          return;
+        } catch (e) {
+          console.error("Error parsing cached session:", e);
+        }
+      }
+      
+      // Attempt to get session data from Firestore or localStorage
+      const sessionData = await getGameSession(cleanId);
       
       console.timeEnd('LoadSessionData');
       
-      if (firestoreSession) {
-        console.log("Loaded session data:", firestoreSession);
+      if (sessionData) {
+        console.log("Loaded session data:", sessionData);
         
         // Ensure we have participants array properly sorted
-        if (firestoreSession.participants) {
-          firestoreSession.participants.sort((a, b) => a.totalTime - b.totalTime);
+        if (sessionData.participants) {
+          sessionData.participants.sort((a, b) => a.totalTime - b.totalTime);
+        } else {
+          sessionData.participants = [{
+            id: sessionData.id,
+            nickname: sessionData.playerNickname,
+            avatar: sessionData.playerAvatar,
+            totalTime: sessionData.totalTime
+          }];
         }
         
-        setSession(firestoreSession);
+        setSession(sessionData);
         
         // Fetch movie posters in parallel
-        fetchMoviePosters(firestoreSession.movies);
+        fetchMoviePosters(sessionData.movies);
       } else {
         console.error("Session not found:", cleanId);
         toast.error("Session not found", {
@@ -79,6 +114,12 @@ const Ranking = () => {
       const fetchPromises = movies.map(async (movie) => {
         if (movie.imdbID) {
           try {
+            // First check if the movie already has an image property
+            if (movie.image && movie.image !== "N/A") {
+              posters[movie.id] = movie.image;
+              return;
+            }
+            
             const movieDetails = await getMovieById(movie.imdbID);
             if (movieDetails && movieDetails.Poster && movieDetails.Poster !== "N/A") {
               posters[movie.id] = movieDetails.Poster;
@@ -107,12 +148,14 @@ const Ranking = () => {
 
   // Subscribe to real-time updates from Firestore
   useEffect(() => {
-    if (!id || !isOnlineMode() || subscriptionActive) return;
+    if (!id || !isOnlineMode() || subscriptionActive || !session) return;
     
     // Clean the ID
     const cleanId = id.replace(/^local-/, '');
     
     try {
+      console.log("Setting up real-time subscription for session:", cleanId);
+      
       // Set up real-time listener for this session
       const unsubscribe = subscribeToSession(cleanId, (updatedSession) => {
         console.log("Real-time update received");
@@ -129,6 +172,7 @@ const Ranking = () => {
       
       // Clean up subscription when component unmounts
       return () => {
+        console.log("Cleaning up subscription");
         unsubscribe();
         setSubscriptionActive(false);
       };
@@ -138,7 +182,7 @@ const Ranking = () => {
       setSubscriptionActive(true);
       return () => setSubscriptionActive(false);
     }
-  }, [id, session]);
+  }, [id, session, subscriptionActive]);
 
   const handleBack = () => {
     navigate(-1);

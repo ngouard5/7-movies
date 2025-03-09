@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { toast } from "sonner";
 import { getGameSession } from "@/services/gameSessionService";
+import { saveSharedGameSession } from "@/utils/gameStorage";
 
 const Challenge = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,12 +26,24 @@ const Challenge = () => {
         const cleanId = id.replace(/^local-/, '');
         console.log("Challenge session ID:", cleanId);
         
-        // Verify the session exists in Firestore
-        const firestoreSession = await getGameSession(cleanId);
-        
-        if (firestoreSession) {
-          console.log("Found challenge session in Firestore:", firestoreSession);
+        // First check if we've already loaded this challenge in sessionStorage
+        const cachedChallenge = sessionStorage.getItem(`shared_session_${cleanId}`);
+        if (cachedChallenge) {
+          console.log("Found cached challenge session:", cachedChallenge);
           setGameSessionId(cleanId);
+          setIsLoading(false);
+          return;
+        }
+        
+        // Verify the session exists in Firestore or localStorage
+        const session = await getGameSession(cleanId);
+        
+        if (session) {
+          console.log("Found challenge session:", session);
+          setGameSessionId(cleanId);
+          
+          // Save to sessionStorage for sharing across tabs
+          saveSharedGameSession(session);
         } else {
           console.error("Challenge session not found");
           toast.error("Challenge not found", {
