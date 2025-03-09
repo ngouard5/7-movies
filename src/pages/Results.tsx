@@ -68,6 +68,11 @@ const Results = () => {
     );
   };
 
+  // Helper function to get a fallback movie poster URL
+  const getMoviePosterUrl = (imdbID: string) => {
+    return `https://img.omdbapi.com/?i=${imdbID}&apikey=8342f4b&h=150`;
+  };
+
   if (isLoading) {
     return (
       <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0">
@@ -102,7 +107,7 @@ const Results = () => {
               >
                 <div className="flex items-center p-3">
                   <img
-                    src={movie.image || "/placeholder.svg"}
+                    src={movie.image || getMoviePosterUrl(movie.imdbID)}
                     alt={movie.title}
                     className="w-12 h-[68px] rounded object-cover mr-3"
                     onError={(e) => {
