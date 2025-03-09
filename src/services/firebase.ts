@@ -1,4 +1,3 @@
-
 import { initializeApp } from 'firebase/app';
 import { getFirestore, enableIndexedDbPersistence, CACHE_SIZE_UNLIMITED } from 'firebase/firestore';
 import { getAuth, signInAnonymously, onAuthStateChanged, User } from 'firebase/auth';
@@ -29,10 +28,9 @@ try {
   auth = getAuth(app);
   firestoreInitialized = true;
   
-  // Enable offline persistence with more robust settings
-  enableIndexedDbPersistence(db, {
-    synchronizeTabs: true
-  }).then(() => {
+  // Enable offline persistence with proper settings
+  // Note: Removed 'synchronizeTabs' as it's not a valid property in PersistenceSettings
+  enableIndexedDbPersistence(db).then(() => {
     console.log("Firestore offline persistence enabled successfully");
   }).catch((err) => {
     if (err.code === 'failed-precondition') {
