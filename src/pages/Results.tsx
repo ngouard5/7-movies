@@ -32,9 +32,13 @@ const Results = () => {
 
     if (time) setGameTime(parseInt(time));
     if (movies) {
-      const parsedMovies = JSON.parse(movies);
-      console.log("Loaded movies from localStorage:", parsedMovies);
-      setGuessedMovies(parsedMovies);
+      try {
+        const parsedMovies = JSON.parse(movies);
+        console.log("Loaded movies from localStorage:", parsedMovies);
+        setGuessedMovies(parsedMovies);
+      } catch (e) {
+        console.error("Error parsing guessed movies:", e);
+      }
     }
     if (nickname) setPlayerNickname(nickname);
     if (avatar) {
@@ -45,15 +49,26 @@ const Results = () => {
   }, []);
 
   const formatTime = (seconds: number | undefined) => {
-    if (seconds === undefined) return "00:00";
+    if (seconds === undefined || isNaN(seconds)) return "00:00";
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   const handleShare = () => {
-    // Generate share URL (this would be a unique URL for challenging friends)
-    const shareUrl = `${window.location.origin}/challenge/${Date.now()}`;
+    // Generate a unique ID for this challenge
+    const challengeId = Date.now().toString(36) + Math.random().toString(36).substring(2);
+    
+    // Store the current game results in localStorage with the challenge ID
+    localStorage.setItem(`challenge_${challengeId}`, JSON.stringify({
+      movies: guessedMovies.map(movie => movie.id),
+      time: gameTime,
+      playerNickname,
+      playerAvatar
+    }));
+    
+    // Create share URL
+    const shareUrl = `${window.location.origin}/challenge/${challengeId}`;
     
     // Copy to clipboard
     navigator.clipboard.writeText(shareUrl)
@@ -70,6 +85,9 @@ const Results = () => {
           variant: "destructive",
         });
       });
+    
+    // Navigate to the challenge page
+    navigate(`/challenge/${challengeId}`);
   };
 
   const handlePlayAgain = () => {

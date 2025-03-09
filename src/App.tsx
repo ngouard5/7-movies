@@ -9,6 +9,7 @@ import PreGame from "./pages/PreGame";
 import Countdown from "./pages/Countdown";
 import Game from "./pages/Game";
 import Results from "./pages/Results";
+import Challenge from "./pages/Challenge";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/countdown" element={<Countdown />} />
           <Route path="/game" element={<Game />} />
           <Route path="/results" element={<Results />} />
+          <Route path="/challenge/:id" element={<Challenge />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

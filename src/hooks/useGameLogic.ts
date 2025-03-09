@@ -11,7 +11,7 @@ export interface MovieData {
   title: string;
   imdbID: string;
   image?: string;
-  guessTime?: number; // Added to track time for each movie
+  guessTime?: number; // Time it took to guess this specific movie
 }
 
 // Helper function to shuffle array
@@ -25,9 +25,30 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 export const useGameLogic = () => {
-  // Get 7 random movies for this game session
+  // Check if there's a challenge to play
   const [gameMovies, setGameMovies] = useState<MovieEmoji[]>(() => {
-    // Shuffle the array and take the first 7 elements
+    const challengeMoviesStr = localStorage.getItem("challengeMovies");
+    
+    if (challengeMoviesStr) {
+      try {
+        // This is a challenge game
+        const challengeMovieIds = JSON.parse(challengeMoviesStr);
+        const moviesForChallenge = challengeMovieIds
+          .map((id: number) => movieEmojis.find(movie => movie.id === id))
+          .filter(Boolean);
+        
+        // Clear the challenge data after loading
+        localStorage.removeItem("challengeMovies");
+        
+        if (moviesForChallenge.length > 0) {
+          return moviesForChallenge;
+        }
+      } catch (e) {
+        console.error("Error parsing challenge movies:", e);
+      }
+    }
+    
+    // Regular game - get 7 random movies
     return shuffleArray(movieEmojis).slice(0, 7);
   });
   
