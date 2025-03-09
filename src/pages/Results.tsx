@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuButton } from "@/components/game/MenuButton";
@@ -83,9 +84,8 @@ const Results = () => {
         });
       })
       .catch(() => {
-        toast("Unable to copy", {
+        toast.error("Unable to copy", {
           description: "Please copy the URL manually",
-          variant: "destructive",
           position: "top-right",
           duration: 3000,
         });

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
@@ -30,9 +29,8 @@ const Challenge = () => {
       setChallengeData(decodedData);
     } catch (e) {
       console.error("Error parsing challenge data:", e);
-      toast("Défi invalide", {
+      toast.error("Défi invalide", {
         description: "Ce défi n'est plus disponible ou est invalide",
-        variant: "destructive",
         position: "top-right",
       });
       navigate("/");

@@ -47,9 +47,8 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
       })
       .catch((error) => {
         console.error("Erreur lors de la copie:", error);
-        toast("Impossible de copier", {
+        toast.error("Impossible de copier", {
           description: "Veuillez copier l'URL manuellement",
-          variant: "destructive",
           position: "top-right",
           duration: 3000,
         });
