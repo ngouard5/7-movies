@@ -36,28 +36,24 @@ const Countdown = () => {
       <div className="relative w-full h-full flex flex-col items-center justify-center">
         <BackgroundGradients />
 
-        {/* Avatar */}
-        <div className="absolute top-[120px] flex flex-col items-center">
+        <div className="flex flex-col items-center justify-center">
+          {/* Avatar */}
           <div className="w-[100px] h-[100px] flex items-center justify-center text-[64px] bg-[#FFF2CC] border-[#FC3] border-2 rounded-full mb-6">
             {avatars[avatarIndex]}
           </div>
           
           {/* Welcome message */}
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold mb-1">Welcome {nickname}!</h2>
-            <p className="text-gray-600">The game will start in</p>
-          </div>
-        </div>
-
-        {/* Countdown animation */}
-        <div className="absolute inset-0 flex items-center justify-center mt-[120px]">
-          <div className="text-[120px] font-bold text-[#E72F2F] animate-pulse">
+          <h2 className="text-2xl font-bold mb-1">Welcome {nickname}!</h2>
+          
+          {/* Game will start in */}
+          <p className="text-gray-600 mb-8">The game will start in</p>
+          
+          {/* Counter */}
+          <div className="text-[120px] font-bold text-[#E72F2F] animate-pulse mb-8">
             {count}
           </div>
-        </div>
-        
-        {/* GIF */}
-        <div className="absolute bottom-[100px] w-full flex justify-center">
+          
+          {/* GIF */}
           <img 
             src="https://media.giphy.com/media/cmzp1CfhZRkMtlCuVj/giphy.gif" 
             alt="Countdown animation" 
