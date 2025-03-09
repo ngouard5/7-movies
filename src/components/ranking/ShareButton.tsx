@@ -22,13 +22,13 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
       time: session.totalTime,
       playerNickname: session.playerNickname,
       playerAvatar: session.playerAvatar,
-      sessionId: sessionId // Include the sessionId to link back to original session
+      sessionId: sessionId // Important: Include the correct sessionId
     };
     
     // Encode the challenge data directly in the URL using base64
     const encodedData = btoa(JSON.stringify(challengeData));
     
-    // Create share URL
+    // Create share URL with the correct structure
     const shareUrl = `${window.location.origin}/challenge/${encodedData}`;
     
     // Copy to clipboard and show visual feedback
@@ -39,17 +39,18 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ session, sessionId }) 
         // Show toast notification
         toast({
           title: "Lien copié !",
-          description: "L'URL du défi a été copiée dans votre presse-papiers",
+          description: "L'URL du défi a été copiée dans votre presse-papiers"
         });
         
         // Reset copied state after 2 seconds
         setTimeout(() => setIsCopied(false), 2000);
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error("Erreur lors de la copie:", error);
         toast({
           title: "Impossible de copier",
           description: "Veuillez copier l'URL manuellement",
-          variant: "destructive",
+          variant: "destructive"
         });
       });
   };
