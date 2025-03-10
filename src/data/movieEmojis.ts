@@ -8,8 +8,8 @@ export interface MovieEmoji {
 
 // List of popular movies with their emoji representations - matched to OMDB titles
 export const movieEmojis: MovieEmoji[] = [
-  { id: 1, title: "Star Wars: Episode IV - A New Hope", emojis: "🚀 👽 🌌 👾", imdbID: "tt0076759" },
-  { id: 2, title: "The Lord of the Rings: The Fellowship of the Ring", emojis: "🧙‍♂️ 💍 🏔️ 🌋", imdbID: "tt0120737" },
+  { id: 1, title: "Star Wars", emojis: "🚀 👽 🌌 👾", imdbID: "tt0076759" },
+  { id: 2, title: "The Lord of the Rings", emojis: "🧙‍♂️ 💍 🏔️ 🌋", imdbID: "tt0120737" },
   { id: 3, title: "Titanic", emojis: "🌊 🚢 💎 💔", imdbID: "tt0120338" },
   { id: 4, title: "WALL·E", emojis: "🤖 👦 ❤️", imdbID: "tt0910970" },
   { id: 5, title: "The Lion King", emojis: "🦁 👑 🌍", imdbID: "tt0110357" },
@@ -33,7 +33,7 @@ export const movieEmojis: MovieEmoji[] = [
   { id: 23, title: "Alien", emojis: "👽 🚀 🥚 😱", imdbID: "tt0078748" },
   { id: 24, title: "Raiders of the Lost Ark", emojis: "👨‍🏫 🏺 🐍 📜", imdbID: "tt0082971" },
   { id: 25, title: "The Princess Bride", emojis: "⚔️ 👸 💗 🏴‍☠️", imdbID: "tt0093779" },
-  { id: 26, title: "Harry Potter and the Philosopher's Stone", emojis: "⚡ 🧙‍♂️ 🏰 🧹", imdbID: "tt0241527" },
+  { id: 26, title: "Harry Potter", emojis: "⚡ 🧙‍♂️ 🏰 🧹", imdbID: "tt0241527" },
   { id: 27, title: "Fight Club", emojis: "👊 🧼 🤯 🏢", imdbID: "tt0137523" },
   { id: 28, title: "The Shining", emojis: "🪓 🏨 👧 ❄️", imdbID: "tt0081505" },
   { id: 29, title: "Ghostbusters", emojis: "👻 🚫 🧪 🚗", imdbID: "tt0087332" },
@@ -122,7 +122,7 @@ export const movieEmojis: MovieEmoji[] = [
   { id: 139, title: "Once Upon a Time in the West", emojis: "🤠 🚂 💧 🏜️", imdbID: "tt0064116" },
   { id: 140, title: "Cinema Paradiso", emojis: "🎬 👦 💋 🔥", imdbID: "tt0095765" },
   { id: 141, title: "Rear Window", emojis: "🪟 📷 🦵 🔍", imdbID: "tt0047396" },
-  { id: 146, title: "Terminator 2: Judgment Day", emojis: "🤖 👦 🏍️ 🔥", imdbID: "tt0103064" },
+  { id: 146, title: "Terminator", emojis: "🤖 👦 🏍️ 🔥", imdbID: "tt0103064" },
   { id: 149, title: "The Great Dictator", emojis: "👨 🌍 ✂️ 🎭", imdbID: "tt0032553" },
   { id: 150, title: "The Lives of Others", emojis: "👂 📝 🎭 🧱", imdbID: "tt0405094" },
   { id: 151, title: "Django Unchained", emojis: "🤠 ⛓️ 🔫 🎩", imdbID: "tt1853728" },
@@ -139,7 +139,6 @@ export const movieEmojis: MovieEmoji[] = [
   { id: 169, title: "Avengers: Endgame", emojis: "🧤 💎 ⌛ 🦸", imdbID: "tt4154796" },
   { id: 170, title: "Top Gun: Maverick", emojis: "✈️ 😎 🏍️ 🎯", imdbID: "tt1745960" },
   { id: 171, title: "Everything Everywhere All at Once", emojis: "🥯 👓 🧹 🪨", imdbID: "tt6710474" },
-  { id: 172, title: "Blade Runner 2049", emojis: "👁️ 🌧️ 🤖 💦", imdbID: "tt1856101" },
   { id: 173, title: "Blade Runner", emojis: "👁️ 🦉 🔫 🏙️", imdbID: "tt0083658" },
   { id: 174, title: "2001: A Space Odyssey", emojis: "🚀 👨‍🚀 🧠 🌌", imdbID: "tt0062622" },
   { id: 175, title: "Lawrence of Arabia", emojis: "🏜️ 🐪 🔥 ⚔️", imdbID: "tt0056172" },
@@ -164,6 +163,5 @@ export const movieEmojis: MovieEmoji[] = [
   { id: 196, title: "Spider-Man: Into the Spider-Verse", emojis: "🕸️ 👦 🕷️ 🌈", imdbID: "tt4633694" },
   { id: 197, title: "Zootopia", emojis: "🦊 🐰 🚔 🏙️", imdbID: "tt2948356" },
   { id: 198, title: "The Lego Movie", emojis: "🧱 👷 👨‍🚀 🦸", imdbID: "tt1490017" },
-  { id: 199, title: "Big Hero 6", emojis: "🤖 👦 🏙️ 👨‍🔬", imdbID: "tt2245084" },
   { id: 200, title: "Tangled", emojis: "👸 🗼 🦎 🍳", imdbID: "tt0398286" }
 ]
