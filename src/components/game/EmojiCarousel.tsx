@@ -36,9 +36,9 @@ export const EmojiCarousel = () => {
   const getAnimationClass = () => {
     switch (animationState) {
       case "enter":
-        return "translate-y-0 opacity-100";
+        return "translate-y-0 opacity-100 animate-slide-in-bottom";
       case "exit":
-        return "-translate-y-full opacity-0";
+        return "-translate-y-full opacity-0 animate-slide-out-top";
       case "visible":
       default:
         return "translate-y-0 opacity-100";
