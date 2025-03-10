@@ -26,6 +26,7 @@ export const useGameLogic = () => {
   const [timer, setTimer] = useState(0);
   const [movieStartTime, setMovieStartTime] = useState(0);
   const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
+  const [passedMovies, setPassedMovies] = useState<MovieData[]>([]);
   
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -51,10 +52,43 @@ export const useGameLogic = () => {
     setCurrentMovieIndex,
     guessedMovies,
     setGuessedMovies,
+    passedMovies,
+    setPassedMovies,
     timer,
     movieStartTime,
     timerRef
   });
+
+  // Function to handle passing a movie
+  const handlePass = () => {
+    const currentMovie = gameMovies[currentMovieIndex];
+    
+    // Add to passed movies list
+    setPassedMovies(prev => [...prev, currentMovie]);
+    
+    // Move to next movie or finish game
+    if (currentMovieIndex < gameMovies.length - 1) {
+      setCurrentMovieIndex(prev => prev + 1);
+    } else {
+      // Game over, clear timer
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+      
+      // Navigate to results page
+      localStorage.setItem(
+        "gameResults",
+        JSON.stringify({
+          totalTime: timer,
+          movies: guessedMovies,
+          passedMovies: [...passedMovies, currentMovie],
+          score: guessedMovies.length,
+          totalMovies: gameMovies.length
+        })
+      );
+      window.location.href = "/results";
+    }
+  };
 
   // Start timer when component mounts
   useEffect(() => {
@@ -93,6 +127,7 @@ export const useGameLogic = () => {
     inputRef,
     currentMovie,
     handleGuess,
+    handlePass,
     formatTime: formatGameTime,
     totalMovies: gameMovies.length,
     answerStatus,

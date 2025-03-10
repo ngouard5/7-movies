@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from "react";
 import { MovieData } from "@/types/gameTypes";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
@@ -8,6 +9,8 @@ interface UseMovieGuessProps {
   setCurrentMovieIndex: React.Dispatch<React.SetStateAction<number>>;
   guessedMovies: MovieData[];
   setGuessedMovies: React.Dispatch<React.SetStateAction<MovieData[]>>;
+  passedMovies: MovieData[];
+  setPassedMovies: React.Dispatch<React.SetStateAction<MovieData[]>>;
   timer: number;
   movieStartTime: number;
   timerRef: React.MutableRefObject<NodeJS.Timeout | null>;
@@ -19,6 +22,8 @@ export const useMovieGuess = ({
   setCurrentMovieIndex,
   guessedMovies,
   setGuessedMovies,
+  passedMovies,
+  setPassedMovies,
   timer,
   movieStartTime,
   timerRef
@@ -103,6 +108,9 @@ export const useMovieGuess = ({
               JSON.stringify({
                 totalTime: timer,
                 movies: [...guessedMovies, updatedMovie],
+                passedMovies: passedMovies,
+                score: guessedMovies.length + 1,
+                totalMovies: gameMovies.length
               })
             );
             window.location.href = "/results";
@@ -147,6 +155,7 @@ export const useMovieGuess = ({
       movieStartTime,
       guessedMovies,
       setGuessedMovies,
+      passedMovies,
       timerRef,
       errorCount,
       generateFirstHint,
