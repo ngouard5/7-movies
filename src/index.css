@@ -134,3 +134,33 @@
 .fade-out {
   animation: fadeOut 0.5s ease-in-out forwards;
 }
+
+@keyframes slide-in-bottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-top {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+.slide-in-bottom {
+  animation: slide-in-bottom 0.5s ease-out forwards;
+}
+
+.slide-out-top {
+  animation: slide-out-top 0.5s ease-out forwards;
+}
