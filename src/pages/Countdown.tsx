@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
+import { AppLayout } from "@/components/layout/AppLayout";
 
 const avatars = [
   "👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"
@@ -32,38 +33,40 @@ const Countdown = () => {
   }, [navigate]);
 
   return (
-    <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 max-md:w-full flex items-center justify-center">
-      <div className="relative w-full h-full flex flex-col items-center justify-center">
-        <BackgroundGradients />
+    <AppLayout>
+      <main className="relative w-full min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0 flex items-center justify-center">
+        <div className="relative w-full h-full flex flex-col items-center justify-center">
+          <BackgroundGradients />
 
-        <div className="flex flex-col items-center justify-center">
-          {/* Avatar */}
-          <div className="w-[100px] h-[100px] flex items-center justify-center text-[64px] bg-[#FFF2CC] border-[#FC3] border-2 rounded-full mb-6">
-            {avatars[avatarIndex]}
+          <div className="flex flex-col items-center justify-center">
+            {/* Avatar */}
+            <div className="w-[100px] h-[100px] flex items-center justify-center text-[64px] bg-[#FFF2CC] border-[#FC3] border-2 rounded-full mb-6">
+              {avatars[avatarIndex]}
+            </div>
+            
+            {/* Welcome message */}
+            <h2 className="text-2xl font-bold mb-1">
+              Welcome, {nickname}!
+            </h2>
+            
+            {/* Game will start in */}
+            <p className="text-gray-600 mb-8">The game will start in</p>
+            
+            {/* Counter */}
+            <div className="text-[120px] font-bold text-[#E72F2F] animate-pulse mb-8">
+              {count}
+            </div>
+            
+            {/* GIF */}
+            <img 
+              src="https://media.giphy.com/media/cmzp1CfhZRkMtlCuVj/giphy.gif" 
+              alt="Countdown animation" 
+              className="w-[200px] h-auto rounded-xl"
+            />
           </div>
-          
-          {/* Welcome message */}
-          <h2 className="text-2xl font-bold mb-1">
-            Welcome, {nickname}!
-          </h2>
-          
-          {/* Game will start in */}
-          <p className="text-gray-600 mb-8">The game will start in</p>
-          
-          {/* Counter */}
-          <div className="text-[120px] font-bold text-[#E72F2F] animate-pulse mb-8">
-            {count}
-          </div>
-          
-          {/* GIF */}
-          <img 
-            src="https://media.giphy.com/media/cmzp1CfhZRkMtlCuVj/giphy.gif" 
-            alt="Countdown animation" 
-            className="w-[200px] h-auto rounded-xl"
-          />
         </div>
-      </div>
-    </main>
+      </main>
+    </AppLayout>
   );
 };
 

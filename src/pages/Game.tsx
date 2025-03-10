@@ -63,7 +63,7 @@ const Game = () => {
         <div className="absolute left-1/2 -translate-x-1/2 bottom-12 w-[90%] max-w-[361px]">
           <Button 
             variant="outline"
-            className="w-full mt-4 border-gray-300 text-gray-500 hover:bg-gray-100"
+            className="w-full mt-4 border-gray-300 text-gray-500 hover:bg-gray-100 rounded-2xl"
             onClick={handlePass}
           >
             <SkipForward className="h-4 w-4 mr-2" />
