@@ -2,6 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { X, Play, BookOpen } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NavigationMenuProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface NavigationMenuProps {
 
 export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   if (!isOpen) return null;
 
@@ -37,12 +39,12 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
           <nav className="space-y-2">
             <NavItem 
               icon={<Play className="text-[#E72F2F]" size={24} />} 
-              label="Play"
-              onClick={() => handleNavigation('/pregame')}
+              label={t('play.button')}
+              onClick={() => handleNavigation('/pre-game')}
             />
             <NavItem 
               icon={<BookOpen className="text-[#E72F2F]" size={24} />} 
-              label="How to play"
+              label={t('how.to.play')}
               onClick={() => handleNavigation('/how-to-play')}
             />
           </nav>

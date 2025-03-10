@@ -35,6 +35,10 @@ const translations = {
     'start.game': 'Start the game!',
     'accept.challenge.button': 'Accept Challenge',
     
+    // Countdown
+    'welcome': 'Welcome',
+    'game.start.in': 'The game will start in',
+    
     // Game
     'movie.counter': 'Movie',
     'type.movie.title': 'Type a movie title...',
@@ -77,6 +81,10 @@ const translations = {
     'choose.avatar': 'Choisissez votre avatar',
     'start.game': 'Commencer le jeu !',
     'accept.challenge.button': 'Accepter le défi',
+    
+    // Compte à rebours
+    'welcome': 'Bienvenue',
+    'game.start.in': 'Le jeu commencera dans',
     
     // Jeu
     'movie.counter': 'Film',

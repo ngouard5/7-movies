@@ -6,10 +6,13 @@ import { PlayButton } from "@/components/game/PlayButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { NavigationMenu } from "@/components/game/NavigationMenu";
 import { MenuButton } from "@/components/game/MenuButton";
+import { LanguageSwitcher } from "@/components/game/LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <>
@@ -31,6 +34,10 @@ const Index = () => {
             </button>
           </div>
 
+          <div className="absolute right-4 top-[69px]">
+            <LanguageSwitcher />
+          </div>
+
           <div
             className="absolute text-[64px] left-1/2 -translate-x-1/2 top-[117px]"
             role="img"
@@ -40,7 +47,7 @@ const Index = () => {
           </div>
 
           <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-1/2 -translate-x-1/2 top-[229px] max-sm:text-[32px] max-sm:leading-10">
-            Find 7 movies with emojis
+            {t('find.movies')}
           </h1>
 
           <div className="absolute w-full left-0 top-[365px]">
@@ -49,10 +56,9 @@ const Index = () => {
 
           <section className="absolute w-full max-w-[361px] text-[22px] leading-[30px] text-[#191919] left-1/2 -translate-x-1/2 top-[521px] max-sm:text-lg max-sm:leading-[26px]">
             <p>
-              Guess <strong>7 movie titles</strong> based on emojis, in the
-              shortest period of time!
+              {t('game.description')}
             </p>
-            <p className="mt-6">Challenge your friends to beat your record!</p>
+            <p className="mt-6">{t('challenge.friends')}</p>
           </section>
 
           <div className="absolute left-1/2 -translate-x-1/2 w-[361px] top-[703px]">
@@ -63,7 +69,7 @@ const Index = () => {
             className="absolute left-1/2 -translate-x-1/2 text-xl font-bold text-[#191919] top-[755px] mt-4 hover:text-[#E72F2F] transition-colors"
             onClick={() => navigate("/how-to-play")}
           >
-            How to play
+            {t('how.to.play')}
           </button>
         </div>
 
