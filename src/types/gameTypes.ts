@@ -6,4 +6,5 @@ export interface MovieData {
   imdbID: string;
   image?: string;
   guessTime?: number; // Time it took to guess this specific movie
+  frenchTitle?: string; // French title of the movie
 }
