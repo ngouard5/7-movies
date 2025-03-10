@@ -7,7 +7,7 @@ interface PhoneMockupProps {
 
 export const PhoneMockup: React.FC<PhoneMockupProps> = ({ children }) => {
   return (
-    <div className="hidden md:flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-4">
       <div className="relative w-[393px] h-[852px] bg-white rounded-[60px] shadow-xl overflow-hidden border-8 border-gray-800">
         {/* Notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150px] h-[30px] bg-gray-800 rounded-b-xl z-10"></div>

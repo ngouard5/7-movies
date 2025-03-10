@@ -1,10 +1,9 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { Timer, CheckCircle, XCircle } from "lucide-react";
 import { formatTime } from "@/utils/gameStorage";
-import { PhoneMockup } from "@/components/game/PhoneMockup";
+import { AppLayout } from "@/components/layout/AppLayout";
 
 interface MovieData {
   id: number;
@@ -81,24 +80,26 @@ const Results = () => {
     return `https://img.omdbapi.com/?i=${imdbID}&apikey=8342f4b&h=150`;
   };
 
-  const ResultsContent = () => {
-    if (isLoading) {
-      return (
-        <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0">
+  if (isLoading) {
+    return (
+      <AppLayout>
+        <main className="relative w-full min-h-[852px] overflow-hidden bg-neutral-50">
           <BackgroundGradients />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-xl">Saving your results...</div>
           </div>
         </main>
-      );
-    }
+      </AppLayout>
+    );
+  }
 
-    return (
-      <main className="relative w-full max-w-[393px] min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
-        <div className="relative h-full pb-8 flex flex-col items-center">
+  return (
+    <AppLayout>
+      <main className="relative w-full min-h-[852px] bg-neutral-50 overflow-auto">
+        <div className="relative pb-8 flex flex-col items-center">
           <BackgroundGradients />
 
-          <div className="absolute w-full max-w-[340px] left-1/2 -translate-x-1/2 top-[60px] text-center flex flex-col items-center">
+          <div className="w-[90%] max-w-[340px] mx-auto pt-[60px] text-center flex flex-col items-center">
             <div className="mb-6 w-full">
               <div className="text-[22px] font-bold text-[#191919]">
                 {playerAvatar} {playerNickname}'s score
@@ -116,7 +117,7 @@ const Results = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-4 max-h-[450px] overflow-y-auto w-full mt-4">
+            <div className="flex flex-col gap-4 w-full mt-4">
               {guessedMovies.length > 0 && (
                 <div className="text-left text-[18px] font-bold flex items-center">
                   <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
@@ -201,21 +202,7 @@ const Results = () => {
           </div>
         </div>
       </main>
-    );
-  };
-
-  return (
-    <>
-      {/* Show ResultsContent directly on mobile */}
-      <div className="md:hidden">
-        <ResultsContent />
-      </div>
-      
-      {/* Show PhoneMockup on tablet/desktop */}
-      <PhoneMockup>
-        <ResultsContent />
-      </PhoneMockup>
-    </>
+    </AppLayout>
   );
 };
 

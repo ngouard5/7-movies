@@ -15,16 +15,18 @@ function App() {
   return (
     <LanguageProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/game" element={<Game />} />
-          <Route path="/how-to-play" element={<HowToPlay />} />
-          <Route path="/pre-game" element={<PreGame />} />
-          <Route path="/results" element={<Results />} />
-          <Route path="/countdown" element={<Countdown />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Toaster />
+        <div className="w-full min-h-screen">
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/game" element={<Game />} />
+            <Route path="/how-to-play" element={<HowToPlay />} />
+            <Route path="/pre-game" element={<PreGame />} />
+            <Route path="/results" element={<Results />} />
+            <Route path="/countdown" element={<Countdown />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
+        </div>
       </Router>
     </LanguageProvider>
   );
