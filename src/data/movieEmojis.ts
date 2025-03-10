@@ -1,4 +1,4 @@
-<lov-code>
+
 export interface MovieEmoji {
   id: number;
   title: string;
@@ -195,4 +195,17 @@ export const movieEmojis: MovieEmoji[] = [
   { id: 185, title: "Frozen", emojis: "❄️ 👑 ☃️ 🦌", imdbID: "tt2294629" },
   { id: 186, title: "Inside Out", emojis: "😀 😭 😡 😱", imdbID: "tt2096673" },
   { id: 187, title: "Moana", emojis: "🌊 🏝️ 🪝 🐓", imdbID: "tt3521164" },
-  { id: 188, title: "The Little Mermaid", emojis
+  { id: 188, title: "The Little Mermaid", emojis: "🧜‍♀️ 🌊 🦞 👑", imdbID: "tt0097757" },
+  { id: 189, title: "Aladdin", emojis: "🧞 💎 🐒 👸", imdbID: "tt0103639" },
+  { id: 190, title: "Beauty and the Beast", emojis: "🌹 📚 🕰️ 🏰", imdbID: "tt0101414" },
+  { id: 191, title: "The Incredibles", emojis: "👨‍👩‍👧‍👦 💪 🦸 🎭", imdbID: "tt0317705" },
+  { id: 192, title: "Soul", emojis: "🎹 👻 🌟 🎭", imdbID: "tt2948372" },
+  { id: 193, title: "Shrek", emojis: "👹 👸 🐴 🧚", imdbID: "tt0126029" },
+  { id: 194, title: "Kung Fu Panda", emojis: "🐼 🥋 🐯 🐍", imdbID: "tt0441773" },
+  { id: 195, title: "How to Train Your Dragon", emojis: "🐉 👦 ⚔️ 🏝️", imdbID: "tt0892769" },
+  { id: 196, title: "Spider-Man: Into the Spider-Verse", emojis: "🕸️ 👦 🕷️ 🌈", imdbID: "tt4633694" },
+  { id: 197, title: "Zootopia", emojis: "🦊 🐰 🚔 🏙️", imdbID: "tt2948356" },
+  { id: 198, title: "The Lego Movie", emojis: "🧱 👷 👨‍🚀 🦸", imdbID: "tt1490017" },
+  { id: 199, title: "Big Hero 6", emojis: "🤖 👦 🏙️ 👨‍🔬", imdbID: "tt2245084" },
+  { id: 200, title: "Tangled", emojis: "👸 🗼 🦎 🍳", imdbID: "tt0398286" }
+]
