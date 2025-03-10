@@ -6,8 +6,6 @@ import { MovieCounter } from "@/components/game/MovieCounter";
 import { EmojiDisplay } from "@/components/game/EmojiDisplay";
 import { MovieSearchInput } from "@/components/game/MovieSearchInput";
 import { useGameLogic } from "@/hooks/useGameLogic";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { LanguageSwitcher } from "@/components/game/LanguageSwitcher";
 
 const Game = () => {
   const {
@@ -27,20 +25,13 @@ const Game = () => {
     showHint,
     hint
   } = useGameLogic();
-  
-  const { t } = useLanguage();
 
   // Convert boolean to string for the MovieSearchInput component
-  const wrongGuessMessage = wrongGuess ? hint || t('wrong.guess') : null;
+  const wrongGuessMessage = wrongGuess ? hint || "That's not it. Try again!" : null;
 
   return (
     <main className="relative w-full max-w-[393px] min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0">
       <BackgroundGradients />
-      
-      {/* Language switcher */}
-      <div className="absolute left-4 top-[69px]">
-        <LanguageSwitcher />
-      </div>
       
       {/* Timer */}
       <GameTimer timer={timer} formatTime={formatTime} />

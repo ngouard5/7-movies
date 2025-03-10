@@ -5,27 +5,21 @@ import { MovieData } from "@/types/gameTypes";
 import { getGameMovies, formatGameTime } from "@/utils/movieUtils";
 import { useMovieGuess } from "@/hooks/useMovieGuess";
 import { useMovieSearch } from "@/hooks/useMovieSearch";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { movieTitleTranslations } from "@/data/movieTranslations";
 
 export type { MovieData } from "@/types/gameTypes";
 
 export const useGameLogic = () => {
-  const { language } = useLanguage();
-  
+  // Get random movies for the game
   const [gameMovies, setGameMovies] = useState<any[]>(() => {
-    // Get random movies and translate titles if needed
+    // Get random movies
     const movies = getGameMovies(movieEmojis, 7);
     
-    // Apply translations if language is French
-    if (language === 'fr') {
-      return movies.map(movie => ({
-        ...movie,
-        title: movieTitleTranslations[movie.title] || movie.title
-      }));
-    }
-    
-    return movies;
+    // Add French titles to each movie
+    return movies.map(movie => ({
+      ...movie,
+      frenchTitle: movieTitleTranslations[movie.title] || movie.title
+    }));
   });
   
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
@@ -61,27 +55,6 @@ export const useGameLogic = () => {
     movieStartTime,
     timerRef
   });
-
-  // Effect to update movies when language changes
-  useEffect(() => {
-    // Get the same random movies but with translated titles if needed
-    if (language === 'fr') {
-      setGameMovies(prevMovies => 
-        prevMovies.map(movie => ({
-          ...movie,
-          title: movieTitleTranslations[movie.originalTitle || movie.title] || movie.title,
-          originalTitle: movie.originalTitle || movie.title // Store original title
-        }))
-      );
-    } else {
-      setGameMovies(prevMovies => 
-        prevMovies.map(movie => ({
-          ...movie,
-          title: movie.originalTitle || movie.title
-        }))
-      );
-    }
-  }, [language]);
 
   // Start timer when component mounts
   useEffect(() => {
