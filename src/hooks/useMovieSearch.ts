@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { searchMovies, MovieSearchResult } from "@/services/movieService";
 
@@ -9,42 +9,44 @@ export const useMovieSearch = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Fetch movie suggestions from OMDb API
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      // Search with a minimum of 2 characters
-      if (searchTerm.length >= 2) {
-        setIsLoading(true);
-        try {
-          const results = await searchMovies(searchTerm);
-          setSuggestions(results);
-        } catch (error) {
-          console.error("Error fetching suggestions:", error);
-          toast({
-            title: "Error",
-            description: "Failed to fetch movie suggestions",
-            variant: "destructive",
-          });
-        } finally {
-          setIsLoading(false);
-        }
-      } else {
-        setSuggestions([]);
+  // Fetch movie suggestions with debouncing
+  const fetchSuggestions = useCallback(async (term: string) => {
+    // Show suggestions with a minimum of 1 character instead of 2
+    if (term.length >= 1) {
+      setIsLoading(true);
+      try {
+        const results = await searchMovies(term);
+        setSuggestions(results);
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch movie suggestions",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
       }
-    };
+    } else {
+      setSuggestions([]);
+    }
+  }, [toast]);
 
-    // Small debounce timer to make search responsive without too many requests
-    const debounceTimer = setTimeout(() => {
-      fetchSuggestions();
-    }, 300);
+  // Use a shorter debounce timer and handle immediate search
+  useEffect(() => {
+    // Search immediately for better responsiveness
+    const immediateTimer = setTimeout(() => {
+      fetchSuggestions(searchTerm);
+    }, 150); // Reduced from 300ms for more immediate feedback
 
-    return () => clearTimeout(debounceTimer);
-  }, [searchTerm, toast]);
+    return () => clearTimeout(immediateTimer);
+  }, [searchTerm, fetchSuggestions]);
 
   return {
     searchTerm,
     setSearchTerm,
     suggestions,
-    isLoading
+    isLoading,
+    clearSuggestions: () => setSuggestions([])
   };
 };

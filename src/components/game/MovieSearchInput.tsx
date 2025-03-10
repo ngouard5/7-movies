@@ -35,6 +35,8 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           autoComplete="off"
+          autoCorrect="off"
+          spellCheck="false"
         />
         
         {isLoading && (

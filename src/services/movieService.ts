@@ -1,4 +1,3 @@
-
 import { movieTitleTranslations } from "@/data/movieTranslations";
 
 interface SearchResponse {
@@ -33,12 +32,68 @@ Object.entries(movieTitleTranslations).forEach(([englishTitle, frenchTitle]) => 
   frenchToEnglishTitles.set(frenchTitle.toLowerCase(), englishTitle);
 });
 
-// Helper function to filter movie results client-side
+// Helper function to calculate Levenshtein distance for fuzzy matching
+const levenshteinDistance = (a: string, b: string): number => {
+  if (a.length === 0) return b.length;
+  if (b.length === 0) return a.length;
+
+  const matrix = [];
+
+  // Initialize matrix
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  // Fill matrix
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      const cost = a[j - 1] === b[i - 1] ? 0 : 1;
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j] + 1, // deletion
+        matrix[i][j - 1] + 1, // insertion
+        matrix[i - 1][j - 1] + cost // substitution
+      );
+    }
+  }
+
+  return matrix[b.length][a.length];
+};
+
+// Function to check if a title matches with fuzzy matching
+const isFuzzyMatch = (title: string, searchTerm: string, threshold = 0.25): boolean => {
+  if (!title || !searchTerm) return false;
+  
+  const titleLower = title.toLowerCase();
+  const searchLower = searchTerm.toLowerCase();
+  
+  // Check for partial match first (optimistic case)
+  if (titleLower.includes(searchLower)) {
+    return true;
+  }
+  
+  // For very short search terms, be more strict about fuzzy matching
+  if (searchLower.length < 3) {
+    return titleLower.startsWith(searchLower);
+  }
+  
+  // Apply fuzzy matching for longer search terms
+  const distance = levenshteinDistance(titleLower, searchLower);
+  const maxLength = Math.max(titleLower.length, searchLower.length);
+  const similarityRatio = 1 - distance / maxLength;
+  
+  return similarityRatio >= threshold;
+};
+
+// Helper function to filter movie results with fuzzy matching
 const filterMoviesByPartialTitle = (movies: MovieSearchResult[], partialTitle: string): MovieSearchResult[] => {
   const lowerPartial = partialTitle.toLowerCase();
-  return movies.filter(movie => {
+  
+  // First get exact or partial matches
+  const exactMatches = movies.filter(movie => {
     const englishMatches = movie.Title.toLowerCase().includes(lowerPartial);
-    // Check if this movie has a French title and if it matches our search term
     const frenchTitle = movieTitleTranslations[movie.Title];
     const frenchMatches = frenchTitle ? frenchTitle.toLowerCase().includes(lowerPartial) : false;
     
@@ -49,26 +104,62 @@ const filterMoviesByPartialTitle = (movies: MovieSearchResult[], partialTitle: s
     
     return englishMatches || frenchMatches;
   });
+  
+  // If we have exact matches, return them
+  if (exactMatches.length > 0) {
+    return exactMatches;
+  }
+  
+  // Otherwise, try fuzzy matching
+  return movies.filter(movie => {
+    const englishFuzzyMatch = isFuzzyMatch(movie.Title, partialTitle);
+    
+    const frenchTitle = movieTitleTranslations[movie.Title];
+    if (frenchTitle) {
+      movie.frenchTitle = frenchTitle;
+    }
+    
+    const frenchFuzzyMatch = frenchTitle ? isFuzzyMatch(frenchTitle, partialTitle) : false;
+    
+    return englishFuzzyMatch || frenchFuzzyMatch;
+  });
 };
 
-// Find English title from French search term
+// Find English title from French search term with fuzzy matching
 const findEnglishTitleFromFrench = (frenchSearchTerm: string): string | null => {
-  // Check if the search term is a partial match for any French title
+  if (frenchSearchTerm.length < 2) return null;
+  
   const lowerSearchTerm = frenchSearchTerm.toLowerCase();
   
+  // First try exact matches
   for (const [frenchTitle, englishTitle] of frenchToEnglishTitles.entries()) {
     if (frenchTitle.includes(lowerSearchTerm)) {
       return englishTitle;
     }
   }
   
-  return null;
+  // Then try fuzzy matches
+  let bestMatch: string | null = null;
+  let bestSimilarity = 0;
+  
+  for (const [frenchTitle, englishTitle] of frenchToEnglishTitles.entries()) {
+    const distance = levenshteinDistance(frenchTitle, lowerSearchTerm);
+    const maxLength = Math.max(frenchTitle.length, lowerSearchTerm.length);
+    const similarity = 1 - distance / maxLength;
+    
+    if (similarity > 0.7 && similarity > bestSimilarity) {
+      bestMatch = englishTitle;
+      bestSimilarity = similarity;
+    }
+  }
+  
+  return bestMatch;
 };
 
 export const searchMovies = async (searchTerm: string): Promise<MovieSearchResult[]> => {
   try {
-    // Only search if we have at least 2 characters
-    if (searchTerm.length < 2) {
+    // We now accept searches with only 1 character
+    if (searchTerm.length < 1) {
       return [];
     }
     
@@ -124,18 +215,23 @@ export const searchMovies = async (searchTerm: string): Promise<MovieSearchResul
       }
     }
     
-    // Check our cache for partial matches if we haven't found anything yet
+    // Try fuzzy matching with cached results
     if (results.length === 0) {
+      let fuzzyMatches: MovieSearchResult[] = [];
+      
       LOCAL_CACHE.forEach((movies, cacheKey) => {
-        // Check if the cache key contains our search term or vice versa
-        if (cacheKey.toLowerCase().includes(searchTerm.toLowerCase()) || 
-            searchTerm.toLowerCase().includes(cacheKey.toLowerCase())) {
+        // Use fuzzy matching for both the cache key and the movies
+        if (isFuzzyMatch(cacheKey, searchTerm)) {
           const filteredMovies = filterMoviesByPartialTitle(movies, searchTerm);
           if (filteredMovies.length > 0) {
-            results.push(...filteredMovies);
+            fuzzyMatches.push(...filteredMovies);
           }
         }
       });
+      
+      if (fuzzyMatches.length > 0) {
+        results = fuzzyMatches;
+      }
     }
     
     // If we have results from any of our search attempts, prepare and return them
@@ -153,8 +249,8 @@ export const searchMovies = async (searchTerm: string): Promise<MovieSearchResul
     
     // If nothing found yet, try with a prefix search
     // For example, if searching for "Harry Potter", try just "Harr"
-    if (searchTerm.length > 3) {
-      const prefix = searchTerm.substring(0, 4);
+    if (searchTerm.length > 1) {
+      const prefix = searchTerm.substring(0, Math.min(3, searchTerm.length));
       const prefixResponse = await fetch(`${BASE_URL}?apikey=${API_KEY}&s=${encodeURIComponent(prefix)}&type=movie`);
       const prefixData: SearchResponse = await prefixResponse.json();
       
@@ -170,7 +266,7 @@ export const searchMovies = async (searchTerm: string): Promise<MovieSearchResul
         // Cache these results too
         LOCAL_CACHE.set(prefix, prefixData.Search);
         
-        // Return filtered results that match our search term
+        // Return filtered results that match our search term with fuzzy matching
         return filterMoviesByPartialTitle(prefixData.Search, searchTerm);
       }
     }
