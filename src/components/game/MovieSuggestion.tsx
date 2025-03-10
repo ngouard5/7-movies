@@ -7,6 +7,7 @@ interface MovieSuggestionProps {
     title: string;
     year: string;
     poster: string;
+    frenchTitle?: string;
   };
   onClick: () => void;
 }
@@ -24,6 +25,9 @@ export const MovieSuggestion: React.FC<MovieSuggestionProps> = ({ movie, onClick
       />
       <div className="text-left">
         <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
+        {movie.frenchTitle && movie.frenchTitle !== movie.title && (
+          <div className="text-[14px] text-gray-600 italic">{movie.frenchTitle}</div>
+        )}
         <div className="text-[14px] text-gray-500">{movie.year}</div>
       </div>
     </button>

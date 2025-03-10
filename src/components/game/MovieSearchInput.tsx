@@ -25,7 +25,7 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
   showHint = false,
 }) => {
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 top-[360px] w-[361px]">
+    <div className="absolute left-1/2 -translate-x-1/2 top-[360px] w-full max-w-[361px]">
       <div className="relative">
         <input
           ref={inputRef}
@@ -52,7 +52,8 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
                   id: movie.imdbID,
                   title: movie.Title,
                   year: movie.Year,
-                  poster: movie.Poster
+                  poster: movie.Poster,
+                  frenchTitle: movie.frenchTitle
                 }}
                 onClick={() => {
                   handleGuess(movie.Title);
