@@ -1,4 +1,3 @@
-
 import { useState, useCallback } from "react";
 import { MovieData } from "@/types/gameTypes";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
@@ -30,8 +29,8 @@ export const useMovieGuess = ({
   const [errorCount, setErrorCount] = useState(0);
   const [hint, setHint] = useState("");
 
-  // Generate a hint for the current movie
-  const generateHint = useCallback((title: string) => {
+  // Generate a first hint for the current movie
+  const generateFirstHint = useCallback((title: string) => {
     // Extract first letter of the movie
     const firstLetter = title.charAt(0);
     
@@ -40,6 +39,16 @@ export const useMovieGuess = ({
     
     // Create hint text
     return `Hint: Title starts with "${firstLetter}" and has ${wordCount} word${wordCount > 1 ? 's' : ''}.`;
+  }, []);
+
+  // Generate a second hint showing first letter of each word
+  const generateSecondHint = useCallback((title: string) => {
+    // Split the title into words and get first letter of each
+    const words = title.split(" ");
+    const firstLetters = words.map(word => word.charAt(0).toUpperCase()).join(" ");
+    
+    // Create hint text
+    return `Hint: First letters of each word: ${firstLetters}`;
   }, []);
 
   // Functions
@@ -97,14 +106,20 @@ export const useMovieGuess = ({
         const newErrorCount = errorCount + 1;
         setErrorCount(newErrorCount);
         
-        // Show hint after first error
+        // Show different hints based on error count
         if (newErrorCount === 1) {
+          // First hint after first error
           setShowHint(true);
-          setHint(generateHint(currentMovie.title));
+          setHint(generateFirstHint(currentMovie.title));
+        } else if (newErrorCount === 2) {
+          // Second hint after second error - first letter of each word
+          setShowHint(true);
+          setHint(generateSecondHint(currentMovie.title));
         } else {
-          // Generate a random error message for subsequent errors
-          setWrongGuess(true);
-          setHint(getRandomErrorMessage(currentMovie.title));
+          // Keep showing the second hint for subsequent errors
+          setShowHint(true);
+          // Keep the second hint for all subsequent errors
+          setHint(generateSecondHint(currentMovie.title));
         }
 
         // Reset the answer status after a short delay
@@ -123,7 +138,8 @@ export const useMovieGuess = ({
       setGuessedMovies,
       timerRef,
       errorCount,
-      generateHint
+      generateFirstHint,
+      generateSecondHint
     ]
   );
 

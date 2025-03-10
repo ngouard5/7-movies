@@ -2,6 +2,7 @@
 import React from "react";
 import { MovieSearchResult } from "@/services/movieService";
 import { MovieSuggestion } from "./MovieSuggestion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface MovieSearchInputProps {
   searchTerm: string;
@@ -24,6 +25,8 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
   wrongGuess,
   showHint = false,
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="absolute left-1/2 -translate-x-1/2 top-[360px] w-[361px]">
       <div className="relative">
@@ -31,7 +34,7 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
           ref={inputRef}
           type="text"
           className="w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid border-[#CCC] text-[18px]"
-          placeholder="Type a movie title..."
+          placeholder={t('type.movie.title')}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           autoComplete="off"

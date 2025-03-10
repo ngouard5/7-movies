@@ -1,50 +1,33 @@
 
-import { Toaster } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { PhoneMockup } from "@/components/game/PhoneMockup";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "./App.css";
 import Index from "./pages/Index";
+import Game from "./pages/Game";
+import HowToPlay from "./pages/HowToPlay";
+import Results from "./pages/Results";
 import PreGame from "./pages/PreGame";
 import Countdown from "./pages/Countdown";
-import Game from "./pages/Game";
-import Results from "./pages/Results";
-import HowToPlay from "./pages/HowToPlay";
 import NotFound from "./pages/NotFound";
+import { Toaster } from "./components/ui/toaster";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
-const queryClient = new QueryClient();
-
-const App = () => {
-  const isMobile = useIsMobile();
-  
-  const AppContent = (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/pregame" element={<PreGame />} />
-        <Route path="/countdown" element={<Countdown />} />
-        <Route path="/game" element={<Game />} />
-        <Route path="/results" element={<Results />} />
-        <Route path="/how-to-play" element={<HowToPlay />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-  );
-
+function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
+    <LanguageProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/game" element={<Game />} />
+          <Route path="/how-to-play" element={<HowToPlay />} />
+          <Route path="/pre-game" element={<PreGame />} />
+          <Route path="/results" element={<Results />} />
+          <Route path="/countdown" element={<Countdown />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
         <Toaster />
-        {isMobile ? (
-          AppContent
-        ) : (
-          <PhoneMockup>{AppContent}</PhoneMockup>
-        )}
-      </TooltipProvider>
-    </QueryClientProvider>
+      </Router>
+    </LanguageProvider>
   );
-};
+}
 
 export default App;
