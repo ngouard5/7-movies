@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "tsx --require dotenv/config src/db/seeds/index.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.4",
