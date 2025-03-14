@@ -1,6 +1,13 @@
+"use client";
+
+import { useAppContext } from "@/contexts/AppContext";
+
 export function MenuButton() {
+  const { setMenuOpen } = useAppContext();
+
   return (
     <button
+      onClick={() => setMenuOpen(true)}
       className="w-12 h-12 flex justify-center items-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
       aria-label="Menu"
     >

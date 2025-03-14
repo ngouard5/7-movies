@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={fredoka.variable}>
+      <body className={`h-full ${fredoka.variable}`}>
         <AppProvider>
           <AppLayout>{children}</AppLayout>
         </AppProvider>

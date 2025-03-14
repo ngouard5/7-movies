@@ -21,7 +21,7 @@ export function NavigationMenu() {
 
       <div className="relative w-[290px] bg-white h-full animate-slide-in-left shadow-lg flex flex-col">
         <div className="p-6 flex justify-between items-center border-b border-gray-200">
-          <div className="text-[22px] font-bold text-[#191919]">Menu</div>
+          <div className="text-[22px] font-bold text-foreground">Menu</div>
           <button
             onClick={closeMenu}
             className="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-[#E72F2F] transition-colors"
@@ -64,7 +64,7 @@ function NavItem({
       onClick={onClick}
     >
       <span className="mr-4">{icon}</span>
-      <span className="text-[18px] font-semibold text-[#191919]">{label}</span>
+      <span className="text-[18px] font-semibold text-foreground">{label}</span>
     </button>
   );
 }
