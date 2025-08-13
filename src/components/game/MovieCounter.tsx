@@ -13,7 +13,7 @@ export const MovieCounter: React.FC<MovieCounterProps> = ({ currentIndex, totalM
   return (
     <div className="text-left">
       <div className="text-[18px] font-bold text-foreground">
-        {t('movie.counter')} {currentIndex + 1}/{totalMovies}
+        {currentIndex + 1}/{totalMovies}
       </div>
     </div>
   );

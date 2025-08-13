@@ -35,11 +35,15 @@ const Game = () => {
       <main className="relative w-full min-h-screen bg-neutral-50">
         <BackgroundGradients />
         
-        {/* Header: Movie counter on left, timer on right */}
+        {/* Header: Movie counter on left, timer center, skip button on right */}
         <div className="sticky top-0 z-20 bg-neutral-50/80 backdrop-blur-sm">
           <div className="flex justify-between items-center p-4">
             <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
             <GameTimer timer={timer} formatTime={formatTime} />
+            <Button variant="outline" className="border-border text-muted-foreground hover:bg-accent rounded-xl h-12 px-4 text-[16px]" onClick={handlePass}>
+              <SkipForward className="h-4 w-4 mr-2" />
+              Skip
+            </Button>
           </div>
         </div>
         
@@ -66,13 +70,6 @@ const Game = () => {
           }} disabled={!searchTerm.trim()}>Confirm</Button>
           </div>
           
-          {/* Skip button */}
-          <div className="w-full max-w-[361px]">
-            <Button variant="outline" className="w-full border-border text-muted-foreground hover:bg-accent rounded-xl h-12 text-[16px]" onClick={handlePass}>
-              <SkipForward className="h-4 w-4 mr-2" />
-              Passer
-            </Button>
-          </div>
           
           {/* Hint message - appears after skip button */}
           {wrongGuessMessage && <div className={`w-full max-w-[361px] p-4 rounded-xl border ${showHint ? 'bg-[#FFF8E0] border-[#F0C000]' : 'bg-[#FADEDE] border-[#E72F2F]'}`}>
