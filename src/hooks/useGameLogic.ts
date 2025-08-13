@@ -1,24 +1,35 @@
 
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { movieEmojis } from "@/data/movieEmojis";
 import { MovieData } from "@/types/gameTypes";
 import { getGameMovies, formatGameTime } from "@/utils/movieUtils";
 import { useMovieGuess } from "@/hooks/useMovieGuess";
 import { movieTitleTranslations } from "@/data/movieTranslations";
+import { movieDetails, getMovieInfo } from "@/data/movieDetails";
 
 export type { MovieData } from "@/types/gameTypes";
 
 export const useGameLogic = () => {
+  const navigate = useNavigate();
+  
   // Get random movies for the game
   const [gameMovies, setGameMovies] = useState<any[]>(() => {
     // Get random movies
     const movies = getGameMovies(movieEmojis, 7);
     
-    // Add French titles to each movie
-    return movies.map(movie => ({
-      ...movie,
-      frenchTitle: movieTitleTranslations[movie.title] || movie.title
-    }));
+    // Add French titles and movie details to each movie
+    return movies.map(movie => {
+      const info = getMovieInfo(movie.title);
+      return {
+        ...movie,
+        frenchTitle: movieTitleTranslations[movie.title] || movie.title,
+        genre: info?.genre,
+        year: info?.year,
+        director: info?.director,
+        mainActor: info?.mainActor
+      };
+    });
   });
   
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
@@ -86,7 +97,7 @@ export const useGameLogic = () => {
           totalMovies: gameMovies.length
         })
       );
-      window.location.href = "/results";
+      navigate("/results");
     }
   };
 
@@ -101,10 +112,10 @@ export const useGameLogic = () => {
     };
   }, []);
 
-  // Update movie start time when movie changes
+  // Update movie start time when movie changes (only when movie index changes)
   useEffect(() => {
     setMovieStartTime(timer);
-  }, [currentMovieIndex, timer]);
+  }, [currentMovieIndex]);
 
   // Focus input when component mounts or movie changes
   useEffect(() => {

@@ -1,9 +1,11 @@
 
 import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { MovieData } from "@/types/gameTypes";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
 import { calculateScore } from "@/utils/scoreCalculator";
 import { isFuzzyMatch, isMovieVariant, getSuggestion } from "@/utils/fuzzyMatching";
+import { getDecade } from "@/data/movieDetails";
 
 interface UseMovieGuessProps {
   gameMovies: MovieData[];
@@ -30,6 +32,7 @@ export const useMovieGuess = ({
   movieStartTime,
   timerRef
 }: UseMovieGuessProps) => {
+  const navigate = useNavigate();
   const [wrongGuess, setWrongGuess] = useState(false);
   const [answerStatus, setAnswerStatus] = useState<"wrong" | "correct" | null>(null);
   const [showHint, setShowHint] = useState(false);
@@ -38,22 +41,14 @@ export const useMovieGuess = ({
   const [showScorePopup, setShowScorePopup] = useState(false);
   const [lastScore, setLastScore] = useState<{basePoints: number, speedBonus: number, totalPoints: number, guessedMovie: MovieData} | null>(null);
 
-  // Generate a first hint for the current movie - using French title
+  // Generate first hint: Genre + decade
   const generateFirstHint = useCallback((movie: MovieData) => {
-    // Use French title for the hint
-    const title = movie.frenchTitle || movie.title;
-    
-    // Extract first letter of the movie
-    const firstLetter = title.charAt(0);
-    
-    // Count total words
-    const wordCount = title.split(" ").length;
-    
-    // Create hint text
-    return `Hint: Title starts with "${firstLetter}" and has ${wordCount} word${wordCount > 1 ? 's' : ''}.`;
+    const genre = movie.genre || "Genre inconnu";
+    const decade = movie.year ? getDecade(movie.year) : "époque inconnue";
+    return `Indice : ${genre}, ${decade}`;
   }, []);
 
-  // Generate a second hint showing first letter of each word - using French title
+  // Generate second hint: First letters + word count - using French title
   const generateSecondHint = useCallback((movie: MovieData) => {
     // Use French title for the hint
     const title = movie.frenchTitle || movie.title;
@@ -61,9 +56,29 @@ export const useMovieGuess = ({
     // Split the title into words and get first letter of each
     const words = title.split(" ");
     const firstLetters = words.map(word => word.charAt(0).toUpperCase()).join(" ");
+    const wordCount = words.length;
     
     // Create hint text
-    return `Hint: First letters of each word: ${firstLetters}`;
+    return `Indice : ${firstLetters} (${wordCount} mot${wordCount > 1 ? 's' : ''})`;
+  }, []);
+
+  // Generate third hint: Main actor or director
+  const generateThirdHint = useCallback((movie: MovieData) => {
+    if (movie.mainActor && movie.director) {
+      // Randomly choose between main actor and director
+      const showActor = Math.random() > 0.5;
+      if (showActor) {
+        return `Indice : Avec ${movie.mainActor}`;
+      } else {
+        return `Indice : Réalisé par ${movie.director}`;
+      }
+    } else if (movie.mainActor) {
+      return `Indice : Avec ${movie.mainActor}`;
+    } else if (movie.director) {
+      return `Indice : Réalisé par ${movie.director}`;
+    } else {
+      return `Indice : Information non disponible`;
+    }
   }, []);
 
   // Functions
@@ -136,7 +151,7 @@ export const useMovieGuess = ({
                 totalMovies: gameMovies.length
               })
             );
-            window.location.href = "/results";
+            navigate("/results");
           }, 1000);
         }
       } else {
@@ -154,19 +169,19 @@ export const useMovieGuess = ({
         
         // Show different hints based on error count
         if (newErrorCount === 1) {
-          // First hint after first error, with suggestion if available
+          // First hint: Genre + decade
           setShowHint(true);
           const baseHint = generateFirstHint(currentMovie);
           setHint(suggestion ? `${baseHint} ${suggestion}` : baseHint);
         } else if (newErrorCount === 2) {
-          // Second hint after second error - first letter of each word
+          // Second hint: First letters + word count
           setShowHint(true);
           const baseHint = generateSecondHint(currentMovie);
           setHint(suggestion ? `${baseHint} ${suggestion}` : baseHint);
         } else {
-          // Keep showing the second hint for subsequent errors
+          // Third hint and beyond: Main actor/director
           setShowHint(true);
-          const baseHint = generateSecondHint(currentMovie);
+          const baseHint = generateThirdHint(currentMovie);
           setHint(suggestion ? `${baseHint} ${suggestion}` : baseHint);
         }
 
@@ -188,7 +203,8 @@ export const useMovieGuess = ({
       timerRef,
       errorCount,
       generateFirstHint,
-      generateSecondHint
+      generateSecondHint,
+      generateThirdHint
     ]
   );
 
