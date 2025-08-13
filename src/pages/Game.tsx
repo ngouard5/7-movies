@@ -76,6 +76,23 @@ const Game = () => {
             )}
           </div>
           
+          {/* Validate button */}
+          <div className="w-full max-w-[361px]">
+            <Button 
+              variant="destructive"
+              className="w-full rounded-xl h-12 text-[16px] font-medium"
+              onClick={() => {
+                if (searchTerm.trim()) {
+                  handleGuess(searchTerm.trim());
+                  setSearchTerm("");
+                }
+              }}
+              disabled={!searchTerm.trim()}
+            >
+              Valider
+            </Button>
+          </div>
+          
           {/* Skip button */}
           <div className="w-full max-w-[361px]">
             <Button 
