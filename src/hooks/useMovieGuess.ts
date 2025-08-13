@@ -41,15 +41,8 @@ export const useMovieGuess = ({
   const [showScorePopup, setShowScorePopup] = useState(false);
   const [lastScore, setLastScore] = useState<{basePoints: number, speedBonus: number, totalPoints: number, guessedMovie: MovieData} | null>(null);
 
-  // Generate first hint: Genre + decade
-  const generateFirstHint = useCallback((movie: MovieData) => {
-    const genre = movie.genre || "Genre inconnu";
-    const decade = movie.year ? getDecade(movie.year) : "époque inconnue";
-    return `Indice : ${genre}, ${decade}`;
-  }, []);
-
-  // Generate second hint: First letters + word count - using French title
-  const generateSecondHint = useCallback((movie: MovieData) => {
+  // Helper function to generate first letters + word count hint
+  const generateLettersAndWordsHint = useCallback((movie: MovieData) => {
     // Use French title for the hint
     const title = movie.frenchTitle || movie.title;
     
@@ -62,9 +55,31 @@ export const useMovieGuess = ({
     return `Indice : ${firstLetters} (${wordCount} mot${wordCount > 1 ? 's' : ''})`;
   }, []);
 
-  // Generate third hint: Main actor or director
+  // Generate first hint: Genre + decade, fallback to letters + words
+  const generateFirstHint = useCallback((movie: MovieData) => {
+    const hasGenre = movie.genre && movie.genre.trim() !== "";
+    const hasYear = movie.year && movie.year > 0;
+    
+    if (hasGenre && hasYear) {
+      const decade = getDecade(movie.year);
+      return `Indice : ${movie.genre}, ${decade}`;
+    } else {
+      // Fallback to letters + words if genre or year missing
+      return generateLettersAndWordsHint(movie);
+    }
+  }, [generateLettersAndWordsHint]);
+
+  // Generate second hint: First letters + word count - using French title
+  const generateSecondHint = useCallback((movie: MovieData) => {
+    return generateLettersAndWordsHint(movie);
+  }, [generateLettersAndWordsHint]);
+
+  // Generate third hint: Main actor or director, fallback to letters + words
   const generateThirdHint = useCallback((movie: MovieData) => {
-    if (movie.mainActor && movie.director) {
+    const hasActor = movie.mainActor && movie.mainActor.trim() !== "";
+    const hasDirector = movie.director && movie.director.trim() !== "";
+    
+    if (hasActor && hasDirector) {
       // Randomly choose between main actor and director
       const showActor = Math.random() > 0.5;
       if (showActor) {
@@ -72,14 +87,15 @@ export const useMovieGuess = ({
       } else {
         return `Indice : Réalisé par ${movie.director}`;
       }
-    } else if (movie.mainActor) {
+    } else if (hasActor) {
       return `Indice : Avec ${movie.mainActor}`;
-    } else if (movie.director) {
+    } else if (hasDirector) {
       return `Indice : Réalisé par ${movie.director}`;
     } else {
-      return `Indice : Information non disponible`;
+      // Fallback to letters + words if no actor/director info
+      return generateLettersAndWordsHint(movie);
     }
-  }, []);
+  }, [generateLettersAndWordsHint]);
 
   // Functions
   const handleGuess = useCallback(
