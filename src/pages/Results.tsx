@@ -146,19 +146,17 @@ const Results = () => {
                       }}
                     />
                     <div className="flex-1 text-left">
-                      <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
-                      <div className="flex items-center justify-between">
-                        {displayTime(movie.guessTime)}
-                        {movie.points && (
-                          <div className="text-[14px] font-bold text-[#E72F2F]">
-                            +{movie.points} pts
-                          </div>
-                        )}
-                      </div>
+                      <div className="font-bold text-[16px] text-[#191919] mb-1">{movie.title}</div>
+                      {displayTime(movie.guessTime)}
                     </div>
-                  </div>
-                  <div className="px-3 pb-3 text-left">
-                    <div className="text-2xl">{movie.emojis}</div>
+                    <div className="flex flex-col items-end gap-2">
+                      <div className="text-2xl">{movie.emojis}</div>
+                      {movie.points && (
+                        <div className="text-[14px] font-bold text-[#E72F2F]">
+                          +{movie.points} pts
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -185,13 +183,11 @@ const Results = () => {
                       }}
                     />
                     <div className="flex-1 text-left">
-                      <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
+                      <div className="font-bold text-[16px] text-[#191919] mb-1">{movie.title}</div>
                       {movie.frenchTitle && movie.frenchTitle !== movie.title && (
                         <div className="text-[14px] text-gray-500">({movie.frenchTitle})</div>
                       )}
                     </div>
-                  </div>
-                  <div className="px-3 pb-3 text-left">
                     <div className="text-2xl">{movie.emojis}</div>
                   </div>
                 </div>

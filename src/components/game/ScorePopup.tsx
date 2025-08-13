@@ -1,10 +1,20 @@
 import React from "react";
 
+interface MovieData {
+  id: number;
+  emojis: string;
+  title: string;
+  imdbID: string;
+  image?: string;
+  frenchTitle?: string;
+}
+
 interface ScorePopupProps {
   show: boolean;
   basePoints: number;
   speedBonus: number;
   totalPoints: number;
+  currentMovie: MovieData;
 }
 
 export const ScorePopup: React.FC<ScorePopupProps> = ({
@@ -12,21 +22,40 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
   basePoints,
   speedBonus,
   totalPoints,
+  currentMovie,
 }) => {
   if (!show) return null;
 
+  const getMoviePosterUrl = (imdbID: string) => {
+    return `https://img.omdbapi.com/?i=${imdbID}&apikey=8342f4b&h=150`;
+  };
+
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 top-[320px] w-full max-w-[361px] z-10">
-      <div className="bg-green-500 text-white p-4 rounded-xl shadow-lg animate-fade-in">
-        <div className="text-center">
-          <div className="text-xl font-bold mb-2">
-            🎉 +{totalPoints} points!
+    <div className="absolute left-1/2 -translate-x-1/2 bottom-[120px] w-[90%] max-w-[361px] z-10">
+      <div className="bg-green-500 text-white p-3 rounded-xl shadow-lg animate-fade-in">
+        <div className="flex items-center gap-3">
+          <img
+            src={currentMovie.image || getMoviePosterUrl(currentMovie.imdbID)}
+            alt={currentMovie.title}
+            className="w-10 h-14 rounded object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "/placeholder.svg";
+            }}
+          />
+          <div className="flex-1">
+            <div className="font-bold text-sm mb-1">{currentMovie.title}</div>
+            <div className="text-xs">
+              💯 Base: {basePoints} pts
+              {speedBonus > 0 && (
+                <span className="ml-2">⚡ Speed bonus: +{speedBonus} pts</span>
+              )}
+            </div>
           </div>
-          <div className="text-sm">
-            💯 Base: {basePoints} pts
-            {speedBonus > 0 && (
-              <span className="ml-2">⚡ Speed bonus: +{speedBonus} pts</span>
-            )}
+          <div className="text-right">
+            <div className="text-lg font-bold">
+              🎉 +{totalPoints}
+            </div>
+            <div className="text-xs">points</div>
           </div>
         </div>
       </div>
