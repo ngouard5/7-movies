@@ -19,7 +19,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
   };
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="absolute inset-0 z-50">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
       
       <div className="relative w-[290px] bg-white h-full animate-slide-in-left shadow-lg flex flex-col">

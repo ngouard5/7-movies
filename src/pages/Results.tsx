@@ -13,6 +13,7 @@ interface MovieData {
   image?: string;
   guessTime?: number;
   frenchTitle?: string;
+  points?: number;
 }
 
 const Results = () => {
@@ -20,6 +21,7 @@ const Results = () => {
   const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
   const [passedMovies, setPassedMovies] = useState<MovieData[]>([]);
   const [score, setScore] = useState<number>(0);
+  const [totalScore, setTotalScore] = useState<number>(0);
   const [totalMovies, setTotalMovies] = useState<number>(7);
   const [playerNickname, setPlayerNickname] = useState<string>("");
   const [playerAvatar, setPlayerAvatar] = useState<string>("👨‍🦰");
@@ -36,6 +38,7 @@ const Results = () => {
         setGuessedMovies(results.movies || []);
         setPassedMovies(results.passedMovies || []);
         setScore(results.score || guessedMovies.length);
+        setTotalScore(results.totalScore || 0);
         setTotalMovies(results.totalMovies || 7);
       } catch (e) {
         console.error("Error parsing game results:", e);
@@ -106,13 +109,16 @@ const Results = () => {
               </div>
               <div className="flex justify-center items-center gap-2 mt-2">
                 <div className="text-[64px] font-bold text-[#E72F2F]">
-                  {score}
+                  {totalScore}
                 </div>
                 <div className="text-[22px] font-medium text-[#191919]">
-                  / {totalMovies}
+                  points
                 </div>
               </div>
-              <div className="text-[18px] font-medium text-[#191919] mt-1">
+              <div className="text-[16px] font-medium text-[#191919] mt-1">
+                Movies guessed: {score} / {totalMovies}
+              </div>
+              <div className="text-[16px] font-medium text-[#191919]">
                 Total time: {formatTime(gameTime)}
               </div>
             </div>
@@ -141,7 +147,14 @@ const Results = () => {
                     />
                     <div className="flex-1 text-left">
                       <div className="font-bold text-[16px] text-[#191919]">{movie.title}</div>
-                      {displayTime(movie.guessTime)}
+                      <div className="flex items-center justify-between">
+                        {displayTime(movie.guessTime)}
+                        {movie.points && (
+                          <div className="text-[14px] font-bold text-[#E72F2F]">
+                            +{movie.points} pts
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="px-3 pb-3 text-left">

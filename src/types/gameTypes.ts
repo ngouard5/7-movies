@@ -7,4 +7,5 @@ export interface MovieData {
   image?: string;
   guessTime?: number; // Time it took to guess this specific movie
   frenchTitle?: string; // French title of the movie
+  points?: number; // Points earned for this movie
 }

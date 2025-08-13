@@ -2,6 +2,7 @@
 import { useState, useCallback } from "react";
 import { MovieData } from "@/types/gameTypes";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
+import { calculateScore } from "@/utils/scoreCalculator";
 
 interface UseMovieGuessProps {
   gameMovies: MovieData[];
@@ -76,9 +77,11 @@ export const useMovieGuess = ({
       if (englishMatch || frenchMatch) {
         // Correct guess
         const guessTimeMs = (timer - movieStartTime) * 1000;
+        const points = calculateScore(guessTimeMs);
         const updatedMovie = {
           ...currentMovie,
           guessTime: guessTimeMs,
+          points: points,
         };
 
         setAnswerStatus("correct");
@@ -103,13 +106,16 @@ export const useMovieGuess = ({
           
           // Navigate to results page after a delay to see the "correct" animation
           setTimeout(() => {
+            const allGuessedMovies = [...guessedMovies, updatedMovie];
+            const totalScore = allGuessedMovies.reduce((sum, movie) => sum + (movie.points || 0), 0);
             localStorage.setItem(
               "gameResults",
               JSON.stringify({
                 totalTime: timer,
-                movies: [...guessedMovies, updatedMovie],
+                movies: allGuessedMovies,
                 passedMovies: passedMovies,
                 score: guessedMovies.length + 1,
+                totalScore: totalScore,
                 totalMovies: gameMovies.length
               })
             );

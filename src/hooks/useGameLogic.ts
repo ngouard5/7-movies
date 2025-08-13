@@ -76,6 +76,7 @@ export const useGameLogic = () => {
       }
       
       // Navigate to results page
+      const totalScore = guessedMovies.reduce((sum, movie) => sum + (movie.points || 0), 0);
       localStorage.setItem(
         "gameResults",
         JSON.stringify({
@@ -83,6 +84,7 @@ export const useGameLogic = () => {
           movies: guessedMovies,
           passedMovies: [...passedMovies, currentMovie],
           score: guessedMovies.length,
+          totalScore: totalScore,
           totalMovies: gameMovies.length
         })
       );
