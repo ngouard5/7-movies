@@ -1,4 +1,3 @@
-
 import React from "react";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { GameTimer } from "@/components/game/GameTimer";
@@ -10,7 +9,6 @@ import { useGameLogic } from "@/hooks/useGameLogic";
 import { Button } from "@/components/ui/button";
 import { SkipForward } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
-
 const Game = () => {
   const {
     currentMovieIndex,
@@ -33,9 +31,7 @@ const Game = () => {
 
   // Convert boolean to string for the MovieSearchInput component
   const wrongGuessMessage = wrongGuess ? hint || "That's not it. Try again!" : null;
-
-  return (
-    <AppLayout>
+  return <AppLayout>
       <main className="relative w-full min-h-screen bg-neutral-50">
         <BackgroundGradients />
         
@@ -54,67 +50,36 @@ const Game = () => {
           
           {/* Input with relative positioning for popup */}
           <div className="w-full max-w-[361px] relative">
-            <MovieSearchInput 
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              inputRef={inputRef}
-              handleGuess={handleGuess}
-              wrongGuess={wrongGuessMessage}
-              showHint={showHint}
-              answerStatus={answerStatus}
-            />
+            <MovieSearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} inputRef={inputRef} handleGuess={handleGuess} wrongGuess={wrongGuessMessage} showHint={showHint} answerStatus={answerStatus} />
             
             {/* Score popup positioned right below input */}
-            {lastScore && (
-              <ScorePopup 
-                show={showScorePopup}
-                basePoints={lastScore.basePoints}
-                speedBonus={lastScore.speedBonus}
-                totalPoints={lastScore.totalPoints}
-                currentMovie={lastScore.guessedMovie}
-              />
-            )}
+            {lastScore && <ScorePopup show={showScorePopup} basePoints={lastScore.basePoints} speedBonus={lastScore.speedBonus} totalPoints={lastScore.totalPoints} currentMovie={lastScore.guessedMovie} />}
           </div>
           
           {/* Validate button */}
           <div className="w-full max-w-[361px]">
-            <Button 
-              variant="destructive"
-              className="w-full rounded-xl h-12 text-[16px] font-medium"
-              onClick={() => {
-                if (searchTerm.trim()) {
-                  handleGuess(searchTerm.trim());
-                  setSearchTerm("");
-                }
-              }}
-              disabled={!searchTerm.trim()}
-            >
-              Valider
-            </Button>
+            <Button variant="destructive" className="w-full rounded-xl h-12 text-[16px] font-medium" onClick={() => {
+            if (searchTerm.trim()) {
+              handleGuess(searchTerm.trim());
+              setSearchTerm("");
+            }
+          }} disabled={!searchTerm.trim()}>Confirm</Button>
           </div>
           
           {/* Skip button */}
           <div className="w-full max-w-[361px]">
-            <Button 
-              variant="outline"
-              className="w-full border-border text-muted-foreground hover:bg-accent rounded-xl h-12 text-[16px]"
-              onClick={handlePass}
-            >
+            <Button variant="outline" className="w-full border-border text-muted-foreground hover:bg-accent rounded-xl h-12 text-[16px]" onClick={handlePass}>
               <SkipForward className="h-4 w-4 mr-2" />
               Passer
             </Button>
           </div>
           
           {/* Hint message - appears after skip button */}
-          {wrongGuessMessage && (
-            <div className={`w-full max-w-[361px] p-4 rounded-xl border ${showHint ? 'bg-[#FFF8E0] border-[#F0C000]' : 'bg-[#FADEDE] border-[#E72F2F]'}`}>
+          {wrongGuessMessage && <div className={`w-full max-w-[361px] p-4 rounded-xl border ${showHint ? 'bg-[#FFF8E0] border-[#F0C000]' : 'bg-[#FADEDE] border-[#E72F2F]'}`}>
               <p className="text-[18px] text-foreground">{wrongGuessMessage}</p>
-            </div>
-          )}
+            </div>}
         </div>
       </main>
-    </AppLayout>
-  );
+    </AppLayout>;
 };
-
 export default Game;
