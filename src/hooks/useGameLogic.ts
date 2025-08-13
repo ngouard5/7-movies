@@ -37,7 +37,10 @@ export const useGameLogic = () => {
     answerStatus, 
     handleGuess,
     showHint,
-    hint
+    hint,
+    resetHints,
+    showScorePopup,
+    lastScore
   } = useMovieGuess({
     gameMovies,
     currentMovieIndex,
@@ -54,6 +57,9 @@ export const useGameLogic = () => {
   // Function to handle passing a movie
   const handlePass = () => {
     const currentMovie = gameMovies[currentMovieIndex];
+    
+    // Reset hints when passing
+    resetHints();
     
     // Add to passed movies list
     setPassedMovies(prev => [...prev, currentMovie]);
@@ -124,6 +130,8 @@ export const useGameLogic = () => {
     totalMovies: gameMovies.length,
     answerStatus,
     showHint,
-    hint
+    hint,
+    showScorePopup,
+    lastScore
   };
 };

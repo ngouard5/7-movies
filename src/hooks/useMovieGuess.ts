@@ -35,6 +35,8 @@ export const useMovieGuess = ({
   const [showHint, setShowHint] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
   const [hint, setHint] = useState("");
+  const [showScorePopup, setShowScorePopup] = useState(false);
+  const [lastScore, setLastScore] = useState<{basePoints: number, speedBonus: number, totalPoints: number} | null>(null);
 
   // Generate a first hint for the current movie - using French title
   const generateFirstHint = useCallback((movie: MovieData) => {
@@ -79,6 +81,11 @@ export const useMovieGuess = ({
         // Correct guess
         const guessTimeMs = (timer - movieStartTime) * 1000;
         const points = calculateScore(guessTimeMs);
+        
+        // Calculate base points and speed bonus for popup
+        const basePoints = 100;
+        const speedBonus = points - basePoints;
+        
         const updatedMovie = {
           ...currentMovie,
           guessTime: guessTimeMs,
@@ -87,6 +94,15 @@ export const useMovieGuess = ({
 
         setAnswerStatus("correct");
         setGuessedMovies((prev) => [...prev, updatedMovie]);
+
+        // Show score popup
+        setLastScore({ basePoints, speedBonus, totalPoints: points });
+        setShowScorePopup(true);
+        
+        // Hide score popup after 2.5 seconds
+        setTimeout(() => {
+          setShowScorePopup(false);
+        }, 2500);
 
         // Reset wrong guess state and hint
         setWrongGuess(false);
@@ -176,11 +192,23 @@ export const useMovieGuess = ({
     ]
   );
 
+  // Function to reset hints (for passing movies)
+  const resetHints = useCallback(() => {
+    setWrongGuess(false);
+    setShowHint(false);
+    setHint("");
+    setErrorCount(0);
+    setAnswerStatus(null);
+  }, []);
+
   return {
     wrongGuess,
     answerStatus,
     handleGuess,
     showHint,
-    hint
+    hint,
+    resetHints,
+    showScorePopup,
+    lastScore
   };
 };

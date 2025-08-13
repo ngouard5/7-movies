@@ -5,6 +5,7 @@ import { GameTimer } from "@/components/game/GameTimer";
 import { MovieCounter } from "@/components/game/MovieCounter";
 import { EmojiDisplay } from "@/components/game/EmojiDisplay";
 import { MovieSearchInput } from "@/components/game/MovieSearchInput";
+import { ScorePopup } from "@/components/game/ScorePopup";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { Button } from "@/components/ui/button";
 import { SkipForward } from "lucide-react";
@@ -25,7 +26,9 @@ const Game = () => {
     answerStatus,
     showHint,
     hint,
-    handlePass
+    handlePass,
+    showScorePopup,
+    lastScore
   } = useGameLogic();
 
   // Convert boolean to string for the MovieSearchInput component
@@ -44,6 +47,16 @@ const Game = () => {
         
         {/* Yellow emojis section */}
         <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
+        
+        {/* Score popup */}
+        {lastScore && (
+          <ScorePopup 
+            show={showScorePopup}
+            basePoints={lastScore.basePoints}
+            speedBonus={lastScore.speedBonus}
+            totalPoints={lastScore.totalPoints}
+          />
+        )}
         
         {/* Input section */}
         <MovieSearchInput 

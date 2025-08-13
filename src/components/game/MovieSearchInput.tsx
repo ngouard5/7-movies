@@ -23,6 +23,7 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && searchTerm.trim()) {
       handleGuess(searchTerm.trim());
+      setSearchTerm(""); // Clear input after guess
     }
   };
   return (
