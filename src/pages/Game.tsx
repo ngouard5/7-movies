@@ -39,24 +39,21 @@ const Game = () => {
       <main className="relative w-full min-h-screen bg-neutral-50">
         <BackgroundGradients />
         
-        {/* Fixed header elements */}
+        {/* Header: Movie counter on left, timer on right */}
         <div className="sticky top-0 z-20 bg-neutral-50/80 backdrop-blur-sm">
-          <div className="flex justify-between items-start p-4">
-            <div className="flex-1" />
-            <GameTimer timer={timer} formatTime={formatTime} />
-          </div>
-          <div className="text-center pb-4">
+          <div className="flex justify-between items-center p-4">
             <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
+            <GameTimer timer={timer} formatTime={formatTime} />
           </div>
         </div>
         
         {/* Main content */}
-        <div className="flex flex-col items-center px-4 space-y-8 pb-8">
+        <div className="flex flex-col items-center px-4 space-y-6 pb-8">
           {/* Emojis section */}
           <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
           
-          {/* Input and validation */}
-          <div className="w-full max-w-[361px]">
+          {/* Input with relative positioning for popup */}
+          <div className="w-full max-w-[361px] relative">
             <MovieSearchInput 
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
@@ -66,6 +63,17 @@ const Game = () => {
               showHint={showHint}
               answerStatus={answerStatus}
             />
+            
+            {/* Score popup positioned right below input */}
+            {lastScore && (
+              <ScorePopup 
+                show={showScorePopup}
+                basePoints={lastScore.basePoints}
+                speedBonus={lastScore.speedBonus}
+                totalPoints={lastScore.totalPoints}
+                currentMovie={lastScore.guessedMovie}
+              />
+            )}
           </div>
           
           {/* Skip button */}
@@ -87,17 +95,6 @@ const Game = () => {
             </div>
           )}
         </div>
-        
-        {/* Score popup */}
-        {lastScore && (
-          <ScorePopup 
-            show={showScorePopup}
-            basePoints={lastScore.basePoints}
-            speedBonus={lastScore.speedBonus}
-            totalPoints={lastScore.totalPoints}
-            currentMovie={lastScore.guessedMovie}
-          />
-        )}
       </main>
     </AppLayout>
   );
