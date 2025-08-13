@@ -48,7 +48,7 @@ const Game = () => {
         </div>
         
         {/* Main content */}
-        <div className="flex flex-col items-center px-4 space-y-6 pb-8">
+        <div className="flex flex-col items-center space-y-6 pb-8 px-0">
           {/* Emojis section */}
           <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
           
