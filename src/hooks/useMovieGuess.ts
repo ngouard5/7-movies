@@ -5,7 +5,7 @@ import { MovieData } from "@/types/gameTypes";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
 import { calculateScore } from "@/utils/scoreCalculator";
 import { isFuzzyMatch, isMovieVariant, getSuggestion } from "@/utils/fuzzyMatching";
-import { getDecade } from "@/data/movieDetails";
+import { getDecade } from "@/data/movies";
 
 interface UseMovieGuessProps {
   gameMovies: MovieData[];

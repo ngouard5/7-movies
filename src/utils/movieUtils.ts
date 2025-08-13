@@ -2,6 +2,7 @@
 // utils/movieUtils.ts
 
 import { movieErrorMessages } from "@/data/movieErrorMessages";
+import type { Movie } from "@/data/movies";
 
 // Function to format time in seconds to mm:ss format
 export const formatGameTime = (timeInSeconds: number): string => {
@@ -17,8 +18,9 @@ export const getRandomErrorMessage = (movieTitle: string): string => {
 };
 
 // Function to get a subset of movies for the game
-// Changed from 1 to 7 movies
-export const getGameMovies = (allMovies: any[], count: number = 7) => {
+// Note: This function is now deprecated in favor of getRandomMovies from movies.ts
+// Kept for backward compatibility
+export const getGameMovies = (allMovies: Movie[], count: number = 7): Movie[] => {
   // Shuffle the array of movies
   const shuffled = [...allMovies].sort(() => 0.5 - Math.random());
   

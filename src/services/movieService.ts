@@ -1,4 +1,4 @@
-import { movieTitleTranslations } from "@/data/movieTranslations";
+import { movies } from "@/data/movies";
 
 interface SearchResponse {
   Search: MovieSearchResult[];
@@ -26,10 +26,16 @@ const API_KEY = "8342f4b";  // Updated API key from OMDB
 const BASE_URL = "https://www.omdbapi.com/";
 const LOCAL_CACHE = new Map<string, MovieSearchResult[]>();
 
-// Create a reverse mapping from French titles to English titles
+// Create mappings from our unified movies data
+const movieTitleTranslations: Record<string, string> = {};
 const frenchToEnglishTitles = new Map<string, string>();
-Object.entries(movieTitleTranslations).forEach(([englishTitle, frenchTitle]) => {
-  frenchToEnglishTitles.set(frenchTitle.toLowerCase(), englishTitle);
+
+// Build the translations from our unified movies data
+movies.forEach(movie => {
+  if (movie.frenchTitle && movie.frenchTitle !== movie.title) {
+    movieTitleTranslations[movie.title] = movie.frenchTitle;
+    frenchToEnglishTitles.set(movie.frenchTitle.toLowerCase(), movie.title);
+  }
 });
 
 // Helper function to calculate Levenshtein distance for fuzzy matching

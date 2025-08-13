@@ -1,15 +1,13 @@
 
 import React, { useState, useEffect } from "react";
-import { movieEmojis } from "@/data/movieEmojis";
+import { getUniqueEmojis } from "@/data/movies";
 
 export const EmojiCarousel = () => {
   const [currentEmojiIndex, setCurrentEmojiIndex] = useState(0);
   const [animationState, setAnimationState] = useState("visible"); // "visible", "exit", "enter"
 
-  // Get unique emoji sets from the movieEmojis array
-  const uniqueEmojis = Array.from(
-    new Set(movieEmojis.map((movie) => movie.emojis))
-  ).slice(0, 10); // Limit to 10 unique emoji sets
+  // Get unique emoji sets from the movies array
+  const uniqueEmojis = getUniqueEmojis(10);
 
   useEffect(() => {
     const interval = setInterval(() => {
