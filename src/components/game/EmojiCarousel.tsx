@@ -25,7 +25,7 @@ export const EmojiCarousel = () => {
         }, 500);
       }, 500); // Match the duration of the exit animation
       
-    }, 2000); // Change every 2 seconds
+    }, 3000); // Change every 3 seconds
 
     return () => clearInterval(interval);
   }, [uniqueEmojis.length]);
@@ -34,12 +34,12 @@ export const EmojiCarousel = () => {
   const getAnimationClass = () => {
     switch (animationState) {
       case "enter":
-        return "translate-y-0 opacity-100 animate-slide-in-bottom";
+        return "translate-x-0 opacity-100 animate-slide-in-left";
       case "exit":
-        return "-translate-y-full opacity-0 animate-slide-out-top";
+        return "translate-x-full opacity-0 animate-slide-out-right";
       case "visible":
       default:
-        return "translate-y-0 opacity-100";
+        return "translate-x-0 opacity-100";
     }
   };
 
