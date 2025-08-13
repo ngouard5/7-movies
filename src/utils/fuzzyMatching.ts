@@ -45,7 +45,7 @@ const extractKeywords = (title: string): string[] => {
   
   return normalizeText(title)
     .split(' ')
-    .filter(word => word.length > 2 && !commonWords.includes(word));
+    .filter(word => word.length > 3 && !commonWords.includes(word)); // Increased from 2 to 3
 };
 
 // Check if guess matches the movie title using fuzzy logic
@@ -59,10 +59,15 @@ export const isFuzzyMatch = (guess: string, movieTitle: string): boolean => {
   if (normalizedGuess === normalizedTitle) return true;
 
   // Check if guess is contained in title (partial match)
-  // Require minimum length and percentage to prevent single-letter matches
-  if (normalizedGuess.length >= 3 && 
-      normalizedGuess.length >= normalizedTitle.length * 0.4 && 
-      normalizedTitle.includes(normalizedGuess)) return true;
+  // Stricter requirements to prevent overly permissive matches
+  if (normalizedGuess.length >= 5 && 
+      normalizedGuess.length >= normalizedTitle.length * 0.6 && 
+      normalizedTitle.includes(normalizedGuess)) {
+    // Additional check: ensure it's not just matching the beginning of a common word
+    const words = normalizedTitle.split(' ');
+    const hasFullWordMatch = words.some(word => word.includes(normalizedGuess) && normalizedGuess.length >= word.length * 0.7);
+    if (hasFullWordMatch) return true;
+  }
 
   // Check if title is contained in guess (user typed more than needed)
   if (normalizedGuess.includes(normalizedTitle)) return true;
@@ -71,15 +76,16 @@ export const isFuzzyMatch = (guess: string, movieTitle: string): boolean => {
   const guessKeywords = extractKeywords(guess);
   const titleKeywords = extractKeywords(movieTitle);
   
-  if (guessKeywords.length > 0) {
+  if (guessKeywords.length > 0 && guessKeywords.every(kw => kw.length >= 4)) {
     const matchedKeywords = guessKeywords.filter(keyword => 
       titleKeywords.some(titleKeyword => 
-        titleKeyword.includes(keyword) || keyword.includes(titleKeyword)
+        titleKeyword.includes(keyword) || (keyword.includes(titleKeyword) && titleKeyword.length >= 4)
       )
     );
     
-    // If most keywords match, consider it a match
-    if (matchedKeywords.length >= Math.min(guessKeywords.length, titleKeywords.length)) {
+    // Require ALL keywords to match for short guesses, most for longer ones
+    const requiredMatches = guessKeywords.length <= 2 ? guessKeywords.length : Math.ceil(guessKeywords.length * 0.8);
+    if (matchedKeywords.length >= requiredMatches) {
       return true;
     }
   }
@@ -89,8 +95,8 @@ export const isFuzzyMatch = (guess: string, movieTitle: string): boolean => {
   const maxLength = Math.max(normalizedGuess.length, normalizedTitle.length);
   const similarity = 1 - distance / maxLength;
 
-  // More lenient for shorter titles, stricter for longer ones
-  const threshold = maxLength < 10 ? 0.7 : 0.8;
+  // Stricter thresholds to prevent overly permissive matching
+  const threshold = maxLength < 6 ? 0.8 : maxLength < 10 ? 0.75 : 0.85;
   
   return similarity >= threshold;
 };
