@@ -49,6 +49,9 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
               {speedBonus > 0 && (
                 <span className="ml-2">⚡ Speed bonus: +{speedBonus} pts</span>
               )}
+              {speedBonus === 0 && (
+                <span className="ml-2 opacity-75">⏱️ No speed bonus (&gt;30s)</span>
+              )}
             </div>
           </div>
           <div className="text-right">

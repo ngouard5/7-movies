@@ -36,7 +36,7 @@ export const useMovieGuess = ({
   const [errorCount, setErrorCount] = useState(0);
   const [hint, setHint] = useState("");
   const [showScorePopup, setShowScorePopup] = useState(false);
-  const [lastScore, setLastScore] = useState<{basePoints: number, speedBonus: number, totalPoints: number} | null>(null);
+  const [lastScore, setLastScore] = useState<{basePoints: number, speedBonus: number, totalPoints: number, guessedMovie: MovieData} | null>(null);
 
   // Generate a first hint for the current movie - using French title
   const generateFirstHint = useCallback((movie: MovieData) => {
@@ -95,8 +95,8 @@ export const useMovieGuess = ({
         setAnswerStatus("correct");
         setGuessedMovies((prev) => [...prev, updatedMovie]);
 
-        // Show score popup
-        setLastScore({ basePoints, speedBonus, totalPoints: points });
+        // Show score popup with the movie we just guessed
+        setLastScore({ basePoints, speedBonus, totalPoints: points, guessedMovie: updatedMovie });
         setShowScorePopup(true);
         
         // Hide score popup after 2.5 seconds

@@ -55,7 +55,7 @@ const Game = () => {
             basePoints={lastScore.basePoints}
             speedBonus={lastScore.speedBonus}
             totalPoints={lastScore.totalPoints}
-            currentMovie={currentMovie}
+            currentMovie={lastScore.guessedMovie}
           />
         )}
         
