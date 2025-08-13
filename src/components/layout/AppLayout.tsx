@@ -1,6 +1,5 @@
 
 import React from "react";
-import { PhoneMockup } from "@/components/game/PhoneMockup";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -8,18 +7,10 @@ interface AppLayoutProps {
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   return (
-    <>
-      {/* Show content directly on mobile */}
-      <div className="md:hidden w-full">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-sm mx-auto">
         {children}
       </div>
-      
-      {/* Show PhoneMockup on tablet/desktop */}
-      <div className="hidden md:block">
-        <PhoneMockup>
-          {children}
-        </PhoneMockup>
-      </div>
-    </>
+    </div>
   );
 };

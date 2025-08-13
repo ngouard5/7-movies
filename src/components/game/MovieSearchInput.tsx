@@ -35,17 +35,17 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
     }
   };
   return (
-    <div className="absolute left-1/2 -translate-x-1/2 top-[360px] w-full max-w-[361px]">
+    <div className="w-full space-y-3">
       <div className="relative">
         <input
           ref={inputRef}
           type="text"
-          className={`w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid text-[18px] transition-colors ${
+          className={`w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-background rounded-xl border-solid text-[18px] transition-colors ${
             answerStatus === 'correct' 
               ? 'border-green-500' 
               : answerStatus === 'wrong' 
                 ? 'border-red-500' 
-                : 'border-[#CCC]'
+                : 'border-border'
           }`}
           placeholder="Type a movie title and press Enter..."
           value={searchTerm}
@@ -61,17 +61,10 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
       <Button 
         onClick={handleSubmit}
         disabled={!searchTerm.trim()}
-        className="w-full mt-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl h-12 text-[16px] font-medium"
+        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-12 text-[16px] font-medium"
       >
         Valider
       </Button>
-
-      {/* Wrong guess message or hint */}
-      {wrongGuess && (
-        <div className={`mt-6 p-4 rounded-xl border ${showHint ? 'bg-[#FFF8E0] border-[#F0C000]' : 'bg-[#FADEDE] border-[#E72F2F]'}`}>
-          <p className="text-[18px] text-[#191919]">{wrongGuess}</p>
-        </div>
-      )}
     </div>
   );
 };
