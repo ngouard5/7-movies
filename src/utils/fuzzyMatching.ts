@@ -59,7 +59,10 @@ export const isFuzzyMatch = (guess: string, movieTitle: string): boolean => {
   if (normalizedGuess === normalizedTitle) return true;
 
   // Check if guess is contained in title (partial match)
-  if (normalizedTitle.includes(normalizedGuess)) return true;
+  // Require minimum length and percentage to prevent single-letter matches
+  if (normalizedGuess.length >= 3 && 
+      normalizedGuess.length >= normalizedTitle.length * 0.4 && 
+      normalizedTitle.includes(normalizedGuess)) return true;
 
   // Check if title is contained in guess (user typed more than needed)
   if (normalizedGuess.includes(normalizedTitle)) return true;

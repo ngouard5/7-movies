@@ -148,7 +148,6 @@ const Results = () => {
                     <div className="flex-1 text-left">
                       <div className="font-bold text-[16px] text-[#191919] mb-1">{movie.title}</div>
                       <div className="text-2xl mb-1">{movie.emojis}</div>
-                      {displayTime(movie.guessTime)}
                     </div>
                     <div className="flex flex-col items-end">
                       {movie.points && (
