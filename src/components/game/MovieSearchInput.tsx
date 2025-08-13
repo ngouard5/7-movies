@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Button } from "@/components/ui/button";
 
 interface MovieSearchInputProps {
   searchTerm: string;
@@ -26,6 +27,13 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
       setSearchTerm(""); // Clear input after guess
     }
   };
+
+  const handleSubmit = () => {
+    if (searchTerm.trim()) {
+      handleGuess(searchTerm.trim());
+      setSearchTerm(""); // Clear input after guess
+    }
+  };
   return (
     <div className="absolute left-1/2 -translate-x-1/2 top-[360px] w-full max-w-[361px]">
       <div className="relative">
@@ -48,6 +56,15 @@ export const MovieSearchInput: React.FC<MovieSearchInputProps> = ({
           spellCheck="false"
         />
       </div>
+
+      {/* Validate button */}
+      <Button 
+        onClick={handleSubmit}
+        disabled={!searchTerm.trim()}
+        className="w-full mt-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl h-12 text-[16px] font-medium"
+      >
+        Valider
+      </Button>
 
       {/* Wrong guess message or hint */}
       {wrongGuess && (

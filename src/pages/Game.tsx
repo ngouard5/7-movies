@@ -70,15 +70,15 @@ const Game = () => {
           answerStatus={answerStatus}
         />
         
-        {/* Pass button */}
-        <div className="absolute left-1/2 -translate-x-1/2 bottom-12 w-[90%] max-w-[361px]">
+        {/* Pass button - positioned right after the input section */}
+        <div className="absolute left-1/2 -translate-x-1/2 top-[520px] w-full max-w-[361px]">
           <Button 
             variant="outline"
-            className="w-full mt-4 border-gray-300 text-gray-500 hover:bg-gray-100 rounded-2xl"
+            className="w-full border-gray-300 text-gray-500 hover:bg-gray-100 rounded-xl h-12 text-[16px]"
             onClick={handlePass}
           >
             <SkipForward className="h-4 w-4 mr-2" />
-            Pass
+            Passer
           </Button>
         </div>
       </main>
