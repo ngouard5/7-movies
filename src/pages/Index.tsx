@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { EmojiCarousel } from "@/components/game/EmojiCarousel";
@@ -7,37 +6,23 @@ import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { NavigationMenu } from "@/components/game/NavigationMenu";
 import { MenuButton } from "@/components/game/MenuButton";
 import { AppLayout } from "@/components/layout/AppLayout";
-
 const Index = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-
-  return (
-    <AppLayout>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter&family=SF+Pro+Display:wght@400;700&display=swap"
-        rel="stylesheet"
-      />
+  return <AppLayout>
+      <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter&family=SF+Pro+Display:wght@400;700&display=swap" rel="stylesheet" />
 
       <main className="relative w-full min-h-[852px] overflow-auto bg-neutral-50">
         <div className="relative flex flex-col items-center px-4">
           <BackgroundGradients />
 
           <div className="absolute left-4 top-[69px]">
-            <div 
-              onClick={() => setMenuOpen(true)}
-              aria-label="Menu"
-              className="cursor-pointer"
-            >
+            <div onClick={() => setMenuOpen(true)} aria-label="Menu" className="cursor-pointer">
               <MenuButton />
             </div>
           </div>
 
-          <div
-            className="absolute text-[64px] left-1/2 -translate-x-1/2 top-[117px]"
-            role="img"
-            aria-label="Popcorn emoji"
-          >
+          <div className="absolute text-[64px] left-1/2 -translate-x-1/2 top-[117px]" role="img" aria-label="Popcorn emoji">
             🍿
           </div>
 
@@ -53,25 +38,20 @@ const Index = () => {
             <p>
               Guess 7 movie titles based on emojis, in the shortest period of time!
             </p>
-            <p className="mt-6">Challenge your friends to beat your record!</p>
+            
           </section>
 
           <div className="absolute left-1/2 -translate-x-1/2 w-[90%] max-w-[361px] top-[703px]">
             <PlayButton />
           </div>
 
-          <button
-            className="absolute left-1/2 -translate-x-1/2 text-xl font-bold text-[#191919] top-[755px] mt-4 hover:text-[#E72F2F] transition-colors"
-            onClick={() => navigate("/how-to-play")}
-          >
+          <button onClick={() => navigate("/how-to-play")} className="absolute left-1/2 -translate-x-1/2 text-xl font-bold text-[#191919] top-[755px] mt-4 hover:text-[#E72F2F] transition-colors my-[24px]">
             How to play
           </button>
         </div>
 
         <NavigationMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       </main>
-    </AppLayout>
-  );
+    </AppLayout>;
 };
-
 export default Index;
