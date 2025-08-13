@@ -15,10 +15,8 @@ const Game = () => {
     currentMovieIndex,
     searchTerm,
     setSearchTerm,
-    suggestions,
     timer,
     wrongGuess,
-    isLoading,
     inputRef,
     currentMovie,
     handleGuess,
@@ -51,12 +49,11 @@ const Game = () => {
         <MovieSearchInput 
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
-          suggestions={suggestions}
-          isLoading={isLoading}
           inputRef={inputRef}
           handleGuess={handleGuess}
           wrongGuess={wrongGuessMessage}
           showHint={showHint}
+          answerStatus={answerStatus}
         />
         
         {/* Pass button */}

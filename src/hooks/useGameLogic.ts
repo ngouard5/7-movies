@@ -4,7 +4,6 @@ import { movieEmojis } from "@/data/movieEmojis";
 import { MovieData } from "@/types/gameTypes";
 import { getGameMovies, formatGameTime } from "@/utils/movieUtils";
 import { useMovieGuess } from "@/hooks/useMovieGuess";
-import { useMovieSearch } from "@/hooks/useMovieSearch";
 import { movieTitleTranslations } from "@/data/movieTranslations";
 
 export type { MovieData } from "@/types/gameTypes";
@@ -27,17 +26,10 @@ export const useGameLogic = () => {
   const [movieStartTime, setMovieStartTime] = useState(0);
   const [guessedMovies, setGuessedMovies] = useState<MovieData[]>([]);
   const [passedMovies, setPassedMovies] = useState<MovieData[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Import search functionality
-  const { 
-    searchTerm, 
-    setSearchTerm, 
-    suggestions, 
-    isLoading 
-  } = useMovieSearch();
 
   // Import guess handling functionality
   const { 
@@ -122,10 +114,8 @@ export const useGameLogic = () => {
     currentMovieIndex,
     searchTerm,
     setSearchTerm,
-    suggestions,
     timer,
     wrongGuess,
-    isLoading,
     inputRef,
     currentMovie,
     handleGuess,

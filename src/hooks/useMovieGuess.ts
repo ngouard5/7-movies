@@ -3,6 +3,7 @@ import { useState, useCallback } from "react";
 import { MovieData } from "@/types/gameTypes";
 import { getRandomErrorMessage } from "@/utils/movieUtils";
 import { calculateScore } from "@/utils/scoreCalculator";
+import { isFuzzyMatch, isMovieVariant, getSuggestion } from "@/utils/fuzzyMatching";
 
 interface UseMovieGuessProps {
   gameMovies: MovieData[];
@@ -69,10 +70,10 @@ export const useMovieGuess = ({
       const currentMovie = gameMovies[currentMovieIndex];
       if (!currentMovie) return;
 
-      // Compare with both English and French titles
-      const englishMatch = guess.toLowerCase() === currentMovie.title.toLowerCase();
+      // Use fuzzy matching for both English and French titles
+      const englishMatch = isFuzzyMatch(guess, currentMovie.title) || isMovieVariant(guess, currentMovie.title);
       const frenchMatch = currentMovie.frenchTitle && 
-                          guess.toLowerCase() === currentMovie.frenchTitle.toLowerCase();
+                          (isFuzzyMatch(guess, currentMovie.frenchTitle) || isMovieVariant(guess, currentMovie.frenchTitle));
 
       if (englishMatch || frenchMatch) {
         // Correct guess
@@ -131,20 +132,26 @@ export const useMovieGuess = ({
         const newErrorCount = errorCount + 1;
         setErrorCount(newErrorCount);
         
+        // Check if we can provide a suggestion for close matches
+        const suggestion = getSuggestion(guess, currentMovie.title) || 
+                          (currentMovie.frenchTitle ? getSuggestion(guess, currentMovie.frenchTitle) : null);
+        
         // Show different hints based on error count
         if (newErrorCount === 1) {
-          // First hint after first error
+          // First hint after first error, with suggestion if available
           setShowHint(true);
-          setHint(generateFirstHint(currentMovie));
+          const baseHint = generateFirstHint(currentMovie);
+          setHint(suggestion ? `${baseHint} ${suggestion}` : baseHint);
         } else if (newErrorCount === 2) {
           // Second hint after second error - first letter of each word
           setShowHint(true);
-          setHint(generateSecondHint(currentMovie));
+          const baseHint = generateSecondHint(currentMovie);
+          setHint(suggestion ? `${baseHint} ${suggestion}` : baseHint);
         } else {
           // Keep showing the second hint for subsequent errors
           setShowHint(true);
-          // Keep the second hint for all subsequent errors
-          setHint(generateSecondHint(currentMovie));
+          const baseHint = generateSecondHint(currentMovie);
+          setHint(suggestion ? `${baseHint} ${suggestion}` : baseHint);
         }
 
         // Reset the answer status after a short delay
