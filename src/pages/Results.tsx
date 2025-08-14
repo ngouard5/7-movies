@@ -111,7 +111,14 @@ const Results = () => {
                 Aaaand... CUT!
               </div>
               <div className="text-[18px] font-sf text-[#191919] mb-6">
-                {score} movies out of {totalMovies}, nicely done {playerNickname}!
+                {(() => {
+                  if (score === 0) return `No movies this time, ${playerNickname}? Time for a movie marathon! 🍿`;
+                  if (score === 1) return `${score} movie found, ${playerNickname}! Every journey starts with one step! 🎬`;
+                  if (score <= 2) return `${score} movies found, ${playerNickname}! Getting warmed up! 🔥`;
+                  if (score <= 4) return `${score} movies out of ${totalMovies}, solid work ${playerNickname}! 🎯`;
+                  if (score <= 6) return `${score} movies out of ${totalMovies}, impressive ${playerNickname}! 🌟`;
+                  return `${score} movies out of ${totalMovies}, absolutely crushing it ${playerNickname}! 🏆`;
+                })()}
               </div>
               <div className="flex justify-center items-center gap-2 mt-2">
                 <div className="text-[64px] font-bold text-[#E72F2F] font-sf">
