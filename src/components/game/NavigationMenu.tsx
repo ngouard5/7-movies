@@ -2,7 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { X, BookOpen } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
 
 interface NavigationMenuProps {
   isOpen: boolean;
@@ -23,7 +23,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
     <div className="absolute inset-0 z-50">
       <div className="absolute inset-0 bg-black/60 animate-fade-in" onClick={onClose} />
       
-      <div className="relative w-full md:w-[290px] bg-neutral-50 h-full animate-fade-in-down shadow-lg flex flex-col">
+      <div className="relative w-full bg-neutral-50 h-full animate-fade-in-down shadow-lg flex flex-col">
         <div className="p-6 flex justify-center items-center border-b border-gray-200 relative">
           <div className="text-[32px]">🍿</div>
           <button 
@@ -45,12 +45,9 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
         </div>
 
         <div className="p-6 border-t border-gray-200 space-y-4">
-          <Button 
-            onClick={() => handleNavigation('/pre-game')}
-            className="w-full h-[60px] bg-[#E72F2F] hover:bg-[#E72F2F]/90 text-white text-[20px] font-bold rounded-[16px] shadow-[0px_3px_3px_rgba(0,0,0,0.06)] font-sf"
-          >
+          <PrimaryButton onClick={() => handleNavigation('/pre-game')}>
             Start a new game
-          </Button>
+          </PrimaryButton>
           
           <div className="text-center space-y-2">
             <div className="text-[14px] text-gray-600">

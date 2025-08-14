@@ -7,6 +7,7 @@ import { AvatarSelector } from "@/components/game/AvatarSelector";
 import { useToast } from "@/hooks/use-toast";
 import { TopLeftButton } from "@/components/ui/TopLeftButton";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
 
 const PreGame = () => {
   const [nickname, setNickname] = useState("");
@@ -55,7 +56,7 @@ const PreGame = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-screen overflow-auto bg-neutral-50 mx-auto my-0">
+      <main className="relative w-full min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
         <div className="relative flex flex-col items-center">
           <BackgroundGradients />
 
@@ -105,12 +106,9 @@ const PreGame = () => {
               </div>
             </div>
 
-            <button
-              className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors font-sf"
-              onClick={handleStartGame}
-            >
+            <PrimaryButton onClick={handleStartGame}>
               {isChallengeMode ? "Accept Challenge" : "Start the game!"}
-            </button>
+            </PrimaryButton>
           </div>
         </div>
       </main>

@@ -5,7 +5,7 @@ import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { NavigationMenu } from "@/components/game/NavigationMenu";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { TopLeftButton } from "@/components/ui/TopLeftButton";
-import { Button } from "@/components/ui/button";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
 
 const HowToPlay = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,13 +17,11 @@ const HowToPlay = () => {
         <div className="relative h-full pb-8">
           <BackgroundGradients />
 
-          <div className="absolute left-4 top-[69px]">
-            <TopLeftButton 
-              onClick={() => navigate(-1)}
-              icon={<ArrowLeft className="w-6 h-6 text-[#E72F2F]" />}
-              ariaLabel="Back"
-            />
-          </div>
+          <TopLeftButton 
+            onClick={() => navigate(-1)}
+            icon={<ArrowLeft className="w-6 h-6 text-[#E72F2F]" />}
+            ariaLabel="Back"
+          />
 
           <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-1/2 -translate-x-1/2 top-[117px] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
             How to play
@@ -70,12 +68,9 @@ const HowToPlay = () => {
 
             {/* Start a new game button */}
             <div className="pt-8">
-              <Button 
-                onClick={() => navigate('/pre-game')}
-                className="w-full h-[60px] bg-[#E72F2F] hover:bg-[#E72F2F]/90 text-white text-[20px] font-bold rounded-[16px] shadow-[0px_3px_3px_rgba(0,0,0,0.06)] font-sf"
-              >
+              <PrimaryButton onClick={() => navigate('/pre-game')}>
                 Start a new game
-              </Button>
+              </PrimaryButton>
             </div>
           </div>
 
