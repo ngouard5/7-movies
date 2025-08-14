@@ -37,13 +37,19 @@ const Game = () => {
           <BackgroundGradients />
 
           {/* Header with MovieCounter, Timer, and Skip button - Sticky */}
-          <header className="sticky top-0 h-[116px] flex items-center justify-between px-4 z-20 bg-neutral-50">
-            <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
-            <GameTimer timer={timer} formatTime={formatTime} />
-            <Button onClick={handlePass} className="flex items-center gap-2 bg-white border border-[#CCC] text-black shadow-[0px_3px_3px_rgba(0,0,0,0.06)] hover:bg-gray-50 font-sf" size="sm">
-              Skip
-              <SkipForward className="w-4 h-4 text-[#E72F2F]" />
-            </Button>
+          <header className="sticky top-0 h-[116px] grid grid-cols-3 items-center px-4 z-20 bg-neutral-50">
+            <div className="flex justify-start">
+              <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
+            </div>
+            <div className="flex justify-center">
+              <GameTimer timer={timer} formatTime={formatTime} />
+            </div>
+            <div className="flex justify-end">
+              <Button onClick={handlePass} className="flex items-center gap-2 bg-white border border-[#CCC] text-black shadow-[0px_3px_3px_rgba(0,0,0,0.06)] hover:bg-gray-50 font-sf" size="sm">
+                Skip
+                <SkipForward className="w-4 h-4 text-[#E72F2F]" />
+              </Button>
+            </div>
           </header>
 
           {/* Main content area */}
