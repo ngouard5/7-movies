@@ -9,7 +9,6 @@ import { useGameLogic } from "@/hooks/useGameLogic";
 import { Button } from "@/components/ui/button";
 import { SkipForward } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
-
 const Game = () => {
   const {
     currentMovieIndex,
@@ -32,32 +31,23 @@ const Game = () => {
 
   // Convert boolean to string for the MovieSearchInput component
   const wrongGuessMessage = wrongGuess ? hint || "That's not it. Try again!" : null;
-
-  return (
-    <AppLayout>
+  return <AppLayout>
       <main className="relative w-full min-h-screen overflow-auto bg-neutral-50 mx-auto my-0">
         <div className="relative flex flex-col">
           <BackgroundGradients />
 
           {/* Header with MovieCounter, Timer, and Skip button - Sticky */}
           <header className="sticky top-0 h-[116px] flex items-center justify-between px-4 z-20 bg-neutral-50">
-            <MovieCounter 
-              currentIndex={currentMovieIndex} 
-              totalMovies={totalMovies} 
-            />
+            <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
             <GameTimer timer={timer} formatTime={formatTime} />
-            <Button
-              onClick={handlePass}
-              className="flex items-center gap-2 bg-white border border-[#CCC] text-[#E72F2F] shadow-[0px_3px_3px_rgba(0,0,0,0.06)] hover:bg-gray-50 font-sf"
-              size="sm"
-            >
+            <Button onClick={handlePass} className="flex items-center gap-2 bg-white border border-[#CCC] text-[#E72F2F] shadow-[0px_3px_3px_rgba(0,0,0,0.06)] hover:bg-gray-50 font-sf" size="sm">
               <SkipForward className="w-4 h-4" />
               Skip
             </Button>
           </header>
 
           {/* Main content area */}
-          <div className="flex-1 flex flex-col items-center px-4">
+          <div className="flex-1 flex flex-col items-center px-0">
             {/* Emoji Display - Sticky */}
             <div className="w-full mb-6 sticky top-[116px] z-10 bg-neutral-50 py-4">
               <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
@@ -65,52 +55,29 @@ const Game = () => {
 
             {/* Input and Score Popup Container */}
             <div className="w-full max-w-[361px] relative mb-6 mx-auto">
-              <MovieSearchInput 
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
-                inputRef={inputRef}
-                handleGuess={handleGuess}
-                wrongGuess={wrongGuessMessage}
-                showHint={showHint}
-                answerStatus={answerStatus}
-              />
+              <MovieSearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} inputRef={inputRef} handleGuess={handleGuess} wrongGuess={wrongGuessMessage} showHint={showHint} answerStatus={answerStatus} />
               
               {/* Score popup positioned relative to input */}
-              {lastScore && (
-                <ScorePopup 
-                  show={showScorePopup}
-                  basePoints={lastScore.basePoints}
-                  speedBonus={lastScore.speedBonus}
-                  totalPoints={lastScore.totalPoints}
-                  currentMovie={lastScore.guessedMovie}
-                />
-              )}
+              {lastScore && <ScorePopup show={showScorePopup} basePoints={lastScore.basePoints} speedBonus={lastScore.speedBonus} totalPoints={lastScore.totalPoints} currentMovie={lastScore.guessedMovie} />}
             </div>
 
             {/* Confirm Button */}
-            <Button
-              onClick={() => {
-                if (searchTerm.trim()) {
-                  handleGuess(searchTerm.trim());
-                  setSearchTerm("");
-                }
-              }}
-              className="w-full max-w-[361px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-6 font-sf"
-            >
+            <Button onClick={() => {
+            if (searchTerm.trim()) {
+              handleGuess(searchTerm.trim());
+              setSearchTerm("");
+            }
+          }} className="w-full max-w-[361px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-6 font-sf">
               Confirm
             </Button>
 
             {/* Message display for wrong guesses or hints */}
-            {wrongGuessMessage && (
-              <div className="text-center text-[#666] text-sm mb-4 font-sf max-w-[361px]">
+            {wrongGuessMessage && <div className="text-center text-[#666] text-sm mb-4 font-sf max-w-[361px]">
                 <div className="text-red-500 mb-2">{wrongGuessMessage}</div>
-              </div>
-            )}
+              </div>}
           </div>
         </div>
       </main>
-    </AppLayout>
-  );
+    </AppLayout>;
 };
-
 export default Game;
