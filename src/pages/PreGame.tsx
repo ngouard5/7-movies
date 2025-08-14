@@ -76,19 +76,19 @@ const PreGame = () => {
             🍿
           </div>
 
-          <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-1/2 -translate-x-1/2 top-[229px] max-sm:text-[32px] max-sm:leading-10">
-            {isChallengeMode ? "Accept the challenge!" : "Before we start..."}
+          <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-1/2 -translate-x-1/2 top-[200px] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
+            {isChallengeMode ? "Accept the challenge!" : ""}
           </h1>
 
-          <div className="absolute left-1/2 -translate-x-1/2 max-w-[361px] w-full top-[323px] px-4">
+          <div className="absolute left-1/2 -translate-x-1/2 max-w-[361px] w-full top-[260px] px-4">
             <div className="mb-6">
-              <label htmlFor="nickname" className="block text-[18px] font-bold text-[#191919] mb-2">
+              <label htmlFor="nickname" className="block text-[18px] font-bold text-[#191919] mb-2 text-left font-sf">
                 Your nickname
               </label>
               <input
                 type="text"
                 id="nickname"
-                className="w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid border-[#CCC] text-[18px]"
+                className="w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid border-[#CCC] text-[18px] font-sf"
                 placeholder="Enter your nickname"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
@@ -97,7 +97,7 @@ const PreGame = () => {
             </div>
 
             <div className="mb-12">
-              <label className="block text-[18px] font-bold text-[#191919] mb-2">
+              <label className="block text-[18px] font-bold text-[#191919] mb-2 text-left font-sf">
                 Choose your avatar
               </label>
               <div className="flex justify-center">
@@ -109,7 +109,7 @@ const PreGame = () => {
             </div>
 
             <button
-              className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors"
+              className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors font-sf"
               onClick={handleStartGame}
             >
               {isChallengeMode ? "Accept Challenge" : "Start the game!"}

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -12,7 +11,7 @@ const HowToPlay = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-[852px] overflow-hidden bg-neutral-50 mx-auto my-0">
+      <main className="relative w-full min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
         <div className="relative h-full pb-8">
           <BackgroundGradients />
 
@@ -26,65 +25,48 @@ const HowToPlay = () => {
             </button>
           </div>
 
-          <div className="absolute w-[361px] left-4 top-[134px]">
-            <div className="text-[22px] font-bold text-[#191919] mb-6">How to play</div>
-            
-            <div className="space-y-6">
-              <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 bg-[#E72F2F] text-white rounded-full flex items-center justify-center font-bold mr-3">1</div>
-                  <div className="text-[18px] font-bold text-[#191919]">Choose your avatar</div>
-                </div>
-                <p className="text-[16px] text-gray-700">
-                  Select an emoji that represents you and enter your nickname.
-                </p>
-              </section>
+          <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-1/2 -translate-x-1/2 top-[117px] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
+            How to play
+          </h1>
 
-              <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 bg-[#E72F2F] text-white rounded-full flex items-center justify-center font-bold mr-3">2</div>
-                  <div className="text-[18px] font-bold text-[#191919]">Get ready</div>
-                </div>
-                <p className="text-[16px] text-gray-700">
-                  A countdown will give you time to prepare. When it reaches zero, the game starts!
-                </p>
-              </section>
+          <div className="absolute left-1/2 -translate-x-1/2 max-w-[400px] w-full top-[200px] px-4 space-y-8">
+            <section className="text-left">
+              <h2 className="text-[24px] font-bold text-[#E72F2F] mb-4 font-sf">
+                Guess the movie titles
+              </h2>
+              <ul className="text-[16px] text-[#191919] leading-[24px] space-y-2 font-sf">
+                <li>• Start a new game and choose your nickname and emoji</li>
+                <li>• Find movie titles as fast as you can</li>
+                <li>• You can write titles both in 🇫🇷 and 🇬🇧</li>
+                <li>• Once you've done, challenge your friend to beat your score!</li>
+              </ul>
+            </section>
 
-              <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 bg-[#E72F2F] text-white rounded-full flex items-center justify-center font-bold mr-3">3</div>
-                  <div className="text-[18px] font-bold text-[#191919]">Guess the movies</div>
-                </div>
-                <p className="text-[16px] text-gray-700">
-                  You'll see a series of emojis that represent a movie title. Type your guess in the search box.
-                </p>
-                <div className="mt-3 flex space-x-2">
-                  <div className="text-2xl">🧙‍♂️ 💍</div>
-                  <div className="text-gray-500">→</div>
-                  <div className="text-[16px] font-medium">The Lord of the Rings</div>
-                </div>
-              </section>
+            <section className="text-left">
+              <h2 className="text-[24px] font-bold text-[#E72F2F] mb-4 font-sf">
+                Examples
+              </h2>
+              <div className="space-y-2 text-[16px] text-[#191919] font-sf">
+                <div>🦁👑🌅🐗 → The Lion King</div>
+                <div>🦇👨‍💼🏙️🚗 → Batman</div>
+                <div>💊🕶️💻🌀 → The Matrix</div>
+              </div>
+            </section>
 
-              <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 bg-[#E72F2F] text-white rounded-full flex items-center justify-center font-bold mr-3">4</div>
-                  <div className="text-[18px] font-bold text-[#191919]">Beat the clock</div>
-                </div>
-                <p className="text-[16px] text-gray-700">
-                  Try to guess all 7 movies as quickly as possible. Your time is being recorded!
-                </p>
-              </section>
-
-              <section className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
-                <div className="flex items-center mb-3">
-                  <div className="w-8 h-8 bg-[#E72F2F] text-white rounded-full flex items-center justify-center font-bold mr-3">5</div>
-                  <div className="text-[18px] font-bold text-[#191919]">Challenge friends</div>
-                </div>
-                <p className="text-[16px] text-gray-700">
-                  Share your result with friends and challenge them to beat your time with the same movies!
-                </p>
-              </section>
-            </div>
+            <section className="text-left">
+              <h2 className="text-[24px] font-bold text-[#E72F2F] mb-4 font-sf">
+                How the scores work?
+              </h2>
+              <div className="text-[16px] text-[#191919] leading-[24px] font-sf">
+                <p className="mb-3">You earn 100 pts for each movie you find</p>
+                <p className="mb-2">Then you get bonus points depending on your quickness:</p>
+                <ul className="space-y-1 ml-4">
+                  <li>• +50 pts before 10 seconds</li>
+                  <li>• +30 pts between 10 and 20 seconds</li>
+                  <li>• +10 pts between 20 and 30 seconds</li>
+                </ul>
+              </div>
+            </section>
           </div>
 
           <NavigationMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />

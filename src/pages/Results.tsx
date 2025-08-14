@@ -52,8 +52,8 @@ const Results = () => {
     const avatar = localStorage.getItem("playerAvatar");
     if (avatar) {
       const avatarIndex = parseInt(avatar);
-      const avatars = ["👨‍🦰", "👩‍🦰", "👨‍🦱", "👩‍🦱", "👨‍🦳", "👩‍🦳", "👨‍🦲", "👩‍🦲"];
-      setPlayerAvatar(avatars[avatarIndex] || "👨‍🦰");
+      const avatars = ["🫠", "🥶", "🥸", "🤬", "🤯", "🥳", "🧐", "😈"];
+      setPlayerAvatar(avatars[avatarIndex] || "🫠");
     }
   }, []);
 
@@ -104,28 +104,34 @@ const Results = () => {
 
           <div className="w-[90%] max-w-[340px] mx-auto pt-[60px] text-center flex flex-col items-center">
             <div className="mb-6 w-full">
-              <div className="text-[22px] font-bold text-[#191919]">
-                {playerAvatar} {playerNickname}'s score
+              <div className="text-[40px] leading-[48px] font-fredoka text-[#191919] mb-4">
+                🎉🎉🎉
+              </div>
+              <div className="text-[32px] leading-[40px] font-fredoka text-[#191919] mb-4">
+                Aaaand... CUT!
+              </div>
+              <div className="text-[18px] font-sf text-[#191919] mb-6">
+                {score} movies out of {totalMovies}, nicely done {playerNickname}!
               </div>
               <div className="flex justify-center items-center gap-2 mt-2">
-                <div className="text-[64px] font-bold text-[#E72F2F]">
+                <div className="text-[64px] font-bold text-[#E72F2F] font-sf">
                   {totalScore}
                 </div>
-                <div className="text-[22px] font-medium text-[#191919]">
+                <div className="text-[22px] font-medium text-[#191919] font-sf">
                   points
                 </div>
               </div>
-              <div className="text-[16px] font-medium text-[#191919] mt-1">
+              <div className="text-[16px] font-medium text-[#191919] mt-1 font-sf">
                 Movies guessed: {score} / {totalMovies}
               </div>
-              <div className="text-[16px] font-medium text-[#191919]">
+              <div className="text-[16px] font-medium text-[#191919] font-sf">
                 Total time: {formatTime(gameTime)}
               </div>
             </div>
 
             <div className="flex flex-col gap-4 w-full mt-4">
               {guessedMovies.length > 0 && (
-                <div className="text-left text-[18px] font-bold flex items-center">
+                <div className="text-left text-[18px] font-bold flex items-center font-sf">
                   <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
                   Guessed Movies
                 </div>
@@ -146,12 +152,12 @@ const Results = () => {
                       }}
                     />
                     <div className="flex-1 text-left">
-                      <div className="font-bold text-[16px] text-[#191919] mb-1">{movie.title}</div>
+                      <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">{movie.title}</div>
                       <div className="text-2xl mb-1">{movie.emojis}</div>
                     </div>
                     <div className="flex flex-col items-end">
                       {movie.points && (
-                        <div className="text-[14px] font-bold text-[#E72F2F]">
+                        <div className="text-[14px] font-bold text-[#E72F2F] font-sf">
                           +{movie.points} pts
                         </div>
                       )}
@@ -161,7 +167,7 @@ const Results = () => {
               ))}
               
               {passedMovies.length > 0 && (
-                <div className="text-left text-[18px] font-bold mt-2 flex items-center">
+                <div className="text-left text-[18px] font-bold mt-2 flex items-center font-sf">
                   <XCircle className="h-5 w-5 mr-2 text-red-500" />
                   Passed Movies
                 </div>
@@ -182,11 +188,8 @@ const Results = () => {
                       }}
                     />
                     <div className="flex-1 text-left">
-                      <div className="font-bold text-[16px] text-[#191919] mb-1">{movie.title}</div>
+                      <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">{movie.title}</div>
                       <div className="text-2xl mb-1">{movie.emojis}</div>
-                      {movie.frenchTitle && movie.frenchTitle !== movie.title && (
-                        <div className="text-[14px] text-gray-500">({movie.frenchTitle})</div>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -195,13 +198,13 @@ const Results = () => {
 
             <div className="flex w-full gap-2 mt-8 flex-col">
               <button
-                className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors"
+                className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors font-sf"
                 onClick={handlePlayAgain}
               >
                 Play again
               </button>
               <button
-                className="w-full h-14 border text-[#191919] text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08)] bg-white rounded-2xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors mt-3"
+                className="w-full h-14 border text-[#191919] text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08)] bg-white rounded-2xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors mt-3 font-sf"
                 onClick={handleGoHome}
               >
                 Go to homepage

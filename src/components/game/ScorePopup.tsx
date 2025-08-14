@@ -33,7 +33,7 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
   return (
     <div className="absolute top-full left-0 right-0 z-[100] mt-2">
       <div className="bg-green-500 text-white p-3 rounded-xl shadow-lg animate-fade-in">
-        <div className="flex items-center gap-3">
+        <div className="flex items-start gap-3">
           <img
             src={currentMovie.image || getMoviePosterUrl(currentMovie.imdbID)}
             alt={currentMovie.title}
@@ -42,23 +42,23 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
               (e.target as HTMLImageElement).src = "/placeholder.svg";
             }}
           />
-          <div className="flex-1">
-            <div className="font-bold text-sm mb-1">{currentMovie.title}</div>
-            <div className="text-xs">
-              💯 Base: {basePoints} pts
+          <div className="flex-1 text-left">
+            <div className="font-bold text-sm mb-1 font-sf">{currentMovie.title}</div>
+            <div className="text-xs font-sf">
+              <div>💯 Correct answer: {basePoints} pts</div>
               {speedBonus > 0 && (
-                <span className="ml-2">⚡ Speed bonus: +{speedBonus} pts</span>
+                <div>⚡ Speed bonus: +{speedBonus} pts</div>
               )}
               {speedBonus === 0 && (
-                <span className="ml-2 opacity-75">⏱️ No speed bonus (&gt;30s)</span>
+                <div className="opacity-75">⏱️ No speed bonus (&gt;30s)</div>
               )}
             </div>
           </div>
           <div className="text-right">
-            <div className="text-lg font-bold">
-              🎉 +{totalPoints}
+            <div className="text-lg font-bold font-sf">
+              +{totalPoints}
             </div>
-            <div className="text-xs">points</div>
+            <div className="text-xs font-sf">points</div>
           </div>
         </div>
       </div>
