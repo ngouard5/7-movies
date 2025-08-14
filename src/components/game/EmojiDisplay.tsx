@@ -22,8 +22,8 @@ export const EmojiDisplay: React.FC<EmojiDisplayProps> = ({
   };
 
   return (
-    <div className={`w-full h-[140px] ${getBgColor()} border-t border-b flex items-center justify-center transition-colors duration-300`}>
-      <div className="text-[64px]" role="img" aria-label="Movie emojis">
+    <div className={`w-full h-[104px] ${getBgColor()} border-t border-b flex items-center justify-center transition-colors duration-300`}>
+      <div className="text-[56px]" role="img" aria-label="Movie emojis">
         {emojis}
       </div>
     </div>
