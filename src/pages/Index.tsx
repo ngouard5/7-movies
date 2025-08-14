@@ -13,7 +13,7 @@ const Index = () => {
       <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter&family=SF+Pro+Display:wght@400;700&display=swap" rel="stylesheet" />
 
       <main className="relative w-full min-h-[852px] overflow-auto bg-neutral-50">
-        <div className="flex flex-col items-center pt-16 pb-8 space-y-8 px-0">
+        <div className="flex flex-col items-center space-y-8 px-0">
           <BackgroundGradients />
 
           <div className="absolute left-4 top-[16px]">
