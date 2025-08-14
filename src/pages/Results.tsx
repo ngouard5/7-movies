@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { Timer, CheckCircle, XCircle } from "lucide-react";
+import { Timer, CheckCircle, XCircle, Home } from "lucide-react";
 import { formatTime } from "@/utils/gameStorage";
+import { TopLeftButton } from "@/components/ui/TopLeftButton";
 import { AppLayout } from "@/components/layout/AppLayout";
 
 interface MovieData {
@@ -101,6 +102,12 @@ const Results = () => {
       <main className="relative w-full min-h-[852px] bg-neutral-50 overflow-auto">
         <div className="relative pb-8 flex flex-col items-center">
           <BackgroundGradients />
+          
+          <TopLeftButton
+            onClick={handleGoHome}
+            icon={<Home className="w-6 h-6 text-[#E72F2F]" />}
+            ariaLabel="Home"
+          />
 
           <div className="w-[90%] max-w-[340px] mx-auto pt-[60px] text-center flex flex-col items-center">
             <div className="mb-6 w-full">

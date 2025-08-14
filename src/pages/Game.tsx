@@ -40,9 +40,9 @@ const Game = () => {
           <header className="sticky top-0 h-[116px] flex items-center justify-between px-4 z-20 bg-neutral-50">
             <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
             <GameTimer timer={timer} formatTime={formatTime} />
-            <Button onClick={handlePass} className="flex items-center gap-2 bg-white border border-[#CCC] text-[#E72F2F] shadow-[0px_3px_3px_rgba(0,0,0,0.06)] hover:bg-gray-50 font-sf" size="sm">
-              <SkipForward className="w-4 h-4" />
+            <Button onClick={handlePass} className="flex items-center gap-2 bg-white border border-[#CCC] text-black shadow-[0px_3px_3px_rgba(0,0,0,0.06)] hover:bg-gray-50 font-sf" size="sm">
               Skip
+              <SkipForward className="w-4 h-4 text-[#E72F2F]" />
             </Button>
           </header>
 
@@ -72,8 +72,11 @@ const Game = () => {
             </Button>
 
             {/* Message display for wrong guesses or hints */}
-            {wrongGuessMessage && <div className="text-center text-[#666] text-sm mb-4 font-sf max-w-[361px]">
-                <div className="text-red-500 mb-2">{wrongGuessMessage}</div>
+            {wrongGuessMessage && <div className="text-center mb-4 font-sf max-w-[361px]">
+                <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600">
+                  <span className="mr-2">💡</span>
+                  <strong>Hint:</strong> {wrongGuessMessage}
+                </div>
               </div>}
           </div>
         </div>

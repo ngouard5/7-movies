@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { AvatarSelector } from "@/components/game/AvatarSelector";
 import { useToast } from "@/hooks/use-toast";
+import { TopLeftButton } from "@/components/ui/TopLeftButton";
 import { AppLayout } from "@/components/layout/AppLayout";
 
 const PreGame = () => {
@@ -58,15 +59,11 @@ const PreGame = () => {
         <div className="relative flex flex-col items-center">
           <BackgroundGradients />
 
-          <div className="absolute left-4 top-[30px]">
-            <button 
-              onClick={handleBackClick}
-              className="w-12 h-12 flex justify-center items-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
-              aria-label="Back"
-            >
-              <ArrowLeft className="w-6 h-6 text-[#E72F2F]" />
-            </button>
-          </div>
+          <TopLeftButton
+            onClick={handleBackClick}
+            icon={<ArrowLeft className="w-6 h-6 text-[#E72F2F]" />}
+            ariaLabel="Back"
+          />
 
           <div
             className="absolute text-[64px] left-1/2 -translate-x-1/2 top-[70px]"
