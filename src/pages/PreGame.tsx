@@ -54,11 +54,11 @@ const PreGame = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-[852px] overflow-auto bg-neutral-50 mx-auto my-0">
+      <main className="relative w-full min-h-screen overflow-auto bg-neutral-50 mx-auto my-0">
         <div className="relative flex flex-col items-center">
           <BackgroundGradients />
 
-          <div className="absolute left-4 top-[69px]">
+          <div className="absolute left-4 top-[30px]">
             <button 
               onClick={handleBackClick}
               className="w-12 h-12 flex justify-center items-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
@@ -69,18 +69,18 @@ const PreGame = () => {
           </div>
 
           <div
-            className="absolute text-[64px] left-1/2 -translate-x-1/2 top-[117px]"
+            className="absolute text-[64px] left-1/2 -translate-x-1/2 top-[70px]"
             role="img"
             aria-label="Popcorn emoji"
           >
             🍿
           </div>
 
-          <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-1/2 -translate-x-1/2 top-[200px] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
+          <h1 className="absolute w-[361px] text-[40px] leading-[48px] text-center text-[#191919] left-1/2 -translate-x-1/2 top-[140px] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
             {isChallengeMode ? "Accept the challenge!" : ""}
           </h1>
 
-          <div className="absolute left-1/2 -translate-x-1/2 max-w-[361px] w-full top-[260px] px-4">
+          <div className="absolute left-1/2 -translate-x-1/2 max-w-[361px] w-full top-[190px] px-4">
             <div className="mb-6">
               <label htmlFor="nickname" className="block text-[18px] font-bold text-[#191919] mb-2 text-left font-sf">
                 Your nickname

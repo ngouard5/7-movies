@@ -52,7 +52,7 @@ export const useMovieGuess = ({
     const wordCount = words.length;
     
     // Create hint text
-    return `Indice : ${firstLetters} (${wordCount} mot${wordCount > 1 ? 's' : ''})`;
+    return `Hint: ${firstLetters} (${wordCount} word${wordCount > 1 ? 's' : ''})`;
   }, []);
 
   // Generate first hint: Genre + decade, fallback to letters + words
@@ -62,7 +62,7 @@ export const useMovieGuess = ({
     
     if (hasGenre && hasYear) {
       const decade = getDecade(movie.year);
-      return `Indice : ${movie.genre}, ${decade}`;
+      return `Hint: ${movie.genre}, ${decade}`;
     } else {
       // Fallback to letters + words if genre or year missing
       return generateLettersAndWordsHint(movie);
@@ -83,14 +83,14 @@ export const useMovieGuess = ({
       // Randomly choose between main actor and director
       const showActor = Math.random() > 0.5;
       if (showActor) {
-        return `Indice : Avec ${movie.mainActor}`;
+        return `Hint: Starring ${movie.mainActor}`;
       } else {
-        return `Indice : Réalisé par ${movie.director}`;
+        return `Hint: Directed by ${movie.director}`;
       }
     } else if (hasActor) {
-      return `Indice : Avec ${movie.mainActor}`;
+      return `Hint: Starring ${movie.mainActor}`;
     } else if (hasDirector) {
-      return `Indice : Réalisé par ${movie.director}`;
+      return `Hint: Directed by ${movie.director}`;
     } else {
       // Fallback to letters + words if no actor/director info
       return generateLettersAndWordsHint(movie);

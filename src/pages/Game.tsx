@@ -59,12 +59,12 @@ const Game = () => {
           {/* Main content area */}
           <div className="flex-1 flex flex-col items-center px-4">
             {/* Emoji Display - Sticky */}
-            <div className="w-full max-w-[400px] mb-6 sticky top-[116px] z-10 bg-neutral-50 py-4">
+            <div className="w-full mb-6 sticky top-[116px] z-10 bg-neutral-50 py-4">
               <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
             </div>
 
             {/* Input and Score Popup Container */}
-            <div className="w-full max-w-[361px] relative mb-6">
+            <div className="w-full max-w-[361px] relative mb-6 mx-auto">
               <MovieSearchInput 
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
@@ -101,16 +101,9 @@ const Game = () => {
             </Button>
 
             {/* Message display for wrong guesses or hints */}
-            {(wrongGuessMessage || showHint) && (
+            {wrongGuessMessage && (
               <div className="text-center text-[#666] text-sm mb-4 font-sf max-w-[361px]">
-                {wrongGuessMessage && (
-                  <div className="text-red-500 mb-2">{wrongGuessMessage}</div>
-                )}
-                {showHint && (
-                  <div className="text-[#E72F2F]">
-                    💡 Hint: {currentMovie.title}
-                  </div>
-                )}
+                <div className="text-red-500 mb-2">{wrongGuessMessage}</div>
               </div>
             )}
           </div>
