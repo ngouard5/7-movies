@@ -1,3 +1,4 @@
+
 import React from "react";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { GameTimer } from "@/components/game/GameTimer";
@@ -9,6 +10,7 @@ import { useGameLogic } from "@/hooks/useGameLogic";
 import { Button } from "@/components/ui/button";
 import { SkipForward } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
+
 const Game = () => {
   const {
     currentMovieIndex,
@@ -31,7 +33,9 @@ const Game = () => {
 
   // Convert boolean to string for the MovieSearchInput component
   const wrongGuessMessage = wrongGuess ? hint || "That's not it. Try again!" : null;
-  return <AppLayout>
+
+  return (
+    <AppLayout>
       <main className="relative w-full min-h-screen overflow-auto bg-neutral-50 mx-auto my-0">
         <div className="relative flex flex-col">
           <BackgroundGradients />
@@ -81,12 +85,14 @@ const Game = () => {
             {wrongGuessMessage && <div className="text-center mb-4 font-sf max-w-[361px]">
                 <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600">
                   <span className="mr-2">💡</span>
-                  <strong>Hint:</strong> {wrongGuessMessage}
+                  {wrongGuessMessage}
                 </div>
               </div>}
           </div>
         </div>
       </main>
-    </AppLayout>;
+    </AppLayout>
+  );
 };
+
 export default Game;
