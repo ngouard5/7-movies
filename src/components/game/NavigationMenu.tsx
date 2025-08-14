@@ -1,7 +1,8 @@
 
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { X, Play, BookOpen } from "lucide-react";
+import { X, BookOpen } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface NavigationMenuProps {
   isOpen: boolean;
@@ -22,12 +23,12 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
     <div className="absolute inset-0 z-50">
       <div className="absolute inset-0 bg-black/60 animate-fade-in" onClick={onClose} />
       
-      <div className="relative w-full md:w-[290px] bg-white h-full animate-fade-in-down shadow-lg flex flex-col">
-        <div className="p-6 flex justify-between items-center border-b border-gray-200">
-          <div className="text-[22px] font-bold text-[#191919]">Menu</div>
+      <div className="relative w-full md:w-[290px] bg-neutral-50 h-full animate-fade-in-down shadow-lg flex flex-col">
+        <div className="p-6 flex justify-center items-center border-b border-gray-200 relative">
+          <div className="text-[32px]">🍿</div>
           <button 
             onClick={onClose}
-            className="w-10 h-10 flex items-center justify-center text-gray-500 hover:text-[#E72F2F] transition-colors"
+            className="absolute right-6 w-10 h-10 flex items-center justify-center text-[#E72F2F] hover:text-[#E72F2F]/80 transition-colors"
           >
             <X size={24} />
           </button>
@@ -36,11 +37,6 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
         <div className="flex-1 py-6">
           <nav className="space-y-2">
             <NavItem 
-              icon={<Play className="text-[#E72F2F]" size={24} />} 
-              label="Play now"
-              onClick={() => handleNavigation('/pre-game')}
-            />
-            <NavItem 
               icon={<BookOpen className="text-[#E72F2F]" size={24} />} 
               label="How to play"
               onClick={() => handleNavigation('/how-to-play')}
@@ -48,9 +44,21 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
           </nav>
         </div>
 
-        <div className="p-6 border-t border-gray-200 text-center">
-          <div className="text-[16px] text-gray-500">
-            Made with ❤️ by Lovable
+        <div className="p-6 border-t border-gray-200 space-y-4">
+          <Button 
+            onClick={() => handleNavigation('/pre-game')}
+            className="w-full h-[60px] bg-[#E72F2F] hover:bg-[#E72F2F]/90 text-white text-[20px] font-bold rounded-[16px] shadow-[0px_3px_3px_rgba(0,0,0,0.06)] font-sf"
+          >
+            Start a new game
+          </Button>
+          
+          <div className="text-center space-y-2">
+            <div className="text-[14px] text-gray-600">
+              7 movies is an after dinner project made by Nicolas Gouard & codeconut
+            </div>
+            <div className="text-[14px] text-gray-600">
+              If you have questions or suggestions please contact us!
+            </div>
           </div>
         </div>
       </div>
