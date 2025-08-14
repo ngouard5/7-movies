@@ -41,7 +41,7 @@ const Game = () => {
           <BackgroundGradients />
 
           {/* Header with MovieCounter, Timer, and Skip button - Sticky */}
-          <header className="sticky top-0 h-[116px] grid grid-cols-3 items-center px-4 z-20 bg-neutral-50">
+          <header className="sticky top-0 h-[80px] grid grid-cols-3 items-center px-4 z-20 bg-neutral-50">
             <div className="flex justify-start">
               <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
             </div>
@@ -59,7 +59,7 @@ const Game = () => {
           {/* Main content area */}
           <div className="flex-1 flex flex-col items-center px-0">
             {/* Emoji Display - Sticky */}
-            <div className="w-full mb-6 sticky top-[116px] z-10 bg-neutral-50 py-4">
+            <div className="w-full mb-6 sticky top-[80px] z-10 bg-neutral-50 py-4">
               <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
             </div>
 
