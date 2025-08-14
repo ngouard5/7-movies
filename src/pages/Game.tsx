@@ -58,7 +58,7 @@ const Game = () => {
           {/* Main content area */}
           <div className="flex-1 flex flex-col items-center px-0">
             {/* Emoji Display - Sticky */}
-            <div className="w-full mb-6 sticky top-[80px] z-10 bg-neutral-50 py-4">
+            <div className="w-full mb-6 sticky top-[80px] z-10 bg-neutral-50">
               <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
             </div>
 
@@ -72,11 +72,12 @@ const Game = () => {
 
             {/* Confirm Button */}
             <Button onClick={() => {
-            if (searchTerm.trim()) {
-              handleGuess(searchTerm.trim());
-              setSearchTerm("");
-            }
-          }} className="w-full max-w-[361px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-6 font-sf">
+              if (searchTerm.trim()) {
+                handleGuess(searchTerm.trim());
+                setSearchTerm("");
+                inputRef.current?.focus();
+              }
+            }} className="w-full max-w-[361px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-6 font-sf">
               Confirm
             </Button>
 

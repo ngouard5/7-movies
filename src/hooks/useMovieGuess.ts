@@ -18,6 +18,7 @@ interface UseMovieGuessProps {
   timer: number;
   movieStartTime: number;
   timerRef: React.MutableRefObject<NodeJS.Timeout | null>;
+  inputRef: React.RefObject<HTMLInputElement>;
 }
 
 export const useMovieGuess = ({
@@ -30,7 +31,8 @@ export const useMovieGuess = ({
   setPassedMovies,
   timer,
   movieStartTime,
-  timerRef
+  timerRef,
+  inputRef
 }: UseMovieGuessProps) => {
   const navigate = useNavigate();
   const [wrongGuess, setWrongGuess] = useState(false);
@@ -145,6 +147,10 @@ export const useMovieGuess = ({
           setTimeout(() => {
             setCurrentMovieIndex((prev) => prev + 1);
             setAnswerStatus(null);
+            // Focus input after moving to next movie
+            if (inputRef.current) {
+              inputRef.current.focus();
+            }
           }, 1000);
         } else {
           // Game over, clear timer

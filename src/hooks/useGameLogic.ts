@@ -47,7 +47,8 @@ export const useGameLogic = () => {
     setPassedMovies,
     timer,
     movieStartTime,
-    timerRef
+    timerRef,
+    inputRef
   });
 
   // Function to handle passing a movie
