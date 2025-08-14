@@ -21,7 +21,6 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
 
   return (
     <div className="fixed inset-0 z-50">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
       
       <div className="relative w-full bg-neutral-50 h-full shadow-lg flex flex-col animate-slide-in-right">
         <div className="p-6 flex justify-center items-center border-b border-gray-200 relative">

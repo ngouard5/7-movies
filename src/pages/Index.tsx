@@ -31,11 +31,13 @@ const Index = () => {
             <h1 className="w-[90%] max-w-[361px] text-[40px] leading-[48px] text-center text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
               Find 7 movies with emojis
             </h1>
+          </div>
 
-            <div className="w-full">
-              <EmojiCarousel />
-            </div>
+          <div className="w-full">
+            <EmojiCarousel />
+          </div>
 
+          <div className="flex flex-col items-center space-y-8 px-4 pt-8">
             <section className="w-[90%] max-w-[361px] text-[22px] leading-[30px] text-[#191919] text-center max-sm:text-lg max-sm:leading-[26px] font-sf">
               <p>
                 Guess 7 movie titles based on emojis, in the shortest period of time!
