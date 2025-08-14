@@ -23,7 +23,7 @@ const Index = () => {
         <div className="relative flex-1">
           <BackgroundGradients />
           
-          <div className="flex flex-col items-center space-y-8 px-4 pt-4">
+          <div className="flex flex-col items-center space-y-8 px-4 pt-8 pb-8">
             <div className="text-[64px]" role="img" aria-label="Popcorn emoji">
               🍿
             </div>
