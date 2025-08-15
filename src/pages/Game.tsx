@@ -35,12 +35,12 @@ const Game = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-screen overflow-auto bg-neutral-50 mx-auto my-0">
+      <main className="relative w-full min-h-screen md:min-h-[600px] overflow-auto mx-auto my-0">
         <div className="relative flex flex-col">
           <BackgroundGradients />
 
           {/* Header with MovieCounter, Timer, and Skip button - Sticky */}
-          <header className="sticky top-0 h-[80px] grid grid-cols-3 items-center px-4 z-20 bg-neutral-50">
+          <header className="sticky top-0 h-[80px] grid grid-cols-3 items-center px-4 z-20">
             <div className="flex justify-start">
               <MovieCounter currentIndex={currentMovieIndex} totalMovies={totalMovies} />
             </div>

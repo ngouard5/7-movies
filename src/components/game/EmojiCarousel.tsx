@@ -22,8 +22,8 @@ export const EmojiCarousel = () => {
         // After enter animation completes, set to visible state
         setTimeout(() => {
           setAnimationState("visible");
-        }, 500);
-      }, 500); // Match the duration of the exit animation
+        }, 300);
+      }, 300); // Match the duration of the exit animation
       
     }, 3000); // Change every 3 seconds
 
@@ -34,9 +34,9 @@ export const EmojiCarousel = () => {
   const getAnimationClass = () => {
     switch (animationState) {
       case "enter":
-        return "translate-x-0 opacity-100 animate-slide-in-left";
+        return "translate-x-0 opacity-100 animate-slide-in-right";
       case "exit":
-        return "translate-x-full opacity-0 animate-slide-out-right";
+        return "translate-x-full opacity-100 animate-slide-out-left";
       case "visible":
       default:
         return "translate-x-0 opacity-100";
@@ -46,7 +46,7 @@ export const EmojiCarousel = () => {
   return (
     <div className="w-full h-[116px] shadow-[0px_2px_5px_rgba(0,0,0,0.10)_inset] bg-[#FFF2CC] border-y-[#FC3] border-t border-solid border-b flex items-center justify-center overflow-hidden">
       <div 
-        className={`text-5xl transition-all duration-500 ${getAnimationClass()}`}
+        className={`text-5xl transition-all duration-300 ${getAnimationClass()}`}
       >
         {uniqueEmojis[currentEmojiIndex]}
       </div>

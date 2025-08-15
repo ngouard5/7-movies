@@ -12,7 +12,7 @@ export const HeaderLayout: React.FC<HeaderLayoutProps> = ({
   rightButton 
 }) => {
   return (
-    <div className="flex flex-col min-h-[852px] bg-neutral-50">
+    <div className="flex flex-col min-h-screen md:min-h-[600px]">
       <header className="flex justify-between items-start pt-4 px-4 relative z-10 flex-shrink-0">
         <div className="w-12 h-12 flex justify-center items-center">
           {leftButton}

@@ -99,8 +99,8 @@ const Results = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-[852px] bg-neutral-50 overflow-auto">
-        <div className="relative pb-8 flex flex-col items-center">
+      <main className="relative w-full min-h-screen md:min-h-[600px]] overflow-auto">
+        <div className="relative flex flex-col items-center">
           <BackgroundGradients />
           
           <TopLeftButton
