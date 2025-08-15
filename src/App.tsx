@@ -10,12 +10,23 @@ import Countdown from "./pages/Countdown";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "./components/ui/toaster";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 function App() {
   return (
     <LanguageProvider>
       <Router>
         <div className="w-full min-h-screen">
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/game" element={<Game />} />
