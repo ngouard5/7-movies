@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { GameTimer } from "@/components/game/GameTimer";
 import { MovieCounter } from "@/components/game/MovieCounter";
@@ -29,6 +29,11 @@ const Game = () => {
     showScorePopup,
     lastScore
   } = useGameLogic();
+
+  // Ajoute ce useEffect ici :
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   // Convert boolean to string for the MovieSearchInput component
   const wrongGuessMessage = wrongGuess ? hint || "That's not it. Try again!" : null;
