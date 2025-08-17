@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { Timer, CheckCircle, XCircle } from "lucide-react";
+import { Timer, CheckCircle, XCircle, Home } from "lucide-react";
 import { formatTime } from "@/utils/gameStorage";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { saveGameSession, type GameSessionData } from "@/services/statsService";
@@ -159,6 +159,10 @@ const Results = () => {
     navigate("/pre-game");
   };
 
+  const handleGoHome = () => {
+    navigate("/");
+  };
+
 
   // Helper function to format time or return an empty string if time is 0
   const displayTime = (time?: number) => {
@@ -182,6 +186,14 @@ const Results = () => {
   return (
     <AppLayout>
       <main className="relative w-full min-h-screen md:min-h-[600px]] overflow-auto">
+        {/* Homepage button */}
+        <button
+          onClick={handleGoHome}
+          className="absolute top-4 left-4 z-10 flex items-center justify-center w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-gray-200 hover:bg-white transition-all duration-200"
+        >
+          <Home className="w-5 h-5 text-gray-700" />
+        </button>
+        
         <div className="relative flex flex-col items-center">
           <BackgroundGradients />
 
