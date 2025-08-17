@@ -7,6 +7,7 @@ import HowToPlay from "./pages/HowToPlay";
 import Results from "./pages/Results";
 import PreGame from "./pages/PreGame";
 import Countdown from "./pages/Countdown";
+import Stats from "./pages/Stats";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "./components/ui/toaster";
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -34,6 +35,7 @@ function App() {
             <Route path="/pre-game" element={<PreGame />} />
             <Route path="/results" element={<Results />} />
             <Route path="/countdown" element={<Countdown />} />
+            <Route path="/admin/stats" element={<Stats />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Toaster />

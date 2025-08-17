@@ -14,7 +14,133 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      game_participants: {
+        Row: {
+          created_at: string
+          id: string
+          player_avatar: string
+          player_nickname: string
+          session_id: string
+          total_time: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          player_avatar: string
+          player_nickname: string
+          session_id: string
+          total_time: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          player_avatar?: string
+          player_nickname?: string
+          session_id?: string
+          total_time?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_participants_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "game_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      game_session_movies: {
+        Row: {
+          created_at: string
+          french_title: string | null
+          guess_time: number | null
+          id: string
+          movie_emojis: string
+          movie_id: string
+          movie_image: string | null
+          movie_imdb_id: string | null
+          movie_title: string
+          points: number | null
+          session_id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          french_title?: string | null
+          guess_time?: number | null
+          id?: string
+          movie_emojis: string
+          movie_id: string
+          movie_image?: string | null
+          movie_imdb_id?: string | null
+          movie_title: string
+          points?: number | null
+          session_id: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          french_title?: string | null
+          guess_time?: number | null
+          id?: string
+          movie_emojis?: string
+          movie_id?: string
+          movie_image?: string | null
+          movie_imdb_id?: string | null
+          movie_title?: string
+          points?: number | null
+          session_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_session_movies_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "game_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      game_sessions: {
+        Row: {
+          created_at: string
+          device_id: string | null
+          id: string
+          movies_guessed: number
+          movies_passed: number
+          player_avatar: string
+          player_nickname: string
+          total_score: number
+          total_time: number
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          movies_guessed?: number
+          movies_passed?: number
+          player_avatar: string
+          player_nickname: string
+          total_score?: number
+          total_time: number
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          device_id?: string | null
+          id?: string
+          movies_guessed?: number
+          movies_passed?: number
+          player_avatar?: string
+          player_nickname?: string
+          total_score?: number
+          total_time?: number
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

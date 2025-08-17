@@ -5,6 +5,8 @@ import { Timer, CheckCircle, XCircle, Home } from "lucide-react";
 import { formatTime } from "@/utils/gameStorage";
 import { TopLeftButton } from "@/components/ui/TopLeftButton";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { saveGameSession, type GameSessionData } from "@/services/statsService";
+import { toast } from "sonner";
 
 interface MovieData {
   id: number;
@@ -27,6 +29,7 @@ const Results = () => {
   const [playerNickname, setPlayerNickname] = useState<string>("");
   const [playerAvatar, setPlayerAvatar] = useState<string>("👨‍🦰");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -56,6 +59,43 @@ const Results = () => {
       const avatars = ["🫠", "🥶", "🥸", "🤬", "🤯", "🥳", "🧐", "😈"];
       setPlayerAvatar(avatars[avatarIndex] || "🫠");
     }
+
+    // Save to database
+    const saveToDatabase = async () => {
+      const results = localStorage.getItem("gameResults");
+      const playerInfo = localStorage.getItem("playerInfo");
+      
+      if (results && playerInfo) {
+        setIsSaving(true);
+        try {
+          const gameResults = JSON.parse(results);
+          const player = JSON.parse(playerInfo);
+          
+          const sessionData: GameSessionData = {
+            playerNickname: player.nickname || "Anonymous",
+            playerAvatar: player.avatar || "👤",
+            totalTime: gameResults.totalTime || 0,
+            totalScore: gameResults.totalScore || 0,
+            moviesGuessed: gameResults.movies?.length || 0,
+            moviesPassed: gameResults.passedMovies?.length || 0,
+            guessedMovies: gameResults.movies || [],
+            passedMovies: gameResults.passedMovies || [],
+          };
+
+          const sessionId = await saveGameSession(sessionData);
+          if (sessionId) {
+            console.log("Game session saved with ID:", sessionId);
+          }
+        } catch (error) {
+          console.error("Failed to save game session:", error);
+          toast.error("Erreur lors de la sauvegarde des statistiques");
+        } finally {
+          setIsSaving(false);
+        }
+      }
+    };
+
+    saveToDatabase();
   }, []);
 
   const handlePlayAgain = () => {
@@ -118,7 +158,7 @@ const Results = () => {
                 Aaaand... CUT!
               </div>
               <div className="text-[18px] font-sf text-[#191919] mb-6">
-                {(() => {
+                 {(() => {
                   if (score === 0) return `No movies this time, ${playerNickname}? Time for a movie marathon! 🍿`;
                   if (score === 1) return `${score} movie found, ${playerNickname}! Every journey starts with one step! 🎬`;
                   if (score <= 2) return `${score} movies found, ${playerNickname}! Getting warmed up! 🔥`;
@@ -126,6 +166,7 @@ const Results = () => {
                   if (score <= 6) return `${score} movies out of ${totalMovies}, impressive ${playerNickname}! 🌟`;
                   return `${score} movies out of ${totalMovies}, absolutely crushing it ${playerNickname}! 🏆`;
                 })()}
+                 {isSaving && <div className="text-sm text-gray-500 mt-2">📊 Sauvegarde des statistiques...</div>}
               </div>
               <div className="flex justify-center items-center gap-2 mt-2">
                 <div className="text-[64px] font-bold text-[#E72F2F] font-sf">
