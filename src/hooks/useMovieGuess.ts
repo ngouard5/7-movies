@@ -58,7 +58,7 @@ export const useMovieGuess = ({
     return `Hint: ${firstLetters} (${wordCount} word${wordCount > 1 ? 's' : ''})`;
   }, []);
 
-  // Generate first hint: Genre + decade, fallback to letters + words
+  // Generate first hint: Genre + decade
   const generateFirstHint = useCallback((movie: MovieData) => {
     const hasGenre = movie.genre && movie.genre.trim() !== "";
     const hasYear = movie.year && movie.year > 0;
@@ -72,32 +72,33 @@ export const useMovieGuess = ({
     }
   }, [generateLettersAndWordsHint]);
 
-  // Generate second hint: First letters + word count - using French title
+  // Generate second hint: Director
   const generateSecondHint = useCallback((movie: MovieData) => {
-    return generateLettersAndWordsHint(movie);
-  }, [generateLettersAndWordsHint]);
-
-  // Generate third hint: Main actor or director, fallback to letters + words
-  const generateThirdHint = useCallback((movie: MovieData) => {
-    const hasActor = movie.mainActor && movie.mainActor.trim() !== "";
     const hasDirector = movie.director && movie.director.trim() !== "";
     
-    if (hasActor && hasDirector) {
-      // Randomly choose between main actor and director
-      const showActor = Math.random() > 0.5;
-      if (showActor) {
-        return `Hint: Starring ${movie.mainActor}`;
-      } else {
-        return `Hint: Directed by ${movie.director}`;
-      }
-    } else if (hasActor) {
-      return `Hint: Starring ${movie.mainActor}`;
-    } else if (hasDirector) {
+    if (hasDirector) {
       return `Hint: Directed by ${movie.director}`;
     } else {
-      // Fallback to letters + words if no actor/director info
+      // Fallback to letters + words if no director info
       return generateLettersAndWordsHint(movie);
     }
+  }, [generateLettersAndWordsHint]);
+
+  // Generate third hint: Main actor
+  const generateThirdHint = useCallback((movie: MovieData) => {
+    const hasActor = movie.mainActor && movie.mainActor.trim() !== "";
+    
+    if (hasActor) {
+      return `Hint: Starring ${movie.mainActor}`;
+    } else {
+      // Fallback to letters + words if no actor info
+      return generateLettersAndWordsHint(movie);
+    }
+  }, [generateLettersAndWordsHint]);
+
+  // Generate fourth hint: First letters + word count
+  const generateFourthHint = useCallback((movie: MovieData) => {
+    return generateLettersAndWordsHint(movie);
   }, [generateLettersAndWordsHint]);
 
   // Function to request the first hint manually
@@ -115,7 +116,7 @@ export const useMovieGuess = ({
     const currentMovie = gameMovies[currentMovieIndex];
     if (!currentMovie) return;
 
-    const nextIndex = (hintIndex + 1) % 3;
+    const nextIndex = (hintIndex + 1) % 4;
     setHintIndex(nextIndex);
 
     let newHint;
@@ -123,11 +124,13 @@ export const useMovieGuess = ({
       newHint = generateFirstHint(currentMovie);
     } else if (nextIndex === 1) {
       newHint = generateSecondHint(currentMovie);
-    } else {
+    } else if (nextIndex === 2) {
       newHint = generateThirdHint(currentMovie);
+    } else {
+      newHint = generateFourthHint(currentMovie);
     }
     setHint(newHint);
-  }, [gameMovies, currentMovieIndex, hintIndex, generateFirstHint, generateSecondHint, generateThirdHint]);
+  }, [gameMovies, currentMovieIndex, hintIndex, generateFirstHint, generateSecondHint, generateThirdHint, generateFourthHint]);
 
   // Functions
   const handleGuess = useCallback(
@@ -245,9 +248,10 @@ export const useMovieGuess = ({
       passedMovies,
       timerRef,
       errorCount,
-      generateFirstHint,
-      generateSecondHint,
-      generateThirdHint
+        generateFirstHint,
+        generateSecondHint,
+        generateThirdHint,
+        generateFourthHint
     ]
   );
 
