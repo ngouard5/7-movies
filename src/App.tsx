@@ -13,6 +13,7 @@ import { Toaster } from "./components/ui/toaster";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { usePostHog } from "posthog-js/react";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -22,12 +23,26 @@ function ScrollToTop() {
   return null;
 }
 
+function PostHogPageview() {
+  const pathname = useLocation().pathname;
+  const posthog = usePostHog();
+  
+  useEffect(() => {
+    if (posthog) {
+      posthog.capture('$pageview');
+    }
+  }, [pathname, posthog]);
+  
+  return null;
+}
+
 function App() {
   return (
     <LanguageProvider>
       <Router>
         <div className="w-full min-h-screen">
           <ScrollToTop />
+          <PostHogPageview />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/game" element={<Game />} />
