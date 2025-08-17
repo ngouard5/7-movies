@@ -49,31 +49,30 @@ const Results = () => {
       }
     }
 
-    // Get player info
-    const nickname = localStorage.getItem("playerNickname") || "Player";
+    // Get player info from separate localStorage keys
+    const nickname = localStorage.getItem("playerNickname") || "Anonymous";
+    const avatarIndex = localStorage.getItem("playerAvatar");
+    
     setPlayerNickname(nickname);
     
-    const avatar = localStorage.getItem("playerAvatar");
-    if (avatar) {
-      const avatarIndex = parseInt(avatar);
+    if (avatarIndex) {
+      const index = parseInt(avatarIndex);
       const avatars = ["🫠", "🥶", "🥸", "🤬", "🤯", "🥳", "🧐", "😈"];
-      setPlayerAvatar(avatars[avatarIndex] || "🫠");
+      setPlayerAvatar(avatars[index] || "🫠");
     }
 
     // Save to database
     const saveToDatabase = async () => {
       const results = localStorage.getItem("gameResults");
-      const playerInfo = localStorage.getItem("playerInfo");
       
-      if (results && playerInfo) {
+      if (results) {
         setIsSaving(true);
         try {
           const gameResults = JSON.parse(results);
-          const player = JSON.parse(playerInfo);
           
           const sessionData: GameSessionData = {
-            playerNickname: player.nickname || "Anonymous",
-            playerAvatar: player.avatar || "👤",
+            playerNickname: nickname,
+            playerAvatar: avatarIndex ? (["🫠", "🥶", "🥸", "🤬", "🤯", "🥳", "🧐", "😈"][parseInt(avatarIndex)] || "🫠") : "🫠",
             totalTime: gameResults.totalTime || 0,
             totalScore: gameResults.totalScore || 0,
             moviesGuessed: gameResults.movies?.length || 0,
@@ -82,9 +81,14 @@ const Results = () => {
             passedMovies: gameResults.passedMovies || [],
           };
 
+          console.log("Saving game session:", sessionData);
           const sessionId = await saveGameSession(sessionData);
           if (sessionId) {
             console.log("Game session saved with ID:", sessionId);
+            toast.success("Statistiques sauvegardées avec succès!");
+          } else {
+            console.warn("Failed to save game session - no session ID returned");
+            toast.error("Erreur lors de la sauvegarde des statistiques");
           }
         } catch (error) {
           console.error("Failed to save game session:", error);
@@ -92,6 +96,8 @@ const Results = () => {
         } finally {
           setIsSaving(false);
         }
+      } else {
+        console.warn("No game results found in localStorage");
       }
     };
 
