@@ -189,9 +189,10 @@ const Results = () => {
         {/* Homepage button */}
         <button
           onClick={handleGoHome}
-          className="absolute top-4 left-4 z-10 flex items-center justify-center w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg border border-gray-200 hover:bg-white transition-all duration-200"
+          className="absolute top-4 left-4 z-10 w-12 h-12 flex justify-center items-center border shadow-[0px_3px_3px_rgba(0,0,0,0.06)] bg-white rounded-xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors"
+          aria-label="Homepage"
         >
-          <Home className="w-5 h-5 text-gray-700" />
+          <Home className="w-5 h-5 text-[#E72F2F]" />
         </button>
         
         <div className="relative flex flex-col items-center">
