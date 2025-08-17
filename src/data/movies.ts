@@ -61,7 +61,7 @@ export const movies: Movie[] = [
   {
     id: 5,
     title: "12 Angry Men",
-    emojis: "👨",
+    emojis: "👨‍⚖️ 1️⃣2️⃣ 😡",
     imdbID: "tt0050083",
     frenchTitle: "12 Hommes en colère",
     genre: "Crime, Drama",
@@ -72,7 +72,7 @@ export const movies: Movie[] = [
   {
     id: 6,
     title: "The Lord of the Rings: The Fellowship of the Ring",
-    emojis: "💍 🧙",
+    emojis: "💍 🧙‍♂️ 🧝‍♂️ 🚶",
     imdbID: "tt0120737",
     frenchTitle: "Le Seigneur des anneaux : La Communauté de l'anneau",
     genre: "Fantasy, Drama, Adventure",
@@ -83,7 +83,7 @@ export const movies: Movie[] = [
   {
     id: 7,
     title: "The Lord of the Rings: The Two Towers",
-    emojis: "💍 🏰 🧙",
+    emojis: "💍 🏰 🧙‍♂️ ⚔️",
     imdbID: "tt0167261",
     frenchTitle: "Le Seigneur des anneaux : Les Deux Tours",
     genre: "Fantasy, Drama, Adventure",
@@ -237,7 +237,7 @@ export const movies: Movie[] = [
   {
     id: 21,
     title: "It's a Wonderful Life",
-    emojis: "👨",
+    emojis: "👨‍👦 🎩 🚂 🇮🇹",
     imdbID: "tt0038650",
     frenchTitle: "La vie est belle",
     genre: "Romance, Fantasy, Family, Drama",
@@ -303,7 +303,7 @@ export const movies: Movie[] = [
   {
     id: 27,
     title: "Back to the Future",
-    emojis: "⏰ 🚗 ⚡ 👨",
+    emojis: "⏰ 🚗 ⚡️ 👨",
     imdbID: "tt0088763",
     frenchTitle: "Retour vers le futur",
     genre: "Sci-Fi, Comedy, Adventure",
@@ -346,7 +346,7 @@ export const movies: Movie[] = [
   {
     id: 31,
     title: "Gisaengchung",
-    emojis: "👨",
+    emojis: "👨‍👩‍👧‍👦 🏠 👨‍👩‍👧‍👦 🔪",
     imdbID: "tt6751668",
     frenchTitle: "Parasite",
     genre: "Drama, Thriller",
@@ -389,7 +389,7 @@ export const movies: Movie[] = [
   {
     id: 35,
     title: "The Departed",
-    emojis: "🕵️",
+    emojis: "🕵️‍♂️ 🚔 🎭 🔫",
     imdbID: "tt0407887",
     frenchTitle: "Les Infiltrés",
     genre: "Crime, Drama, Thriller",
@@ -400,7 +400,7 @@ export const movies: Movie[] = [
   {
     id: 36,
     title: "Whiplash",
-    emojis: "🥁 👨",
+    emojis: "🥁 👨‍🏫 🩸 🎵",
     imdbID: "tt2582802",
     frenchTitle: "Whiplash",
     genre: "Drama, Music",
@@ -411,7 +411,7 @@ export const movies: Movie[] = [
   {
     id: 37,
     title: "American History X",
-    emojis: "👨",
+    emojis: "👨‍🦲 ⚫ ⚪️ 💪 ",
     imdbID: "tt0120586",
     frenchTitle: "American History X",
     genre: "Crime, Drama",
@@ -467,7 +467,7 @@ export const movies: Movie[] = [
   {
     id: 42,
     title: "The Usual Suspects",
-    emojis: "👨",
+    emojis: "👨‍🦽 👮 🚢 ☕",
     imdbID: "tt0114814",
     frenchTitle: "Usual Suspects",
     genre: "Crime, Drama, Mystery, Thriller",
@@ -600,7 +600,7 @@ export const movies: Movie[] = [
   {
     id: 54,
     title: "Das Leben der Anderen",
-    emojis: "🎧 🎙️ 🕵️",
+    emojis: "🎧 🎙️ 🕵️‍♂️ 🇩🇪",
     imdbID: "tt0405094",
     frenchTitle: "La Vie des autres",
     genre: "Drama, Mystery, Thriller",
@@ -611,7 +611,7 @@ export const movies: Movie[] = [
   {
     id: 55,
     title: "The Avengers",
-    emojis: "🦸",
+    emojis: "🦸‍♂️ 🛡️ 🔨 👊",
     imdbID: "tt0848228",
     frenchTitle: "Avengers",
     genre: "Action, Sci-Fi",
@@ -677,7 +677,7 @@ export const movies: Movie[] = [
   {
     id: 61,
     title: "Toy Story",
-    emojis: "🤠 🚀 🧸 🪀",
+    emojis: "🤠 🚀 🧸 🦖",
     imdbID: "tt0114709",
     frenchTitle: "Toy Story",
     genre: "Animation, Adventure, Comedy, Family, Fantasy",
@@ -732,7 +732,7 @@ export const movies: Movie[] = [
   {
     id: 66,
     title: "Braveheart",
-    emojis: "⚔️ 🛡️ 🏴",
+    emojis: "⚔️ 🛡️ 🏴󠁧󠁢󠁳󠁣󠁴󠁿 🏰",
     imdbID: "tt0112573",
     frenchTitle: "Braveheart",
     genre: "Biography, Drama, War",
@@ -775,7 +775,7 @@ export const movies: Movie[] = [
   {
     id: 70,
     title: "Requiem for a Dream",
-    emojis: "💊 📺 👁️ 🌀",
+    emojis: "💉 📺 👁️ 🌀",
     imdbID: "tt0180093",
     frenchTitle: "Requiem for a Dream",
     genre: "Drama",
@@ -830,7 +830,7 @@ export const movies: Movie[] = [
   {
     id: 75,
     title: "North by Northwest",
-    emojis: "✈️ 🏃",
+    emojis: "✈️ 🏃‍♂️ 🕵️‍♂️ 🚘",
     imdbID: "tt0053125",
     frenchTitle: "La mort aux trousses",
     genre: "Thriller, Mistery, Drama, Adventure",
@@ -874,7 +874,7 @@ export const movies: Movie[] = [
   {
     id: 79,
     title: "M - Eine Stadt sucht einen Mörder",
-    emojis: "🎈 🕵️",
+    emojis: "🎈 🕵️‍♂️ 🔪 😱",
     imdbID: "tt0022100",
     frenchTitle: "M le maudit",
     genre: "Crime, Mystery, Thriller",
@@ -896,7 +896,7 @@ export const movies: Movie[] = [
   {
     id: 81,
     title: "Vertigo",
-    emojis: "🌀 🔔 🕵️",
+    emojis: "🌀 🔔 🕵️‍♂️ 😵",
     imdbID: "tt0052357",
     frenchTitle: "Sueurs froides",
     genre: "Mystery, Romance, Thriller",
@@ -907,7 +907,7 @@ export const movies: Movie[] = [
   {
     id: 82,
     title: "Le fabuleux destin d'Amélie Poulain",
-    emojis: "👩",
+    emojis: "👩🏻 🥄 📸 🇫🇷",
     imdbID: "tt0211915",
     frenchTitle: "Le Fabuleux Destin d'Amélie Poulain",
     genre: "Comedy, Romance",
@@ -918,7 +918,7 @@ export const movies: Movie[] = [
   {
     id: 83,
     title: "A Clockwork Orange",
-    emojis: "🎩 🥛 🎶 🔪",
+    emojis: "👁️ 🥛 🎭 🎩",
     imdbID: "tt0066921",
     frenchTitle: "Orange mécanique",
     genre: "Crime, Sci-Fi",
@@ -929,7 +929,7 @@ export const movies: Movie[] = [
   {
     id: 84,
     title: "Oppenheimer",
-    emojis: "💣 🧑",
+    emojis: "💣 🧑‍🔬 ☢️ 💥",
     imdbID: "tt15398776",
     frenchTitle: "Oppenheimer",
     genre: "Biography, Drama, History",
@@ -962,7 +962,7 @@ export const movies: Movie[] = [
   {
     id: 87,
     title: "\"1917\"",
-    emojis: "🪖 🚶",
+    emojis: "🪖 🚶‍♂️ 🕊️ ⏳",
     imdbID: "tt8579674",
     frenchTitle: "\"1917\"",
     genre: "Action, Drama, War",
@@ -973,7 +973,7 @@ export const movies: Movie[] = [
   {
     id: 88,
     title: "L.A. Confidential",
-    emojis: "🎬 🕵️",
+    emojis: "🎬 🕵️‍♂️ 🌴 🔫",
     imdbID: "tt0119488",
     frenchTitle: "L.A. Confidential",
     genre: "Crime, Drama, Mystery, Thriller",
@@ -1116,7 +1116,7 @@ export const movies: Movie[] = [
   {
     id: 101,
     title: "Kill Bill: Vol. 1",
-    emojis: "👩",
+    emojis: "👩 ⚔️ 🟡 🩸",
     imdbID: "tt0266697",
     frenchTitle: "Kill Bill",
     genre: "Action, Crime, Thriller",
@@ -1160,7 +1160,7 @@ export const movies: Movie[] = [
   {
     id: 105,
     title: "Hauru no ugoku shiro",
-    emojis: "🏰 🚶",
+    emojis: "🏰 🚶‍♂️ 🔮 🔥",
     imdbID: "tt0347149",
     frenchTitle: "Le Château ambulant",
     genre: "Animation, Adventure, Family, Fantasy",
@@ -1269,7 +1269,7 @@ export const movies: Movie[] = [
   {
     id: 115,
     title: "Harry Potter and the Sorcerer's Stone",
-    emojis: "⚡ 🏰 🧙 🧹",
+    emojis: "⚡️ 🏰 🧙‍♂️ 🧹",
     imdbID: "tt0241527",
     frenchTitle: "Harry Potter à l'école des sorciers",
     genre: "Mistery, Fantasy, Family, Adventure",
@@ -1280,7 +1280,7 @@ export const movies: Movie[] = [
   {
     id: 116,
     title: "Harry Potter and the Goblet of Fire",
-    emojis: "⚡ 🔥 🏆 🐉",
+    emojis: "⚡️ 🔥 🏆 🐉",
     imdbID: "tt0330373",
     frenchTitle: "Harry Potter et la Coupe de Feu",
     genre: "Mistery, Fantasy, Family, Adventure",
@@ -1334,7 +1334,7 @@ export const movies: Movie[] = [
   {
     id: 121,
     title: "12 Years a Slave",
-    emojis: "⛓️ 🏠 👨",
+    emojis: "⛓️ 🏠 👨‍🌾 😢",
     imdbID: "tt2024544",
     frenchTitle: "12 Years a Slave",
     genre: "Biography, Drama, History",
@@ -1356,7 +1356,7 @@ export const movies: Movie[] = [
   {
     id: 123,
     title: "Blade Runner",
-    emojis: "🤖 🌆 🕵️",
+    emojis: "🤖 🌆 🕵️‍♂️ 🌧️",
     imdbID: "tt0083658",
     frenchTitle: "Blade Runner",
     genre: "Action, Drama, Sci-Fi, Thriller",
@@ -1400,7 +1400,7 @@ export const movies: Movie[] = [
   {
     id: 127,
     title: "Ratatouille",
-    emojis: "🐭 🍽️ 👨",
+    emojis: "🐭 🍽️ 👨‍🍳 🇫🇷",
     imdbID: "tt0382932",
     frenchTitle: "Ratatouille",
     genre: "Animation, Adventure, Comedy, Family, Fantasy",
@@ -1498,7 +1498,7 @@ export const movies: Movie[] = [
   {
     id: 136,
     title: "Pirates of the Caribbean: The Curse of the Black Pearl",
-    emojis: "🏴",
+    emojis: "🏴‍☠️ ⚔️ 🚢 💀",
     imdbID: "tt0325980",
     frenchTitle: "Pirates des Caraïbes : La Malédiction du Black Pearl",
     genre: "Action, Adventure, Fantasy",
@@ -1531,7 +1531,7 @@ export const movies: Movie[] = [
   {
     id: 139,
     title: "The Exorcist",
-    emojis: "😈 🛏️ 👩",
+    emojis: "😈 🛏️ 👩‍👧 ✝️",
     imdbID: "tt0070047",
     frenchTitle: "L'Exorciste",
     genre: "Horror",
@@ -1553,7 +1553,7 @@ export const movies: Movie[] = [
   {
     id: 141,
     title: "The Incredibles",
-    emojis: "🦸",
+    emojis: "🦸🦸‍♂️ 🦸‍♀️ 🏡 🔥",
     imdbID: "tt0317705",
     frenchTitle: "Les Indestructibles",
     genre: "Animation, Action, Adventure, Family",
@@ -1575,7 +1575,7 @@ export const movies: Movie[] = [
   {
     id: 143,
     title: "The Grapes of Wrath",
-    emojis: "🚜 🌾 🚶",
+    emojis: "🚜 🌾 🚶‍♂️ 😢",
     imdbID: "tt0032551",
     frenchTitle: "Les Raisins de la colère",
     genre: "Drama",
@@ -1608,7 +1608,7 @@ export const movies: Movie[] = [
   {
     id: 146,
     title: "The Little Mermaid",
-    emojis: "🧜",
+    emojis: "🧜‍♀️ 🌊 🦀 🎶",
     imdbID: "tt0097757",
     frenchTitle: "La Petite Sirène",
     genre: "Adventure, Family, Fantasy, Musical, Romance",
@@ -1641,7 +1641,7 @@ export const movies: Movie[] = [
   {
     id: 149,
     title: "Aladdin",
-    emojis: "🕌 🧞",
+    emojis: "🕌 🧞‍♂️ 🏰 🏜️",
     imdbID: "tt0103639",
     frenchTitle: "Aladdin",
     genre: "Adventure, Comedy, Family, Fantasy, Musical, Romance",
@@ -1740,7 +1740,7 @@ export const movies: Movie[] = [
   {
     id: 158,
     title: "The Sword in the Stone",
-    emojis: "🧙",
+    emojis: "🧙‍♂️ ⚔️ 🐦 📚",
     imdbID: "tt0057546",
     frenchTitle: "Merlin l'Enchanteur",
     genre: "Animation, Adventure, Comedy, Family, Fantasy, Musical",
@@ -1762,7 +1762,7 @@ export const movies: Movie[] = [
   {
     id: 160,
     title: "Frozen",
-    emojis: "❄️ 👭 🏰 🎶",
+    emojis: "❄️ 👸 🏰 ⛄️",
     imdbID: "tt2294629",
     frenchTitle: "La Reinge des Neiges",
     genre: "Musical, Fantasy, Family, Comedy, Animation, Adventure",
@@ -1773,7 +1773,7 @@ export const movies: Movie[] = [
   {
     id: 161,
     title: "Hercules",
-    emojis: "⚡ 💪 🎶 🏺",
+    emojis: "⚡️ 💪 🎶 🏺",
     imdbID: "tt0119282",
     frenchTitle: "Hercule",
     genre: "Animation, Action, Adventure, Comedy, Family, Fantasy, Musical, Romance",
@@ -1913,7 +1913,7 @@ export const movies: Movie[] = [
   {
     id: 174,
     title: "Astérix & Obélix : Mission Cléopâtre",
-    emojis: "🛕 🏺 😂 🏹",
+    emojis: "🛕 🏺 😂 🧪",
     imdbID: "tt0250223",
     frenchTitle: "Astérix et Obélix : Mission Cléopâtre",
     genre: "Comedy",
@@ -2066,7 +2066,7 @@ export const movies: Movie[] = [
   {
     id: 188,
     title: "X-Men",
-    emojis: "🧬 ⚡ ❄️ 🔥",
+    emojis: "🧬 ⚡️ ❄️ 🔥",
     imdbID: "tt0120903",
     frenchTitle: "X-Men",
     genre: "Sci-Fi, Adventure, Action",
@@ -2150,7 +2150,7 @@ export const movies: Movie[] = [
   {
     id: 195,
     title: "X-Men Origins: Wolverine",
-    emojis: "🦸",
+    emojis: "🦸‍♂️ ⚔️ 🩸 🐺",
     imdbID: "tt0458525",
     frenchTitle: "X-Men Origins: Wolverine",
     genre: "Sci-Fi, Action",
@@ -2162,7 +2162,7 @@ export const movies: Movie[] = [
   {
     id: 196,
     title: "Tangled",
-    emojis: "👩",
+    emojis: "👩‍🦳 🏰 ✂️ 🔥",
     imdbID: "tt0398286",
     frenchTitle: "Raiponce",
     genre: "Animation, Adventure, Comedy",
@@ -2195,7 +2195,7 @@ export const movies: Movie[] = [
   {
     id: 199,
     title: "Peter Pan",
-    emojis: "🧒 🧚 🏴",
+    emojis: "🧒 🧚 🏴‍☠️ 🌠",
     imdbID: "tt0046183",
     frenchTitle: "Les Aventures de Peter Pan",
     genre: "Musical, Fantasy, Family, Comedy, Animation, Adventure",
@@ -2239,7 +2239,7 @@ export const movies: Movie[] = [
   {
     id: 203,
     title: "The Social Network",
-    emojis: "💻 🏫 👨",
+    emojis: "💻 💸 👨‍💻 📱",
     imdbID: "tt1285016",
     frenchTitle: "The Social Network",
     genre: "Biography, Drama",
@@ -2293,7 +2293,7 @@ export const movies: Movie[] = [
   {
     id: 208,
     title: "OSS 117: Le Caire, nid d'espions",
-    emojis: "🕵️",
+    emojis: "🕵️‍♂️ 🎩 🏜️ 😂",
     imdbID: "tt0464913",
     frenchTitle: "OSS 117, Le Caire nid d'espions",
     genre: "Action, Adventure, Comedy",
@@ -2315,7 +2315,7 @@ export const movies: Movie[] = [
   {
     id: 210,
     title: "Ace Ventura: Pet Detective",
-    emojis: "🕵️",
+    emojis: "🕵️‍♂️ 🦜 🦷 😂",
     imdbID: "tt0109040",
     frenchTitle: "Ace Ventura, détective chiens et chats",
     genre: "Comedy",
@@ -2348,7 +2348,7 @@ export const movies: Movie[] = [
   {
     id: 213,
     title: "Sherlock Holmes",
-    emojis: "🕵️",
+    emojis: "🕵️‍♂️ 🔍 🎩 🏙️",
     imdbID: "tt0988045",
     frenchTitle: "Sherlock Holmes",
     genre: "Action, Adventure, Mystery",
@@ -2414,7 +2414,7 @@ export const movies: Movie[] = [
   {
     id: 219,
     title: "Seven Pounds",
-    emojis: "❤️ 👨",
+    emojis: "❤️ 👨‍⚕️ 📞 😢",
     imdbID: "tt0814314",
     frenchTitle: "Sept vies",
     genre: "Drama, Romance",
@@ -2458,7 +2458,7 @@ export const movies: Movie[] = [
   {
     id: 223,
     title: "Interview with the Vampire: The Vampire Chronicles",
-    emojis: "🧛",
+    emojis: "🧛‍♂️ 🩸 📖 🌙",
     imdbID: "tt0110148",
     frenchTitle: "Entretien avec un vampire",
     genre: "Drama, Fantasy, Horror",
@@ -2678,7 +2678,7 @@ export const movies: Movie[] = [
   {
     id: 243,
     title: "The Martian",
-    emojis: "🚀 🔴 👨",
+    emojis: "🚀 🔴 👨‍🚀 🌱",
     imdbID: "tt3659388",
     frenchTitle: "Mars",
     genre: "Adventure, Drama, Sci-Fi",
@@ -2689,7 +2689,7 @@ export const movies: Movie[] = [
   {
     id: 244,
     title: "Gravity",
-    emojis: "🌌 🚀 👩",
+    emojis: "🌌 🚀 👩‍🚀 🔄",
     imdbID: "tt1454468",
     frenchTitle: "Gravity",
     genre: "Drama, Sci-Fi, Thriller",
@@ -2731,7 +2731,7 @@ export const movies: Movie[] = [
   {
     id: 248,
     title: "The Horse Whisperer",
-    emojis: "🐎 🌅 🧑",
+    emojis: "🐎 🌅 🧑‍⚕️ ❤️",
     imdbID: "tt0119314",
     frenchTitle: "L'homme qui murmurait à l'oreille des chevaux",
     genre: "Drama, Romance",
@@ -2764,7 +2764,7 @@ export const movies: Movie[] = [
   {
     id: 251,
     title: "Les petits mouchoirs",
-    emojis: "🏖️ 👨",
+    emojis: "🏖️ 👨‍👩‍👧‍👦 🍷 😢",
     imdbID: "tt1440232",
     frenchTitle: "Les petits mouchoirs",
     genre: "Comedy, Drama",
@@ -2786,7 +2786,7 @@ export const movies: Movie[] = [
   {
     id: 253,
     title: "Le dîner de cons",
-    emojis: "🍽️ 🤦",
+    emojis: "🍽️ 🤦‍♂️ 😂 🏠",
     imdbID: "tt0119038",
     frenchTitle: "Le Dîner de Cons",
     genre: "Comedy",
@@ -2863,7 +2863,7 @@ export const movies: Movie[] = [
   {
     id: 260,
     title: "Doctor Strange",
-    emojis: "🌀 🧙",
+    emojis: "🌀 🧙‍♂️ 🏛️ 💫",
     imdbID: "tt1211837",
     frenchTitle: "Doctor Strange",
     genre: "Action, Adventure, Fantasy",
@@ -2875,7 +2875,7 @@ export const movies: Movie[] = [
   {
     id: 261,
     title: "Thor",
-    emojis: "⚡ 🔨 🌉 👑",
+    emojis: "⚡️ 🔨 🌉 👑",
     imdbID: "tt0800369",
     frenchTitle: "Thor",
     genre: "Action, Adventure, Fantasy",
@@ -2927,7 +2927,7 @@ export const getDecade = (year: number): string => {
 };
 
 // Helper function to get random movies for the game
-export const getRandomMovies = (count: number = 7): Movie[] => {
+export const getRandomMovies = (movies: Movie[], count: number = 7): Movie[] => {
   const shuffled = [...movies].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
