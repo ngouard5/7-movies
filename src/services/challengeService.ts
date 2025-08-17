@@ -37,17 +37,16 @@ export async function getChallengeMovies(sessionId: string): Promise<Movie[] | n
     }
 
     // Convert database movies to Movie format
+    // Note: Only use properties that exist in the database
     const challengeMovies: Movie[] = movies.map(movie => ({
       id: parseInt(movie.movie_id),
       title: movie.movie_title,
       emojis: movie.movie_emojis,
       imdbID: movie.movie_imdb_id || '',
       image: movie.movie_image,
-      frenchTitle: movie.french_title,
-      genre: movie.genre,
-      year: movie.year,
-      director: movie.director,
-      mainActor: movie.mainActor
+      frenchTitle: movie.french_title
+      // Note: genre, year, director, mainActor are not stored in game_session_movies
+      // so we don't include them here
     }));
 
     console.log("Challenge movies loaded:", challengeMovies.length);
