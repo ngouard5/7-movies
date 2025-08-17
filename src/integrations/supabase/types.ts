@@ -111,6 +111,7 @@ export type Database = {
           movies_passed: number
           player_avatar: string
           player_nickname: string
+          session_hash: string | null
           total_score: number
           total_time: number
           user_agent: string | null
@@ -123,6 +124,7 @@ export type Database = {
           movies_passed?: number
           player_avatar: string
           player_nickname: string
+          session_hash?: string | null
           total_score?: number
           total_time: number
           user_agent?: string | null
@@ -135,6 +137,7 @@ export type Database = {
           movies_passed?: number
           player_avatar?: string
           player_nickname?: string
+          session_hash?: string | null
           total_score?: number
           total_time?: number
           user_agent?: string | null

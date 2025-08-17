@@ -58,20 +58,54 @@ function generateDeviceId(): string {
   return Math.abs(hash).toString(36);
 }
 
+// Generate a deterministic session hash based on game data
+function generateSessionHash(data: GameSessionData): string {
+  const sessionData = [
+    data.playerNickname,
+    data.playerAvatar,
+    data.totalTime,
+    data.totalScore,
+    data.moviesGuessed,
+    data.moviesPassed,
+    // Include movie titles to make session unique
+    data.guessedMovies.map(m => m.title).sort().join(','),
+    data.passedMovies.map(m => m.title).sort().join(','),
+    Date.now().toString() // Add timestamp to ensure uniqueness
+  ].join('|');
+  
+  // Simple hash function
+  let hash = 0;
+  for (let i = 0; i < sessionData.length; i++) {
+    const char = sessionData.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  
+  return Math.abs(hash).toString(36);
+}
+
 export async function saveGameSession(data: GameSessionData): Promise<string | null> {
   try {
-    // Save main game session
+    const sessionHash = generateSessionHash(data);
+    const deviceId = data.deviceId || generateDeviceId();
+    const userAgent = data.userAgent || navigator.userAgent;
+
+    // Use upsert to avoid duplicates based on session_hash
     const { data: session, error: sessionError } = await supabase
       .from('game_sessions')
-      .insert({
+      .upsert({
+        session_hash: sessionHash,
         player_nickname: data.playerNickname,
         player_avatar: data.playerAvatar,
         total_time: data.totalTime,
         total_score: data.totalScore,
         movies_guessed: data.moviesGuessed,
         movies_passed: data.moviesPassed,
-        device_id: data.deviceId || generateDeviceId(),
-        user_agent: data.userAgent || navigator.userAgent,
+        device_id: deviceId,
+        user_agent: userAgent,
+      }, {
+        onConflict: 'session_hash',
+        ignoreDuplicates: false
       })
       .select('id')
       .single();
@@ -81,7 +115,7 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
       return null;
     }
 
-    // Save all movies (guessed and passed)
+    // Save all movies (guessed and passed) using upsert to avoid duplicates
     const allMovies = [
       ...data.guessedMovies.map(movie => ({
         session_id: session.id,
@@ -110,9 +144,13 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
     ];
 
     if (allMovies.length > 0) {
+      // Use upsert based on the unique constraint (session_id, movie_id, status)
       const { error: moviesError } = await supabase
         .from('game_session_movies')
-        .insert(allMovies);
+        .upsert(allMovies, {
+          onConflict: 'session_id,movie_id,status',
+          ignoreDuplicates: true
+        });
 
       if (moviesError) {
         console.error('Error saving game session movies:', moviesError);

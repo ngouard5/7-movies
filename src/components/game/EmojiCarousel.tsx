@@ -6,8 +6,14 @@ export const EmojiCarousel = () => {
   const [currentEmojiIndex, setCurrentEmojiIndex] = useState(0);
   const [animationState, setAnimationState] = useState("visible"); // "visible", "exit", "enter"
 
-  // Get unique emoji sets from the movies array
-  const uniqueEmojis = getUniqueEmojis(10);
+  // Get random emoji sets from the movies array - randomize them each time
+  const [uniqueEmojis] = useState(() => {
+    const emojis = getUniqueEmojis(50); // Get more emojis first
+    // Shuffle the array to get random order
+    const shuffled = [...emojis].sort(() => 0.5 - Math.random());
+    // Take only 10 random ones
+    return shuffled.slice(0, 10);
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {

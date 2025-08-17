@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { Timer, CheckCircle, XCircle, Home } from "lucide-react";
@@ -31,6 +31,7 @@ const Results = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
+  const hasSaved = useRef(false);
 
   useEffect(() => {
     // Retrieve results from localStorage
@@ -61,8 +62,15 @@ const Results = () => {
       setPlayerAvatar(avatars[index] || "🫠");
     }
 
-    // Save to database
+    // Save to database only once
     const saveToDatabase = async () => {
+      // Prevent double saves (especially in React.StrictMode during development)
+      if (hasSaved.current) {
+        console.log("Save already attempted, skipping to prevent duplicates");
+        return;
+      }
+      
+      hasSaved.current = true;
       const results = localStorage.getItem("gameResults");
       
       if (results) {
