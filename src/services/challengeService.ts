@@ -2,6 +2,11 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Movie } from "@/data/movies";
 
+interface ChallengeSessionInfo {
+  playerNickname: string;
+  totalScore: number;
+}
+
 export interface ChallengeMovieData {
   id: number;
   emojis: string;
@@ -82,4 +87,37 @@ export function getChallengeData(): { movies: Movie[]; sourceSessionId: string }
 export function clearChallengeData() {
   localStorage.removeItem('challengeMovies');
   localStorage.removeItem('challengeSourceSessionId');
+}
+
+/**
+ * Fetch challenge session information (nickname and score)
+ */
+export async function getChallengeSessionInfo(sessionId: string): Promise<ChallengeSessionInfo | null> {
+  try {
+    console.log("Fetching challenge session info for:", sessionId);
+    
+    const { data: sessionData, error } = await supabase
+      .from('game_sessions')
+      .select('player_nickname, total_score')
+      .eq('id', sessionId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching challenge session info:", error);
+      return null;
+    }
+
+    if (!sessionData) {
+      console.log("No session data found for session ID:", sessionId);
+      return null;
+    }
+
+    return {
+      playerNickname: sessionData.player_nickname,
+      totalScore: sessionData.total_score
+    };
+  } catch (error) {
+    console.error("Error fetching challenge session info:", error);
+    return null;
+  }
 }

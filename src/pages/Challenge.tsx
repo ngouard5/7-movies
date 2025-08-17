@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { getChallengeMovies, setChallengeData } from "@/services/challengeService";
+import { getChallengeMovies, getChallengeSessionInfo, setChallengeData } from "@/services/challengeService";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
-import { Home, Users } from "lucide-react";
+import { Home, Target } from "lucide-react";
 import { TopLeftButton } from "@/components/ui/TopLeftButton";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Challenge = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
@@ -16,21 +17,27 @@ const Challenge = () => {
   const [challengeInfo, setChallengeInfo] = useState<{
     movieCount: number;
     playerNickname?: string;
+    totalScore?: number;
   } | null>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const loadChallenge = async () => {
       if (!sessionId) {
-        setError("ID de défi manquant");
+        setError(t('challenge.not.found'));
         setIsLoading(false);
         return;
       }
 
       try {
-        const movies = await getChallengeMovies(sessionId);
+        // Load both movies and session info in parallel
+        const [movies, sessionInfo] = await Promise.all([
+          getChallengeMovies(sessionId),
+          getChallengeSessionInfo(sessionId)
+        ]);
         
         if (!movies || movies.length === 0) {
-          setError("Défi introuvable ou expiré");
+          setError(t('challenge.not.found'));
           setIsLoading(false);
           return;
         }
@@ -40,18 +47,20 @@ const Challenge = () => {
         
         setChallengeInfo({
           movieCount: movies.length,
+          playerNickname: sessionInfo?.playerNickname,
+          totalScore: sessionInfo?.totalScore,
         });
         
       } catch (error) {
         console.error("Error loading challenge:", error);
-        setError("Erreur lors du chargement du défi");
+        setError(t('challenge.not.found'));
       } finally {
         setIsLoading(false);
       }
     };
 
     loadChallenge();
-  }, [sessionId]);
+  }, [sessionId, t]);
 
   const handleStartChallenge = () => {
     navigate("/pre-game");
@@ -67,7 +76,7 @@ const Challenge = () => {
         <main className="relative w-full min-h-screen overflow-hidden bg-neutral-50">
           <BackgroundGradients />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-xl font-sf">Chargement du défi...</div>
+            <div className="text-xl font-sf">{t('challenge.loading')}</div>
           </div>
         </main>
       </AppLayout>
@@ -90,13 +99,13 @@ const Challenge = () => {
             <div className="w-[90%] max-w-[340px] text-center">
               <div className="text-[40px] mb-4">❌</div>
               <div className="text-[24px] font-bold mb-4 font-sf text-[#191919]">
-                Défi introuvable
+                {t('challenge.not.found')}
               </div>
               <div className="text-[16px] mb-8 font-sf text-[#666]">
-                {error}
+                {t('challenge.not.found.desc')}
               </div>
               <PrimaryButton onClick={handleGoHome}>
-                Retour à l'accueil
+                {t('challenge.back.home')}
               </PrimaryButton>
             </div>
           </div>
@@ -120,24 +129,26 @@ const Challenge = () => {
           <div className="w-[90%] max-w-[340px] text-center">
             <div className="text-[64px] mb-4">🎬</div>
             <div className="text-[32px] leading-[40px] font-fredoka text-[#191919] mb-4">
-              Défi accepté !
+              {t('challenge.accepted')}
             </div>
             <div className="text-[18px] font-sf text-[#191919] mb-2">
-              Un ami vous a lancé un défi !
+              {challengeInfo?.playerNickname ? `${challengeInfo.playerNickname} challenges you to a Movie Emoji game!` : 'A friend challenges you to a Movie Emoji game!'}
             </div>
             <div className="text-[16px] font-sf text-[#666] mb-8">
-              Jouez avec les mêmes {challengeInfo?.movieCount} films et essayez de faire mieux !
+              {t('challenge.description')}
             </div>
             
-            <div className="flex items-center justify-center gap-2 mb-8 p-4 bg-white border border-[#CCC] rounded-xl">
-              <Users className="w-5 h-5 text-[#E72F2F]" />
-              <span className="font-sf text-[#191919]">
-                Même séquence de films
-              </span>
-            </div>
+            {challengeInfo?.totalScore && (
+              <div className="flex items-center justify-center gap-2 mb-8 p-4 bg-white border border-[#CCC] rounded-xl">
+                <Target className="w-5 h-5 text-[#E72F2F]" />
+                <span className="font-sf text-[#191919]">
+                  {t('challenge.score.beat')} {challengeInfo.totalScore} pts
+                </span>
+              </div>
+            )}
 
             <PrimaryButton onClick={handleStartChallenge}>
-              Commencer le défi
+              {t('challenge.start')}
             </PrimaryButton>
           </div>
         </div>

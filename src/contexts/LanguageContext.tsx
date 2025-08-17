@@ -64,6 +64,24 @@ const translations = {
     'and.has': 'and has',
     'word': 'word',
     'words': 'words',
+    'play.again': 'Play again',
+    
+    // Share
+    'share.button': 'Challenge your friends',
+    'share.copied': 'Copied!',
+    'share.copy.success': 'Challenge link copied!',
+    'share.copy.error': 'Copy failed',
+    'share.web.title': 'Movie Emoji Challenge',
+    
+    // Challenge page
+    'challenge.accepted': 'Challenge accepted!',
+    'challenge.loading': 'Loading challenge...',
+    'challenge.not.found': 'Challenge not found',
+    'challenge.not.found.desc': 'This challenge may have expired or been removed.',
+    'challenge.back.home': 'Back to home',
+    'challenge.start': 'Start Challenge',
+    'challenge.description': 'You will have 7 movies to guess, based on emojis. The faster you are, the more you score points!',
+    'challenge.score.beat': 'Score to beat:',
   },
   fr: {
     // Page d'accueil
@@ -111,6 +129,24 @@ const translations = {
     'and.has': 'et contient',
     'word': 'mot',
     'words': 'mots',
+    'play.again': 'Jouer à nouveau',
+    
+    // Partage
+    'share.button': 'Partager ce défi',
+    'share.copied': 'Copié !',
+    'share.copy.success': 'Lien de défi copié !',
+    'share.copy.error': 'Erreur lors de la copie',
+    'share.web.title': 'Défi Movie Emoji',
+    
+    // Page de défi
+    'challenge.accepted': 'Défi accepté !',
+    'challenge.loading': 'Chargement du défi...',
+    'challenge.not.found': 'Défi introuvable',
+    'challenge.not.found.desc': 'Ce défi a peut-être expiré ou été supprimé.',
+    'challenge.back.home': 'Retour à l\'accueil',
+    'challenge.start': 'Commencer le défi',
+    'challenge.description': 'Vous devez deviner 7 films à partir d\'émojis. Plus vous êtes rapide, plus vous marquez de points !',
+    'challenge.score.beat': 'Score à battre :',
   }
 };
 

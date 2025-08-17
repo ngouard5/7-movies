@@ -2,14 +2,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { Timer, CheckCircle, XCircle, Home } from "lucide-react";
+import { Timer, CheckCircle, XCircle } from "lucide-react";
 import { formatTime } from "@/utils/gameStorage";
-import { TopLeftButton } from "@/components/ui/TopLeftButton";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { saveGameSession, type GameSessionData } from "@/services/statsService";
 import { ShareButton } from "@/components/game/ShareButton";
 import { clearChallengeData } from "@/services/challengeService";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { PrimaryButton } from "@/components/ui/PrimaryButton";
 
 interface MovieData {
   id: number;
@@ -31,12 +32,12 @@ const Results = () => {
   const [totalMovies, setTotalMovies] = useState<number>(7);
   const [playerNickname, setPlayerNickname] = useState<string>("");
   const [playerAvatar, setPlayerAvatar] = useState<string>("👨‍🦰");
-  const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [savedSessionId, setSavedSessionId] = useState<string | null>(null);
   const [challengeSourceSessionId, setChallengeSourceSessionId] = useState<string | null>(null);
   const navigate = useNavigate();
   const hasSaved = useRef(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Retrieve results from localStorage
@@ -126,11 +127,6 @@ const Results = () => {
     navigate("/pre-game");
   };
 
-  const handleGoHome = () => {
-    // Clear challenge data when going home
-    clearChallengeData();
-    navigate("/");
-  };
 
   // Helper function to format time or return an empty string if time is 0
   const displayTime = (time?: number) => {
@@ -150,30 +146,12 @@ const Results = () => {
     return `https://img.omdbapi.com/?i=${imdbID}&apikey=8342f4b&h=150`;
   };
 
-  if (isLoading) {
-    return (
-      <AppLayout>
-        <main className="relative w-full min-h-[852px] overflow-hidden bg-neutral-50">
-          <BackgroundGradients />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-xl">Saving your results...</div>
-          </div>
-        </main>
-      </AppLayout>
-    );
-  }
 
   return (
     <AppLayout>
       <main className="relative w-full min-h-screen md:min-h-[600px]] overflow-auto">
         <div className="relative flex flex-col items-center">
           <BackgroundGradients />
-          
-          <TopLeftButton
-            onClick={handleGoHome}
-            icon={<Home className="w-6 h-6 text-[#E72F2F]" />}
-            ariaLabel="Home"
-          />
 
           <div className="w-[90%] max-w-[340px] mx-auto pt-[60px] text-center flex flex-col items-center">
             <div className="mb-6 w-full">
@@ -197,7 +175,6 @@ const Results = () => {
                   const challengeMessage = challengeSourceSessionId ? " 🏆 Challenge completed!" : "";
                   return baseMessage + challengeMessage;
                 })()}
-                 {isSaving && <div className="text-sm text-gray-500 mt-2">📊 Sauvegarde des statistiques...</div>}
               </div>
               <div className="flex justify-center items-center gap-2 mt-2">
                 <div className="text-[64px] font-bold text-[#E72F2F] font-sf">
@@ -294,16 +271,10 @@ const Results = () => {
               )}
               
               <button
-                className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors font-sf"
+                className="w-full h-14 border text-[#191919] text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08)] bg-white rounded-2xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors font-sf"
                 onClick={handlePlayAgain}
               >
-                Play again
-              </button>
-              <button
-                className="w-full h-14 border text-[#191919] text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08)] bg-white rounded-2xl border-solid border-[#CCC] hover:bg-gray-50 transition-colors mt-3 font-sf"
-                onClick={handleGoHome}
-              >
-                Go to homepage
+                {t('play.again')}
               </button>
             </div>
           </div>
