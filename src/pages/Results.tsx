@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
@@ -6,6 +7,8 @@ import { formatTime } from "@/utils/gameStorage";
 import { TopLeftButton } from "@/components/ui/TopLeftButton";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { saveGameSession, type GameSessionData } from "@/services/statsService";
+import { ShareButton } from "@/components/game/ShareButton";
+import { clearChallengeData } from "@/services/challengeService";
 import { toast } from "sonner";
 
 interface MovieData {
@@ -30,6 +33,8 @@ const Results = () => {
   const [playerAvatar, setPlayerAvatar] = useState<string>("👨‍🦰");
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [savedSessionId, setSavedSessionId] = useState<string | null>(null);
+  const [challengeSourceSessionId, setChallengeSourceSessionId] = useState<string | null>(null);
   const navigate = useNavigate();
   const hasSaved = useRef(false);
 
@@ -45,6 +50,7 @@ const Results = () => {
         setScore(results.score || guessedMovies.length);
         setTotalScore(results.totalScore || 0);
         setTotalMovies(results.totalMovies || 7);
+        setChallengeSourceSessionId(results.challengeSourceSessionId || null);
       } catch (e) {
         console.error("Error parsing game results:", e);
       }
@@ -87,12 +93,14 @@ const Results = () => {
             moviesPassed: gameResults.passedMovies?.length || 0,
             guessedMovies: gameResults.movies || [],
             passedMovies: gameResults.passedMovies || [],
+            challengeSourceSessionId: gameResults.challengeSourceSessionId || null,
           };
 
           console.log("Saving game session:", sessionData);
           const sessionId = await saveGameSession(sessionData);
           if (sessionId) {
             console.log("Game session saved with ID:", sessionId);
+            setSavedSessionId(sessionId);
             toast.success("Statistiques sauvegardées avec succès!");
           } else {
             console.warn("Failed to save game session - no session ID returned");
@@ -113,10 +121,14 @@ const Results = () => {
   }, []);
 
   const handlePlayAgain = () => {
+    // Clear challenge data when playing again (not repeating the same challenge)
+    clearChallengeData();
     navigate("/pre-game");
   };
 
   const handleGoHome = () => {
+    // Clear challenge data when going home
+    clearChallengeData();
     navigate("/");
   };
 
@@ -173,12 +185,17 @@ const Results = () => {
               </div>
               <div className="text-[18px] font-sf text-[#191919] mb-6">
                  {(() => {
-                  if (score === 0) return `No movies this time, ${playerNickname}? Time for a movie marathon! 🍿`;
-                  if (score === 1) return `${score} movie found, ${playerNickname}! Every journey starts with one step! 🎬`;
-                  if (score <= 2) return `${score} movies found, ${playerNickname}! Getting warmed up! 🔥`;
-                  if (score <= 4) return `${score} movies out of ${totalMovies}, solid work ${playerNickname}! 🎯`;
-                  if (score <= 6) return `${score} movies out of ${totalMovies}, impressive ${playerNickname}! 🌟`;
-                  return `${score} movies out of ${totalMovies}, absolutely crushing it ${playerNickname}! 🏆`;
+                  const baseMessage = (() => {
+                    if (score === 0) return `No movies this time, ${playerNickname}? Time for a movie marathon! 🍿`;
+                    if (score === 1) return `${score} movie found, ${playerNickname}! Every journey starts with one step! 🎬`;
+                    if (score <= 2) return `${score} movies found, ${playerNickname}! Getting warmed up! 🔥`;
+                    if (score <= 4) return `${score} movies out of ${totalMovies}, solid work ${playerNickname}! 🎯`;
+                    if (score <= 6) return `${score} movies out of ${totalMovies}, impressive ${playerNickname}! 🌟`;
+                    return `${score} movies out of ${totalMovies}, absolutely crushing it ${playerNickname}! 🏆`;
+                  })();
+                  
+                  const challengeMessage = challengeSourceSessionId ? " 🏆 Challenge completed!" : "";
+                  return baseMessage + challengeMessage;
                 })()}
                  {isSaving && <div className="text-sm text-gray-500 mt-2">📊 Sauvegarde des statistiques...</div>}
               </div>
@@ -266,6 +283,16 @@ const Results = () => {
             </div>
 
             <div className="flex w-full gap-2 mt-8 flex-col">
+              {/* Share button - only show if session is saved and not from a challenge */}
+              {savedSessionId && !challengeSourceSessionId && (
+                <ShareButton 
+                  sessionId={savedSessionId}
+                  playerNickname={playerNickname}
+                  score={score}
+                  totalMovies={totalMovies}
+                />
+              )}
+              
               <button
                 className="w-full h-14 border text-white text-xl font-bold shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] bg-[#E72F2F] rounded-2xl border-solid border-[#E72F2F] hover:bg-[#d62b2b] transition-colors font-sf"
                 onClick={handlePlayAgain}

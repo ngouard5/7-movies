@@ -12,6 +12,7 @@ export interface GameSessionData {
   userAgent?: string;
   guessedMovies: MovieData[];
   passedMovies: MovieData[];
+  challengeSourceSessionId?: string | null;
 }
 
 export interface GameStats {
@@ -103,6 +104,7 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
         movies_passed: data.moviesPassed,
         device_id: deviceId,
         user_agent: userAgent,
+        challenge_id: data.challengeSourceSessionId || null,
       }, {
         onConflict: 'session_hash',
         ignoreDuplicates: false
@@ -116,8 +118,9 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
     }
 
     // Save all movies (guessed and passed) using upsert to avoid duplicates
+    // Include movie_order for proper sequencing
     const allMovies = [
-      ...data.guessedMovies.map(movie => ({
+      ...data.guessedMovies.map((movie, index) => ({
         session_id: session.id,
         movie_id: movie.id.toString(),
         movie_title: movie.title,
@@ -128,8 +131,9 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
         status: 'guessed' as const,
         points: movie.points,
         guess_time: movie.guessTime,
+        movie_order: index, // Order based on when they were guessed
       })),
-      ...data.passedMovies.map(movie => ({
+      ...data.passedMovies.map((movie, index) => ({
         session_id: session.id,
         movie_id: movie.id.toString(),
         movie_title: movie.title,
@@ -140,6 +144,7 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
         status: 'passed' as const,
         points: 0,
         guess_time: null,
+        movie_order: data.guessedMovies.length + index, // Order after guessed movies
       }))
     ];
 

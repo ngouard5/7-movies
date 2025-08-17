@@ -59,6 +59,7 @@ export type Database = {
           movie_id: string
           movie_image: string | null
           movie_imdb_id: string | null
+          movie_order: number
           movie_title: string
           points: number | null
           session_id: string
@@ -73,6 +74,7 @@ export type Database = {
           movie_id: string
           movie_image?: string | null
           movie_imdb_id?: string | null
+          movie_order?: number
           movie_title: string
           points?: number | null
           session_id: string
@@ -87,6 +89,7 @@ export type Database = {
           movie_id?: string
           movie_image?: string | null
           movie_imdb_id?: string | null
+          movie_order?: number
           movie_title?: string
           points?: number | null
           session_id?: string
@@ -104,6 +107,7 @@ export type Database = {
       }
       game_sessions: {
         Row: {
+          challenge_id: string | null
           created_at: string
           device_id: string | null
           id: string
@@ -117,6 +121,7 @@ export type Database = {
           user_agent: string | null
         }
         Insert: {
+          challenge_id?: string | null
           created_at?: string
           device_id?: string | null
           id?: string
@@ -130,6 +135,7 @@ export type Database = {
           user_agent?: string | null
         }
         Update: {
+          challenge_id?: string | null
           created_at?: string
           device_id?: string | null
           id?: string
@@ -142,7 +148,15 @@ export type Database = {
           total_time?: number
           user_agent?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "game_sessions_challenge_fk"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "game_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

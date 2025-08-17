@@ -5,14 +5,20 @@ import { getRandomMovies, movies, type Movie } from "@/data/movies";
 import { MovieData } from "@/types/gameTypes";
 import { formatGameTime } from "@/utils/movieUtils";
 import { useMovieGuess } from "@/hooks/useMovieGuess";
+import { getChallengeData, clearChallengeData } from "@/services/challengeService";
 
 export type { MovieData } from "@/types/gameTypes";
 
 export const useGameLogic = () => {
   const navigate = useNavigate();
   
-  // Get random movies for the game
+  // Get movies for the game (either from challenge or random)
   const [gameMovies] = useState<Movie[]>(() => {
+    const challengeData = getChallengeData();
+    if (challengeData) {
+      console.log("Using challenge movies:", challengeData.movies.length);
+      return challengeData.movies;
+    }
     // Get random movies - all data is already unified in the movies array
     return getRandomMovies(movies, 7);
   });
@@ -72,6 +78,9 @@ export const useGameLogic = () => {
         clearInterval(timerRef.current);
       }
       
+      // Check if this was a challenge
+      const challengeData = getChallengeData();
+      
       // Navigate to results page
       const totalScore = guessedMovies.reduce((sum, movie) => sum + (movie.points || 0), 0);
       localStorage.setItem(
@@ -82,7 +91,8 @@ export const useGameLogic = () => {
           passedMovies: [...passedMovies, currentMovie],
           score: guessedMovies.length,
           totalScore: totalScore,
-          totalMovies: gameMovies.length
+          totalMovies: gameMovies.length,
+          challengeSourceSessionId: challengeData?.sourceSessionId || null
         })
       );
       navigate("/results");
