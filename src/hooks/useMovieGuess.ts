@@ -38,6 +38,7 @@ export const useMovieGuess = ({
   const [wrongGuess, setWrongGuess] = useState(false);
   const [answerStatus, setAnswerStatus] = useState<"wrong" | "correct" | null>(null);
   const [showHint, setShowHint] = useState(false);
+  const [hintIndex, setHintIndex] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [hint, setHint] = useState("");
   const [showScorePopup, setShowScorePopup] = useState(false);
@@ -99,6 +100,35 @@ export const useMovieGuess = ({
     }
   }, [generateLettersAndWordsHint]);
 
+  // Function to request the first hint manually
+  const requestHint = useCallback(() => {
+    const currentMovie = gameMovies[currentMovieIndex];
+    if (!currentMovie) return;
+
+    setShowHint(true);
+    setHintIndex(0);
+    setHint(generateFirstHint(currentMovie));
+  }, [gameMovies, currentMovieIndex, generateFirstHint]);
+
+  // Function to cycle through hints
+  const cycleHint = useCallback(() => {
+    const currentMovie = gameMovies[currentMovieIndex];
+    if (!currentMovie) return;
+
+    const nextIndex = (hintIndex + 1) % 3;
+    setHintIndex(nextIndex);
+
+    let newHint;
+    if (nextIndex === 0) {
+      newHint = generateFirstHint(currentMovie);
+    } else if (nextIndex === 1) {
+      newHint = generateSecondHint(currentMovie);
+    } else {
+      newHint = generateThirdHint(currentMovie);
+    }
+    setHint(newHint);
+  }, [gameMovies, currentMovieIndex, hintIndex, generateFirstHint, generateSecondHint, generateThirdHint]);
+
   // Functions
   const handleGuess = useCallback(
     (guess: string) => {
@@ -140,6 +170,7 @@ export const useMovieGuess = ({
         // Reset wrong guess state and hint
         setWrongGuess(false);
         setShowHint(false);
+        setHintIndex(0);
         setErrorCount(0);
 
         // Move to next movie or finish game
@@ -189,23 +220,8 @@ export const useMovieGuess = ({
         const suggestion = getSuggestion(guess, currentMovie.title) || 
                           (currentMovie.frenchTitle ? getSuggestion(guess, currentMovie.frenchTitle) : null);
         
-        // Show different hints based on error count
-        if (newErrorCount === 1) {
-          // First hint: Genre + decade
-          setShowHint(true);
-          const baseHint = generateFirstHint(currentMovie);
-          setHint(suggestion ? `${baseHint} ${suggestion}` : baseHint);
-        } else if (newErrorCount === 2) {
-          // Second hint: First letters + word count
-          setShowHint(true);
-          const baseHint = generateSecondHint(currentMovie);
-          setHint(suggestion ? `${baseHint} ${suggestion}` : baseHint);
-        } else {
-          // Third hint and beyond: Main actor/director
-          setShowHint(true);
-          const baseHint = generateThirdHint(currentMovie);
-          setHint(suggestion ? `${baseHint} ${suggestion}` : baseHint);
-        }
+        // No longer automatically show hints on wrong guesses
+        // The user can now request hints manually
 
         // Reset the answer status after a short delay
         setTimeout(() => {
@@ -235,6 +251,7 @@ export const useMovieGuess = ({
     setWrongGuess(false);
     setShowHint(false);
     setHint("");
+    setHintIndex(0);
     setErrorCount(0);
     setAnswerStatus(null);
   }, []);
@@ -246,6 +263,8 @@ export const useMovieGuess = ({
     showHint,
     hint,
     resetHints,
+    requestHint,
+    cycleHint,
     showScorePopup,
     lastScore
   };

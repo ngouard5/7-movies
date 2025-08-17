@@ -7,7 +7,7 @@ import { MovieSearchInput } from "@/components/game/MovieSearchInput";
 import { ScorePopup } from "@/components/game/ScorePopup";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { Button } from "@/components/ui/button";
-import { SkipForward } from "lucide-react";
+import { SkipForward, RefreshCw } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 
 const Game = () => {
@@ -26,6 +26,8 @@ const Game = () => {
     showHint,
     hint,
     handlePass,
+    requestHint,
+    cycleHint,
     showScorePopup,
     lastScore
   } = useGameLogic();
@@ -36,7 +38,7 @@ const Game = () => {
   }, []);
 
   // Convert boolean to string for the MovieSearchInput component
-  const wrongGuessMessage = wrongGuess ? hint || "That's not it. Try again!" : null;
+  const wrongGuessMessage = wrongGuess ? "That's not it. Try again!" : null;
 
   return (
     <AppLayout>
@@ -82,17 +84,38 @@ const Game = () => {
                 setSearchTerm("");
                 inputRef.current?.focus();
               }
-            }} className="w-full max-w-[361px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-6 font-sf">
+            }} className="w-full max-w-[361px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-4 font-sf">
               Confirm
             </Button>
 
-            {/* Message display for wrong guesses or hints */}
+            {/* I need a hint button - only show if hint is not visible */}
+            {!showHint && (
+              <Button onClick={requestHint} variant="outline" className="w-full max-w-[361px] h-10 mb-4 text-sm font-sf">
+                I need a hint
+              </Button>
+            )}
+
+            {/* Message display for wrong guesses */}
             {wrongGuessMessage && <div className="text-center mb-4 font-sf max-w-[361px]">
                 <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600">
-                  <span className="mr-2">💡</span>
                   {wrongGuessMessage}
                 </div>
               </div>}
+
+            {/* Hint display with refresh button */}
+            {showHint && hint && (
+              <div className="text-center mb-4 font-sf max-w-[361px]">
+                <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600 flex items-center justify-between">
+                  <div className="flex items-center">
+                    <span className="mr-2">💡</span>
+                    {hint}
+                  </div>
+                  <Button onClick={cycleHint} variant="ghost" size="sm" className="ml-2 h-6 w-6 p-0">
+                    <RefreshCw className="w-3 h-3" />
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>

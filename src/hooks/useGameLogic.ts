@@ -35,6 +35,8 @@ export const useGameLogic = () => {
     showHint,
     hint,
     resetHints,
+    requestHint,
+    cycleHint,
     showScorePopup,
     lastScore
   } = useMovieGuess({
@@ -128,6 +130,8 @@ export const useGameLogic = () => {
     answerStatus,
     showHint,
     hint,
+    requestHint,
+    cycleHint,
     showScorePopup,
     lastScore
   };
