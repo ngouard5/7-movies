@@ -22,9 +22,13 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   const { t, language } = useLanguage();
 
   const shareUrl = `${window.location.origin}/challenge/${sessionId}`;
+  
+  // Get total score from localStorage
+  const totalScore = localStorage.getItem('totalScore') ? parseInt(localStorage.getItem('totalScore')!) : 0;
+  
   const shareText = language === 'fr' 
-    ? `🎬 ${playerNickname} vous lance un défi movie emoji ! Ils ont trouvé ${score}/${totalMovies} films. Saurez-vous faire mieux ?`
-    : `🎬 ${playerNickname} challenges you to a Movie Emoji game! They guessed ${score}/${totalMovies} movies. Can you beat them?`;
+    ? `🎬 ${playerNickname} vous lance un défi movie emoji ! Ils ont trouvé ${score}/${totalMovies} films et marqué ${totalScore} pts. Saurez-vous faire mieux ?`
+    : `🎬 ${playerNickname} challenges you to a Movie Emoji game! They guessed ${score}/${totalMovies} movies and scored ${totalScore} pts. Can you beat them?`;
 
   const handleShare = async () => {
     // Try to use native Web Share API first
