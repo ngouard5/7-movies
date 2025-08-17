@@ -87,14 +87,23 @@ function generateSessionHash(data: GameSessionData): string {
 
 export async function saveGameSession(data: GameSessionData): Promise<string | null> {
   try {
+    // Generate session ID client-side to avoid blocked SELECT operation
+    const sessionId = crypto.randomUUID ? crypto.randomUUID() : 
+      'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    
     const sessionHash = generateSessionHash(data);
     const deviceId = data.deviceId || generateDeviceId();
     const userAgent = data.userAgent || navigator.userAgent;
 
-    // Use upsert to avoid duplicates based on session_hash
-    const { data: session, error: sessionError } = await supabase
+    // Use insert with client-generated ID to avoid SELECT operation
+    const { error: sessionError } = await supabase
       .from('game_sessions')
-      .upsert({
+      .insert({
+        id: sessionId,
         session_hash: sessionHash,
         player_nickname: data.playerNickname,
         player_avatar: data.playerAvatar,
@@ -105,14 +114,9 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
         device_id: deviceId,
         user_agent: userAgent,
         challenge_id: data.challengeSourceSessionId || null,
-      }, {
-        onConflict: 'session_hash',
-        ignoreDuplicates: false
-      })
-      .select('id')
-      .single();
+      });
 
-    if (sessionError || !session) {
+    if (sessionError) {
       console.error('Error saving game session:', sessionError);
       return null;
     }
@@ -121,7 +125,7 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
     // Include movie_order for proper sequencing
     const allMovies = [
       ...data.guessedMovies.map((movie, index) => ({
-        session_id: session.id,
+        session_id: sessionId,
         movie_id: movie.id.toString(),
         movie_title: movie.title,
         movie_emojis: movie.emojis,
@@ -134,7 +138,7 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
         movie_order: index, // Order based on when they were guessed
       })),
       ...data.passedMovies.map((movie, index) => ({
-        session_id: session.id,
+        session_id: sessionId,
         movie_id: movie.id.toString(),
         movie_title: movie.title,
         movie_emojis: movie.emojis,
@@ -163,7 +167,7 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
       }
     }
 
-    return session.id;
+    return sessionId;
   } catch (error) {
     console.error('Unexpected error saving game session:', error);
     return null;
