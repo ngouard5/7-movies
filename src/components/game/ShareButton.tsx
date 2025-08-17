@@ -24,7 +24,19 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   const shareUrl = `${window.location.origin}/challenge/${sessionId}`;
   
   // Get total score from localStorage
-  const totalScore = localStorage.getItem('totalScore') ? parseInt(localStorage.getItem('totalScore')!) : 0;
+  let totalScore = 0;
+  try {
+    const gameResults = localStorage.getItem('gameResults');
+    if (gameResults) {
+      const parsed = JSON.parse(gameResults);
+      totalScore = parsed.totalScore || 0;
+    } else {
+      // Fallback to old totalScore key for compatibility
+      totalScore = localStorage.getItem('totalScore') ? parseInt(localStorage.getItem('totalScore')!) : 0;
+    }
+  } catch (error) {
+    totalScore = 0;
+  }
   
   const shareText = language === 'fr' 
     ? `🎬 ${playerNickname} vous lance un défi movie emoji ! Ils ont trouvé ${score}/${totalMovies} films et marqué ${totalScore} pts. Saurez-vous faire mieux ?`
