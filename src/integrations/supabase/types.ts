@@ -47,6 +47,13 @@ export type Database = {
             referencedRelation: "game_sessions"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "game_participants_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "public_game_sessions"
+            referencedColumns: ["id"]
+          },
         ]
       }
       game_session_movies: {
@@ -103,6 +110,13 @@ export type Database = {
             referencedRelation: "game_sessions"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "game_session_movies_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "public_game_sessions"
+            referencedColumns: ["id"]
+          },
         ]
       }
       game_sessions: {
@@ -156,11 +170,68 @@ export type Database = {
             referencedRelation: "game_sessions"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "game_sessions_challenge_fk"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "public_game_sessions"
+            referencedColumns: ["id"]
+          },
         ]
       }
     }
     Views: {
-      [_ in never]: never
+      public_game_sessions: {
+        Row: {
+          challenge_id: string | null
+          created_at: string | null
+          id: string | null
+          movies_guessed: number | null
+          movies_passed: number | null
+          player_avatar: string | null
+          player_nickname: string | null
+          total_score: number | null
+          total_time: number | null
+        }
+        Insert: {
+          challenge_id?: string | null
+          created_at?: string | null
+          id?: string | null
+          movies_guessed?: number | null
+          movies_passed?: number | null
+          player_avatar?: string | null
+          player_nickname?: string | null
+          total_score?: number | null
+          total_time?: number | null
+        }
+        Update: {
+          challenge_id?: string | null
+          created_at?: string | null
+          id?: string | null
+          movies_guessed?: number | null
+          movies_passed?: number | null
+          player_avatar?: string | null
+          player_nickname?: string | null
+          total_score?: number | null
+          total_time?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "game_sessions_challenge_fk"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "game_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "game_sessions_challenge_fk"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "public_game_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never
