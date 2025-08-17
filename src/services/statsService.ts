@@ -172,9 +172,10 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
 
 export async function getGameStats(): Promise<GameStats | null> {
   try {
-    // Get total sessions and basic stats
+    // SECURITY: Use secure public view instead of direct table access
+    // This prevents exposure of sensitive data like device_id and user_agent
     const { data: sessions, error: sessionsError } = await supabase
-      .from('game_sessions')
+      .from('public_game_sessions')
       .select('id, total_score, total_time, movies_guessed')
       .order('created_at', { ascending: false });
 
@@ -224,9 +225,9 @@ export async function getGameStats(): Promise<GameStats | null> {
       .sort((a, b) => b.timesGuessed - a.timesGuessed)
       .slice(0, 10);
 
-    // Get recent sessions with player info
+    // SECURITY: Use secure public view for recent sessions
     const { data: recentSessions, error: recentError } = await supabase
-      .from('game_sessions')
+      .from('public_game_sessions')
       .select('id, player_nickname, total_score, total_time, created_at')
       .order('created_at', { ascending: false })
       .limit(20);
