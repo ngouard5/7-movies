@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { getRandomMovies, type Movie } from "@/data/movies";
+import { getRandomMovies, movies, type Movie } from "@/data/movies";
 import { MovieData } from "@/types/gameTypes";
 import { formatGameTime } from "@/utils/movieUtils";
 import { useMovieGuess } from "@/hooks/useMovieGuess";
@@ -14,7 +14,7 @@ export const useGameLogic = () => {
   // Get random movies for the game
   const [gameMovies] = useState<Movie[]>(() => {
     // Get random movies - all data is already unified in the movies array
-    return getRandomMovies(7);
+    return getRandomMovies(movies, 7);
   });
   
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
