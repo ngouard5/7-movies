@@ -96,8 +96,9 @@ export async function getChallengeSessionInfo(sessionId: string): Promise<Challe
   try {
     console.log("Fetching challenge session info for:", sessionId);
     
+    // Use the secure public view that excludes sensitive data
     const { data: sessionData, error } = await supabase
-      .from('game_sessions')
+      .from('public_game_sessions')
       .select('player_nickname, total_score')
       .eq('id', sessionId)
       .single();
