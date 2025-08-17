@@ -212,6 +212,11 @@ export const useMovieGuess = ({
         setWrongGuess(true);
         setAnswerStatus("wrong");
         
+        // Hide wrong guess message after 3 seconds
+        setTimeout(() => {
+          setWrongGuess(false);
+        }, 3000);
+        
         // Increment error count
         const newErrorCount = errorCount + 1;
         setErrorCount(newErrorCount);
