@@ -6,6 +6,7 @@ import { Timer, CheckCircle, XCircle } from "lucide-react";
 import { formatTime } from "@/utils/gameStorage";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { saveGameSession, type GameSessionData } from "@/services/statsService";
+import { supabase } from "@/integrations/supabase/client";
 import { ShareButton } from "@/components/game/ShareButton";
 import { clearChallengeData } from "@/services/challengeService";
 import { toast } from "sonner";
@@ -102,6 +103,37 @@ const Results = () => {
           if (sessionId) {
             console.log("Game session saved with ID:", sessionId);
             setSavedSessionId(sessionId);
+            
+            // Verify what was actually saved to the database
+            try {
+              const { data: verificationData, error: verifyError } = await supabase
+                .from('public_game_sessions')
+                .select('id, total_score, movies_guessed, movies_passed, total_time')
+                .eq('id', sessionId)
+                .maybeSingle();
+                
+              if (verifyError) {
+                console.error('Error verifying saved session:', verifyError);
+              } else if (verificationData) {
+                console.debug('Verification - Database contains:', verificationData);
+                
+                const expectedScore = sessionData.totalScore > 0 
+                  ? sessionData.totalScore 
+                  : sessionData.guessedMovies.reduce((sum, movie) => sum + (movie.points || 0), 0);
+                
+                if (verificationData.total_score !== expectedScore) {
+                  console.warn(`Score mismatch! Expected: ${expectedScore}, Database: ${verificationData.total_score}`);
+                  toast.error(`Attention: score enregistré (${verificationData.total_score}) diffère du score calculé (${expectedScore})`);
+                } else {
+                  console.debug('Score verification successful');
+                }
+              } else {
+                console.warn('No verification data found for session:', sessionId);
+              }
+            } catch (verifyError) {
+              console.error('Error during verification:', verifyError);
+            }
+            
             toast.success("Statistiques sauvegardées avec succès!");
           } else {
             console.warn("Failed to save game session - no session ID returned");

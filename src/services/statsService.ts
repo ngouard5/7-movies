@@ -99,6 +99,19 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
     const deviceId = data.deviceId || generateDeviceId();
     const userAgent = data.userAgent || navigator.userAgent;
 
+    // Calculate a robust total score - use provided totalScore if > 0, otherwise sum from movies
+    const totalScoreToSave = data.totalScore > 0 
+      ? data.totalScore 
+      : data.guessedMovies.reduce((sum, movie) => sum + (movie.points || 0), 0);
+
+    console.debug('Saving game session:', {
+      sessionId,
+      totalScore: data.totalScore,
+      calculatedScore: totalScoreToSave,
+      moviesGuessed: data.moviesGuessed,
+      moviesPassed: data.moviesPassed
+    });
+
     // Use insert with client-generated ID to avoid SELECT operation
     const { error: sessionError } = await supabase
       .from('game_sessions')
@@ -108,7 +121,7 @@ export async function saveGameSession(data: GameSessionData): Promise<string | n
         player_nickname: data.playerNickname,
         player_avatar: data.playerAvatar,
         total_time: data.totalTime,
-        total_score: data.totalScore,
+        total_score: totalScoreToSave,
         movies_guessed: data.moviesGuessed,
         movies_passed: data.moviesPassed,
         device_id: deviceId,
