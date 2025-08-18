@@ -64,12 +64,13 @@ const Game = () => {
           </header>
 
           {/* Main content area */}
-          <div className="flex-1 flex flex-col items-center px-4">
+          <div className="flex-1 flex flex-col items-center">
             {/* Emoji Display - Sticky */}
             <div className="w-full mb-6 sticky top-[80px] z-10 bg-neutral-50">
               <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
             </div>
 
+            <div className="w-full max-w-[400px] relative px-4 mx-auto">
             {/* Input and Score Popup Container */}
             <div className="w-full max-w-[400px] relative mb-6 mx-auto">
               <MovieSearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} inputRef={inputRef} handleGuess={handleGuess} wrongGuess={wrongGuessMessage} showHint={showHint} answerStatus={answerStatus} />
@@ -117,6 +118,7 @@ const Game = () => {
                 </div>
               </div>
             )}
+            </div>
           </div>
         </div>
       </main>
