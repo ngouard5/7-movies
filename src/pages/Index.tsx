@@ -29,7 +29,7 @@ const Index = () => {
               🍿
             </div>
 
-            <h1 className="w-[90%] max-w-[400px] text-[40px] leading-[48px] text-center text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
+            <h1 className="w-[90%] max-w-[400px] text-[40px] leading-[48px] text-center text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka whitespace-pre-line">
               {t('find.movies')}
             </h1>
           </div>

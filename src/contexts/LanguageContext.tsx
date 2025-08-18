@@ -20,7 +20,7 @@ const LanguageContext = createContext<LanguageContextType>({
 const translations = {
   en: {
     // Home page
-    'find.movies': 'Find 7 movies with emojis',
+    'find.movies': 'Find movies\nwith emojis',
     'game.description': 'Guess 7 movie titles based on emojis, in the shortest period of time!',
     'challenge.friends': 'Challenge your friends to beat your record!',
     'play.button': 'Play now',
@@ -73,13 +73,13 @@ const translations = {
     'share.web.title': 'Movie Emoji Challenge',
     
     // Challenge page
-    'challenge.accepted': 'Challenge accepted!',
+    'challenge.accepted': 'Take on the challenge!',
     'challenge.loading': 'Loading challenge...',
     'challenge.not.found': 'Challenge not found',
     'challenge.not.found.desc': 'This challenge may have expired or been removed.',
     'challenge.back.home': 'Back to home',
     'challenge.start': 'Start Challenge',
-    'challenge.description': 'You will have 7 movies to guess, based on emojis. The faster you are, the more you score points!',
+    'challenge.description': 'Ready? The faster you answer, the more you score points!',
     'challenge.score.beat': 'Score to beat:',
     
     // Game interface
@@ -121,10 +121,10 @@ const translations = {
   },
   fr: {
     // Page d'accueil
-    'find.movies': 'Trouvez 7 films avec des émojis',
-    'game.description': 'Devinez 7 titres de films à partir d\'émojis, dans le temps le plus court possible !',
+    'find.movies': 'Devinez les films grâce aux émojis',
+    'game.description': 'Devinez 7 titres de films à partir d\'émojis, le plus rapidement possible !',
     'challenge.friends': 'Défiez vos amis pour battre votre record !',
-    'play.button': 'Jouer maintenant',
+    'play.button': 'Jouer',
     'how.to.play': 'Comment jouer',
     
     // Pré-jeu
@@ -173,13 +173,13 @@ const translations = {
     'share.web.title': 'Défi Movie Emoji',
     
     // Page de défi
-    'challenge.accepted': 'Défi accepté !',
+    'challenge.accepted': 'Relevez le défi',
     'challenge.loading': 'Chargement du défi...',
     'challenge.not.found': 'Défi introuvable',
     'challenge.not.found.desc': 'Ce défi a peut-être expiré ou été supprimé.',
     'challenge.back.home': 'Retour à l\'accueil',
-    'challenge.start': 'Commencer le défi',
-    'challenge.description': 'Vous devez deviner 7 films à partir d\'émojis. Plus vous êtes rapide, plus vous marquez de points !',
+    'challenge.start': 'Jouer',
+    'challenge.description': 'Prêt ? Plus vous êtes rapide, plus vous marquez de points !',
     'challenge.score.beat': 'Score à battre :',
     
     // Interface de jeu

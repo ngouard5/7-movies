@@ -38,7 +38,6 @@ const Countdown = () => {
     <AppLayout>
       <main className="relative w-full min-h-screen md:min-h-[600px] pt-16 overflow-hidden mx-auto my-0 flex items-center justify-center">
         <div className="relative w-full h-full flex flex-col items-center justify-center">
-          <BackgroundGradients />
 
           <div className="flex flex-col items-center justify-center">
             {/* Avatar */}

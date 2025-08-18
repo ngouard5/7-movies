@@ -197,7 +197,7 @@ const Results = () => {
         
         <div className="relative flex flex-col items-center">
 
-          <div className="w-[90%] max-w-[340px] mx-auto pt-[60px] text-center flex flex-col items-center">
+          <div className="w-[90%] max-w-[400px] mx-auto pt-[60px] text-center flex flex-col items-center">
             <div className="mb-6 w-full">
               <div className="text-[40px] leading-[48px] font-fredoka text-[#191919] mb-4">
                 🎉🎉🎉

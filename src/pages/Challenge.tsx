@@ -74,7 +74,6 @@ const Challenge = () => {
     return (
       <AppLayout>
         <main className="relative w-full min-h-screen min-h-screen md:min-h-[600px] overflow-hidden">
-          <BackgroundGradients />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-xl font-sf">{t('challenge.loading')}</div>
           </div>
@@ -87,7 +86,6 @@ const Challenge = () => {
     return (
       <AppLayout>
         <main className="relative w-full min-h-screen md:min-h-[600px] overflow-hidden">
-          <BackgroundGradients />
           
           <TopLeftButton
             onClick={handleGoHome}
@@ -96,7 +94,7 @@ const Challenge = () => {
           />
 
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-[90%] max-w-[340px] text-center">
+            <div className="w-[90%] max-w-[400px] text-center">
               <div className="text-[40px] mb-4">❌</div>
               <div className="text-[24px] font-bold mb-4 font-sf text-[#191919]">
                 {t('challenge.not.found')}
@@ -117,7 +115,6 @@ const Challenge = () => {
   return (
     <AppLayout>
       <main className="relative w-full min-h-screen md:min-h-[600px] overflow-hidden">
-        <BackgroundGradients />
         
         <TopLeftButton
           onClick={handleGoHome}
@@ -126,19 +123,45 @@ const Challenge = () => {
         />
 
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-[90%] max-w-[340px] text-center">
+          <div className="w-[90%] max-w-[400px] text-center">
             <div className="text-[64px] mb-4">🍿</div>
             <div className="text-[32px] leading-[40px] font-fredoka text-[#191919] mb-4">
               {t('challenge.accepted')}
             </div>
             <div className="text-[18px] font-sf text-[#191919] mb-2">
               {challengeInfo?.playerNickname 
-                ? language === 'fr' 
-                  ? `${challengeInfo.playerNickname} vous lance un défi Movie Emoji !`
-                  : `${challengeInfo.playerNickname} challenges you to a Movie Emoji game!`
-                : language === 'fr'
-                  ? 'Un ami vous lance un défi Movie Emoji !'
-                  : 'A friend challenges you to a Movie Emoji game!'
+                ? (language === 'fr'
+                    ? (<>
+                        Vous aurez 7 films à trouver grâce à des emojis.
+                        <br />
+                        Voici un exemple :
+                        <br />
+                        🦁 👑 🌅 🐗 = Le Roi Lion.
+                      </>)
+                    : (<>
+                        You will have 7 movies to guess with emojis.
+                        <br />
+                        Here is an example:
+                        <br />
+                        🦁 👑 🌅 🐗 = The Lion King.
+                      </>)
+                  )
+                : (language === 'fr'
+                    ? (<>
+                        Vous aurez 7 films à trouver grâce à des emojis.
+                        <br />
+                        Voici un exemple :
+                        <br />
+                        🦁 👑 🌅 🐗 = Le Roi Lion.
+                      </>)
+                    : (<>
+                        You will have 7 movies to guess with emojis.
+                        <br />
+                        Here is an example:
+                        <br />
+                        🦁 👑 🌅 🐗 = The Lion King.
+                      </>)
+                  )
               }
             </div>
             <div className="text-[16px] font-sf text-[#666] mb-8">

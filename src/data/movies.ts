@@ -21,18 +21,18 @@ export const movies: Movie[] = [
     genre: "Drama",
     year: 1994,
     director: "Frank Darabont",
-    mainActor: "Alfonso Freeman"
+    mainActor: "Tim Robbins"
   },
   {
     id: 2,
     title: "The Godfather",
-    emojis: "🤵 🐎 🔫 🍝",
+    emojis: "🤵🏻‍♂️ 🐎 🔫 🍝",
     imdbID: "tt0068646",
     frenchTitle: "Le Parrain",
     genre: "Crime, Drama",
     year: 1972,
     director: "Francis Ford Coppola",
-    mainActor: "Abe Vigoda"
+    mainActor: "Marlon Brando"
   },
   {
     id: 3,
@@ -43,7 +43,7 @@ export const movies: Movie[] = [
     genre: "Action, Crime, Drama, Thriller",
     year: 1992,
     director: "Tim Burton",
-    mainActor: "Andrew Bryniarski",
+    mainActor: "Michael Keaton",
     tags: ["Superhero"]
   },
   {
@@ -55,19 +55,19 @@ export const movies: Movie[] = [
     genre: "Action, Crime, Drama, Thriller",
     year: 2008,
     director: "Christopher Nolan",
-    mainActor: "Aaron Eckhart",
+    mainActor: "Christian Bale",
     tags: ["Superhero"]
   },
   {
     id: 5,
     title: "12 Angry Men",
-    emojis: "👨‍⚖️ 1️⃣2️⃣ 😡",
+    emojis: "⚖️ 1️⃣2️⃣ 😡",
     imdbID: "tt0050083",
     frenchTitle: "12 Hommes en colère",
     genre: "Crime, Drama",
     year: 1957,
     director: "Sidney Lumet",
-    mainActor: "Billy Nelson"
+    mainActor: "Henry Fonda"
   },
   {
     id: 6,
@@ -78,7 +78,7 @@ export const movies: Movie[] = [
     genre: "Fantasy, Drama, Adventure",
     year: 2001,
     director: "Peter Jackson",
-    mainActor: "Alan Howard"
+    mainActor: "Elijah Wood"
   },
   {
     id: 7,
@@ -89,7 +89,7 @@ export const movies: Movie[] = [
     genre: "Fantasy, Drama, Adventure",
     year: 2002,
     director: "Peter Jackson",
-    mainActor: "Andy Serkis"
+    mainActor: "Elijah Wood"
   },
   {
     id: 8,
@@ -100,7 +100,7 @@ export const movies: Movie[] = [
     genre: "Fantasy, Drama, Adventure",
     year: 2003,
     director: "Peter Jackson",
-    mainActor: "Alan Howard"
+    mainActor: "Elijah Wood"
   },
   {
     id: 9,
@@ -111,7 +111,7 @@ export const movies: Movie[] = [
     genre: "History, Drama, Biography",
     year: 1993,
     director: "Steven Spielberg",
-    mainActor: "Agnieszka Wagner"
+    mainActor: "Liam Neeson"
   },
   {
     id: 10,
@@ -121,8 +121,8 @@ export const movies: Movie[] = [
     frenchTitle: "Pulp Fiction",
     genre: "Crime, Drama",
     year: 1994,
-    director: "Q3772",
-    mainActor: "Alexis Arquette"
+    director: "Quentin Tarantino",
+    mainActor: "John Travolta"
   },
   {
     id: 11,
@@ -133,7 +133,7 @@ export const movies: Movie[] = [
     genre: "Western, Adventure",
     year: 1966,
     director: "Sergio Leone",
-    mainActor: "Al Mulock"
+    mainActor: "Clint Eastwood"
   },
   {
     id: 12,
@@ -144,7 +144,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance",
     year: 1994,
     director: "Robert Zemeckis",
-    mainActor: "Aaron Izbicki"
+    mainActor: "Tom Hanks"
   },
   {
     id: 13,
@@ -155,7 +155,7 @@ export const movies: Movie[] = [
     genre: "Drama",
     year: 1999,
     director: "David Fincher",
-    mainActor: "Bob Stephenson"
+    mainActor: "Brad Pitt"
   },
   {
     id: 14,
@@ -166,7 +166,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Sci-Fi, Thriller",
     year: 2010,
     director: "Christopher Nolan",
-    mainActor: "Cillian Murphy"
+    mainActor: "Leonardo DiCaprio"
   },
   {
     id: 15,
@@ -177,7 +177,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Fantasy, Sci-Fi",
     year: 1977,
     director: "George Lucas",
-    mainActor: "Alec Guinness"
+    mainActor: "Mark Hamill"
   },
   {
     id: 16,
@@ -188,7 +188,7 @@ export const movies: Movie[] = [
     genre: "Action, Sci-Fi",
     year: 1999,
     director: "Lana Wachowski, Lilly Wachowski",
-    mainActor: "Ada Nicodemou"
+    mainActor: "Keanu Reeves"
   },
   {
     id: 17,
@@ -199,7 +199,7 @@ export const movies: Movie[] = [
     genre: "Biography, Crime, Drama",
     year: 1990,
     director: "Martin Scorsese",
-    mainActor: "Beau Starr"
+    mainActor: "Robert De Niro"
   },
   {
     id: 18,
@@ -208,9 +208,9 @@ export const movies: Movie[] = [
     imdbID: "tt0073486",
     frenchTitle: "Vol au-dessus d'un nid de coucou",
     genre: "Drama",
-    year: 2000,
+    year: 1975,
     director: "Miloš Forman",
-    mainActor: "Anjelica Huston"
+    mainActor: "Jack Nicholson"
   },
   {
     id: 19,
@@ -221,7 +221,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Drama, Sci-Fi",
     year: 2014,
     director: "Christopher Nolan",
-    mainActor: "Anne Hathaway"
+    mainActor: "Matthew McConaughey"
   },
   {
     id: 20,
@@ -232,7 +232,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama, Mystery, Thriller",
     year: 1995,
     director: "David Fincher",
-    mainActor: "Alfonso Freeman"
+    mainActor: "Morgan Freeman"
   },
   {
     id: 21,
@@ -243,7 +243,7 @@ export const movies: Movie[] = [
     genre: "Romance, Fantasy, Family, Drama",
     year: 1946,
     director: "Frank Capra",
-    mainActor: "Adriana Caselotti"
+    mainActor: "James Stewart"
   },
   {
     id: 22,
@@ -254,7 +254,7 @@ export const movies: Movie[] = [
     genre: "Thriller, Horror, Drama",
     year: 1991,
     director: "Jonathan Demme",
-    mainActor: "Adelle Lutz"
+    mainActor: "Jodie Foster"
   },
   {
     id: 23,
@@ -265,7 +265,7 @@ export const movies: Movie[] = [
     genre: "War, Drama",
     year: 1998,
     director: "Steven Spielberg",
-    mainActor: "Adam Goldberg"
+    mainActor: "Tom Hanks"
   },
   {
     id: 24,
@@ -281,13 +281,13 @@ export const movies: Movie[] = [
   {
     id: 25,
     title: "The Green Mile",
-    emojis: "🟩 🔌 🐁 👮",
+    emojis: "🟩 🔌 👮‍♂️ 🐁",
     imdbID: "tt0120689",
     frenchTitle: "La Ligne verte",
     genre: "Crime, Drama, Fantasy, Mystery",
     year: 1999,
     director: "Frank Darabont",
-    mainActor: "Barry Pepper"
+    mainActor: "Tom Hanks"
   },
   {
     id: 26,
@@ -303,13 +303,13 @@ export const movies: Movie[] = [
   {
     id: 27,
     title: "Back to the Future",
-    emojis: "⏰ 🚗 ⚡️ 👨",
+    emojis: "⏰ 🚗 ⚡️ 👨‍🔬",
     imdbID: "tt0088763",
     frenchTitle: "Retour vers le futur",
     genre: "Sci-Fi, Comedy, Adventure",
     year: 1985,
     director: "Robert Zemeckis",
-    mainActor: "Billy Zane"
+    mainActor: "Michael J. Fox"
   },
   {
     id: 28,
@@ -330,7 +330,7 @@ export const movies: Movie[] = [
     genre: "Biography, Drama, Music, War",
     year: 2002,
     director: "Roman Polanski",
-    mainActor: "Adam Bauman"
+    mainActor: "Adrien Brody"
   },
   {
     id: 30,
@@ -341,7 +341,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Drama",
     year: 2000,
     director: "Ridley Scott",
-    mainActor: "Adam Levy"
+    mainActor: "Russell Crowe"
   },
   {
     id: 31,
@@ -352,7 +352,7 @@ export const movies: Movie[] = [
     genre: "Drama, Thriller",
     year: 2019,
     director: "Bong Joon-ho",
-    mainActor: "Cho Yeo-jeong"
+    mainActor: "Song Kang-ho"
   },
   {
     id: 32,
@@ -363,7 +363,7 @@ export const movies: Movie[] = [
     genre: "Horror, Mystery, Thriller",
     year: 1960,
     director: "Alfred Hitchcock",
-    mainActor: "Alfred Hitchcock"
+    mainActor: "Anthony Perkins"
   },
   {
     id: 33,
@@ -406,7 +406,7 @@ export const movies: Movie[] = [
     genre: "Drama, Music",
     year: 2014,
     director: "Damien Chazelle",
-    mainActor: "April Grace"
+    mainActor: "Miles Teller"
   },
   {
     id: 37,
@@ -417,7 +417,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama",
     year: 1998,
     director: "Tony Kaye",
-    mainActor: "Anne Lambton"
+    mainActor: "Edward Norton"
   },
   {
     id: 38,
@@ -428,7 +428,7 @@ export const movies: Movie[] = [
     genre: "Drama, Mystery, Sci-Fi, Thriller",
     year: 2006,
     director: "Christopher Nolan",
-    mainActor: "Andy Serkis"
+    mainActor: "Christian Bale"
   },
   {
     id: 39,
@@ -439,7 +439,7 @@ export const movies: Movie[] = [
     genre: "Action, Crime, Drama, Thriller",
     year: 1994,
     director: "Luc Besson",
-    mainActor: "Arsène Jiroyan"
+    mainActor: "Jean Reno"
   },
   {
     id: 40,
@@ -450,7 +450,7 @@ export const movies: Movie[] = [
     genre: "Animation, Action, Adventure, Family, Fantasy, Sci-Fi",
     year: 2002,
     director: "Sam Raimi",
-    mainActor: "Andray Johnson",
+    mainActor: "Tobey Maguire",
     tags: ["Superhero"]
   },
   {
@@ -462,7 +462,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance, War",
     year: 1942,
     director: "Michael Curtiz",
-    mainActor: "Adrienne D'Ambricourt"
+    mainActor: "Humphrey Bogart"
   },
   {
     id: 42,
@@ -473,7 +473,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama, Mystery, Thriller",
     year: 1995,
     director: "Bryan Singer",
-    mainActor: "Benicio del Toro"
+    mainActor: "Kevin Spacey"
   },
   {
     id: 43,
@@ -484,7 +484,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama",
     year: 2011,
     director: "Éric Toledano, Olivier Nakache",
-    mainActor: "Alba Gaïa Bellugi"
+    mainActor: "François Cluzet"
   },
   {
     id: 44,
@@ -495,7 +495,7 @@ export const movies: Movie[] = [
     genre: "Action, Crime, Drama",
     year: 2001,
     director: "Charlie Chaplin",
-    mainActor: "Al Ernest Garcia"
+    mainActor: "Charles Chaplin"
   },
   {
     id: 45,
@@ -506,7 +506,7 @@ export const movies: Movie[] = [
     genre: "Horror, Sci-Fi",
     year: 1979,
     director: "Ridley Scott",
-    mainActor: "Bolaji Badejo"
+    mainActor: "Sigourney Weaver"
   },
   {
     id: 46,
@@ -517,7 +517,7 @@ export const movies: Movie[] = [
     genre: "Drama, Mystery, Thriller",
     year: 1954,
     director: "Alfred Hitchcock",
-    mainActor: "Alfred Hitchcock"
+    mainActor: "James Stewart"
   },
   {
     id: 47,
@@ -528,7 +528,7 @@ export const movies: Movie[] = [
     genre: "Western, Drama",
     year: 1968,
     director: "Sergio Leone",
-    mainActor: "Al Mulock"
+    mainActor: "Henry Fonda"
   },
   {
     id: 48,
@@ -539,7 +539,7 @@ export const movies: Movie[] = [
     genre: "Western",
     year: 2012,
     director: "Q3772",
-    mainActor: "Amber Tamblyn"
+    mainActor: "Jamie Foxx"
   },
   {
     id: 49,
@@ -550,7 +550,7 @@ export const movies: Movie[] = [
     genre: "Drama, Mystery, War",
     year: 1979,
     director: "Francis Ford Coppola",
-    mainActor: "Albert Hall"
+    mainActor: "Martin Sheen"
   },
   {
     id: 50,
@@ -561,7 +561,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Drama, Sci-Fi",
     year: 2021,
     director: "Denis Villeneuve",
-    mainActor: "Babs Olusanmokun"
+    mainActor: "Timothée Chalamet"
   },
   {
     id: 51,
@@ -572,7 +572,7 @@ export const movies: Movie[] = [
     genre: "Mystery, Thriller",
     year: 2000,
     director: "Christopher Nolan",
-    mainActor: "Callum Keith Rennie"
+    mainActor: "Guy Pearce"
   },
   {
     id: 52,
@@ -583,7 +583,7 @@ export const movies: Movie[] = [
     genre: "Animation, Adventure, Family, Sci-Fi",
     year: 2008,
     director: "Andrew Stanton",
-    mainActor: "Fred Willard",
+    mainActor: "Ben Burtt",
     tags: ["Disney"]
   },
   {
@@ -595,7 +595,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Action",
     year: 2008,
     director: "Steven Spielberg",
-    mainActor: "Alfred Molina"
+    mainActor: "Harrison Ford"
   },
   {
     id: 54,
@@ -606,7 +606,7 @@ export const movies: Movie[] = [
     genre: "Drama, Mystery, Thriller",
     year: 2006,
     director: "Florian Henckel von Donnersmarck",
-    mainActor: "Bastian Trost"
+    mainActor: "Ulrich Mühe"
   },
   {
     id: 55,
@@ -629,7 +629,7 @@ export const movies: Movie[] = [
     genre: "Drama, Horror",
     year: 1980,
     director: "Stanley Kubrick",
-    mainActor: "Anne Jackson"
+    mainActor: "Jack Nicholson"
   },
   {
     id: 57,
@@ -640,7 +640,7 @@ export const movies: Movie[] = [
     genre: "Comedy",
     year: 2012,
     director: "Charlie Chaplin",
-    mainActor: "Bernard Gorcey"
+    mainActor: "Charles Chaplin"
   },
   {
     id: 58,
@@ -651,7 +651,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Drama, War",
     year: 2009,
     director: "Q3772",
-    mainActor: "Alexander Fehling"
+    mainActor: "Brad Pitt"
   },
   {
     id: 59,
@@ -694,7 +694,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance",
     year: 1997,
     director: "Gus Van Sant",
-    mainActor: "Alison Folland"
+    mainActor: "Robin Williams"
   },
   {
     id: 63,
@@ -716,7 +716,7 @@ export const movies: Movie[] = [
     genre: "Comedy, War",
     year: 1964,
     director: "Stanley Kubrick",
-    mainActor: "Frank Berry"
+    mainActor: "Peter Sellers"
   },
   {
     id: 65,
@@ -738,7 +738,7 @@ export const movies: Movie[] = [
     genre: "Biography, Drama, War",
     year: 1995,
     director: "Mel Gibson",
-    mainActor: "Alex Norton"
+    mainActor: "Mel Gibson"
   },
   {
     id: 67,
@@ -759,7 +759,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama, Thriller",
     year: 2019,
     director: "Todd Phillips",
-    mainActor: "Ben Warheit"
+    mainActor: "Joaquin Phoenix"
   },
   {
     id: 69,
@@ -770,7 +770,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama",
     year: 1984,
     director: "Sergio Leone",
-    mainActor: "Arnon Milchan"
+    mainActor: "Robert De Niro"
   },
   {
     id: 70,
@@ -781,7 +781,7 @@ export const movies: Movie[] = [
     genre: "Drama",
     year: 2000,
     director: "Darren Aronofsky",
-    mainActor: "Ajay Naidu"
+    mainActor: "Ellen Burstyn"
   },
   {
     id: 71,
@@ -792,7 +792,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance, Sci-Fi",
     year: 2004,
     director: "Michel Gondry",
-    mainActor: "David Cross"
+    mainActor: "Jim Carrey"
   },
   {
     id: 72,
@@ -803,7 +803,7 @@ export const movies: Movie[] = [
     genre: "Sci-Fi, Adventure",
     year: 1968,
     director: "Stanley Kubrick",
-    mainActor: "Alan Gifford"
+    mainActor: "Keir Dullea"
   },
   {
     id: 73,
@@ -814,7 +814,7 @@ export const movies: Movie[] = [
     genre: "Crime, Thriller",
     year: 1992,
     director: "Q3772",
-    mainActor: "Burr Steers"
+    mainActor: "Harvey Keitel"
   },
   {
     id: 74,
@@ -836,7 +836,7 @@ export const movies: Movie[] = [
     genre: "Thriller, Mistery, Drama, Adventure",
     year: 1959,
     director: "Alfred Hitchcock",
-    mainActor: "Adam Williams"
+    mainActor: "Cary Grant"
   },
   {
     id: 76,
@@ -858,7 +858,7 @@ export const movies: Movie[] = [
     genre: "Drama, Mystery",
     year: 1941,
     director: "Orson Welles",
-    mainActor: "Agnes Moorehead"
+    mainActor: "Orson Welles"
   },
   {
     id: 78,
@@ -880,7 +880,7 @@ export const movies: Movie[] = [
     genre: "Crime, Mystery, Thriller",
     year: 1931,
     director: "Fritz Lang",
-    mainActor: "Albert Hörrmann"
+    mainActor: "Peter Lorre"
   },
   {
     id: 80,
@@ -891,7 +891,7 @@ export const movies: Movie[] = [
     genre: "Drama, War",
     year: 1987,
     director: "Stanley Kubrick",
-    mainActor: "Adam Baldwin"
+    mainActor: "Matthew Modine"
   },
   {
     id: 81,
@@ -902,7 +902,7 @@ export const movies: Movie[] = [
     genre: "Mystery, Romance, Thriller",
     year: 1958,
     director: "Alfred Hitchcock",
-    mainActor: "Alfred Hitchcock"
+    mainActor: "James Stewart"
   },
   {
     id: 82,
@@ -913,7 +913,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Romance",
     year: 2001,
     director: "Jean-Pierre Jeunet",
-    mainActor: "André Dussollier"
+    mainActor: "Audrey Tautou"
   },
   {
     id: 83,
@@ -924,7 +924,7 @@ export const movies: Movie[] = [
     genre: "Crime, Sci-Fi",
     year: 1971,
     director: "Stanley Kubrick",
-    mainActor: "Adrienne Corri"
+    mainActor: "Malcolm McDowell"
   },
   {
     id: 84,
@@ -935,7 +935,7 @@ export const movies: Movie[] = [
     genre: "Biography, Drama, History",
     year: 2023,
     director: "Christopher Nolan",
-    mainActor: "Alden Ehrenreich"
+    mainActor: "Cillian Murphy"
   },
   {
     id: 85,
@@ -946,7 +946,7 @@ export const movies: Movie[] = [
     genre: "Action, Thriller",
     year: 1988,
     director: "John McTiernan",
-    mainActor: "Al Leong"
+    mainActor: "Bruce Willis"
   },
   {
     id: 86,
@@ -957,7 +957,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Crime",
     year: 2000,
     director: "Guy Ritchie",
-    mainActor: "Adam Fogerty"
+    mainActor: "Jason Statham"
   },
   {
     id: 87,
@@ -968,7 +968,7 @@ export const movies: Movie[] = [
     genre: "Action, Drama, War",
     year: 2019,
     director: "Sam Mendes",
-    mainActor: "Adrian Scarborough"
+    mainActor: "Dean-Charles Chapman"
   },
   {
     id: 88,
@@ -979,7 +979,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama, Mystery, Thriller",
     year: 1997,
     director: "Curtis Hanson",
-    mainActor: "Amber Smith"
+    mainActor: "Kevin Spacey"
   },
   {
     id: 89,
@@ -990,7 +990,7 @@ export const movies: Movie[] = [
     genre: "Biography, Drama, History, War",
     year: 2004,
     director: "Oliver Hirschbiegel",
-    mainActor: "Alexander Held"
+    mainActor: "Bruno Ganz"
   },
   {
     id: 90,
@@ -1001,7 +1001,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama",
     year: 1976,
     director: "Martin Scorsese",
-    mainActor: "Albert Brooks"
+    mainActor: "Robert De Niro"
   },
   {
     id: 91,
@@ -1012,7 +1012,7 @@ export const movies: Movie[] = [
     genre: "Biography, Comedy, Crime, Drama",
     year: 2013,
     director: "Martin Scorsese",
-    mainActor: "Ashlie Atkinson"
+    mainActor: "Leonardo DiCaprio"
   },
   {
     id: 92,
@@ -1023,7 +1023,7 @@ export const movies: Movie[] = [
     genre: "Drama, Western",
     year: 1965,
     director: "Sergio Leone",
-    mainActor: "Aldo Sambrell"
+    mainActor: "Clint Eastwood"
   },
   {
     id: 93,
@@ -1034,7 +1034,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama",
     year: 1998,
     director: "Peter Weir",
-    mainActor: "Brian Delate"
+    mainActor: "Jim Carrey"
   },
   {
     id: 94,
@@ -1045,7 +1045,7 @@ export const movies: Movie[] = [
     genre: "Drama, Mystery, Thriller",
     year: 2010,
     director: "Martin Scorsese",
-    mainActor: "Aidan Mitchell"
+    mainActor: "Leonardo DiCaprio"
   },
   {
     id: 95,
@@ -1056,7 +1056,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Sci-Fi, Thriller",
     year: 1993,
     director: "Steven Spielberg",
-    mainActor: "Ariana Richards"
+    mainActor: "Sam Neill"
   },
   {
     id: 96,
@@ -1067,7 +1067,7 @@ export const movies: Movie[] = [
     genre: "Drama",
     year: 2007,
     director: "Paul Thomas Anderson",
-    mainActor: "Barry Del Sherman"
+    mainActor: "Daniel Day-Lewis"
   },
   {
     id: 97,
@@ -1089,7 +1089,7 @@ export const movies: Movie[] = [
     genre: "Drama, Mystery, Thriller",
     year: 1999,
     director: "M. Night Shyamalan",
-    mainActor: "Angelica Page"
+    mainActor: "Bruce Willis"
   },
   {
     id: 99,
@@ -1100,7 +1100,7 @@ export const movies: Movie[] = [
     genre: "Action, Drama",
     year: 1986,
     director: "Tony Scott",
-    mainActor: "Adrian Pasdar"
+    mainActor: "Tom Cruise"
   },
   {
     id: 100,
@@ -1111,7 +1111,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama, Thriller",
     year: 2007,
     director: "Ethan Coen, Joel Coen",
-    mainActor: "Barry Corbin"
+    mainActor: "Tommy Lee Jones"
   },
   {
     id: 101,
@@ -1122,7 +1122,7 @@ export const movies: Movie[] = [
     genre: "Action, Crime, Thriller",
     year: 2003,
     director: "Q3772",
-    mainActor: "Ambrosia Kelley"
+    mainActor: "Uma Thurman"
   },
   {
     id: 102,
@@ -1144,7 +1144,7 @@ export const movies: Movie[] = [
     genre: "Action, Crime, Drama, Mystery, Thriller",
     year: 2005,
     director: "John Sturges",
-    mainActor: "Angus Lennie"
+    mainActor: "Steve McQueen"
   },
   {
     id: 104,
@@ -1155,7 +1155,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Comedy, Fantasy",
     year: 1975,
     director: "Terry Jones, Terry Gilliam",
-    mainActor: "Carol Cleveland"
+    mainActor: "Graham Chapman"
   },
   {
     id: 105,
@@ -1176,7 +1176,7 @@ export const movies: Movie[] = [
     genre: "Biography, Drama",
     year: 1980,
     director: "David Lynch",
-    mainActor: "Anne Bancroft"
+    mainActor: "Anthony Hopkins"
   },
   {
     id: 107,
@@ -1187,7 +1187,7 @@ export const movies: Movie[] = [
     genre: "War, Romance, Drama",
     year: 1939,
     director: "Sam Wood, Victor Fleming, George Cukor",
-    mainActor: "Alberto Morin"
+    mainActor: "Clark Gable"
   },
   {
     id: 108,
@@ -1198,7 +1198,7 @@ export const movies: Movie[] = [
     genre: "Action, Drama, Sci-Fi, Thriller",
     year: 2005,
     director: "James McTeigue",
-    mainActor: "Ben Miles"
+    mainActor: "Hugo Weaving"
   },
   {
     id: 109,
@@ -1220,7 +1220,7 @@ export const movies: Movie[] = [
     genre: "Adenture, Drama, War",
     year: 1957,
     director: "David Lean",
-    mainActor: "Alec Guinness"
+    mainActor: "William Holden"
   },
   {
     id: 111,
@@ -1231,7 +1231,7 @@ export const movies: Movie[] = [
     genre: "Drama",
     year: 1996,
     director: "Danny Boyle",
-    mainActor: "Andrew Macdonald"
+    mainActor: "Ewan McGregor"
   },
   {
     id: 112,
@@ -1242,7 +1242,7 @@ export const movies: Movie[] = [
     genre: "Biography, Drama, Sport",
     year: 1980,
     director: "Martin Scorsese",
-    mainActor: "Cathy Moriarty"
+    mainActor: "Robert De Niro"
   },
   {
     id: 113,
@@ -1253,7 +1253,7 @@ export const movies: Movie[] = [
     genre: "Biography, Crime, Drama",
     year: 2002,
     director: "Steven Spielberg",
-    mainActor: "Alex Hyde-White"
+    mainActor: "Leonardo DiCaprio"
   },
   {
     id: 114,
@@ -1264,7 +1264,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama, Thriller",
     year: 2014,
     director: "Ethan Coen, Joel Coen",
-    mainActor: "Bain Boehlke"
+    mainActor: "William H. Macy"
   },
   {
     id: 115,
@@ -1275,7 +1275,7 @@ export const movies: Movie[] = [
     genre: "Mistery, Fantasy, Family, Adventure",
     year: 2001,
     director: "Chris Columbus",
-    mainActor: "Adrian Rawlins"
+    mainActor: "Daniel Radcliffe"
   },
   {
     id: 116,
@@ -1286,7 +1286,7 @@ export const movies: Movie[] = [
     genre: "Mistery, Fantasy, Family, Adventure",
     year: 2005,
     director: "Mike Newell",
-    mainActor: "Adrian Rawlins"
+    mainActor: "Daniel Radcliffe"
   },
   {
     id: 117,
@@ -1308,7 +1308,7 @@ export const movies: Movie[] = [
     genre: "Drama, Sport",
     year: 2004,
     director: "Clint Eastwood",
-    mainActor: "Anthony Mackie"
+    mainActor: "Hilary Swank"
   },
   {
     id: 119,
@@ -1340,7 +1340,7 @@ export const movies: Movie[] = [
     genre: "Biography, Drama, History",
     year: 2013,
     director: "Steve McQueen",
-    mainActor: "Adepero Oduye"
+    mainActor: "Chiwetel Ejiofor"
   },
   {
     id: 122,
@@ -1351,7 +1351,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama",
     year: 1989,
     director: "Peter Weir",
-    mainActor: "Alexandra Powers"
+    mainActor: "Robin Williams"
   },
   {
     id: 123,
@@ -1362,7 +1362,7 @@ export const movies: Movie[] = [
     genre: "Action, Drama, Sci-Fi, Thriller",
     year: 1982,
     director: "Ridley Scott",
-    mainActor: "Brion James"
+    mainActor: "Harrison Ford"
   },
   {
     id: 124,
@@ -1373,7 +1373,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Comedy, Crime",
     year: 2014,
     director: "Wes Anderson",
-    mainActor: "Adrien Brody"
+    mainActor: "Ralph Fiennes"
   },
   {
     id: 125,
@@ -1417,12 +1417,12 @@ export const movies: Movie[] = [
     genre: "Reality-TV",
     year: 2011,
     director: "Charlie Chaplin",
-    mainActor: "Albert Austin"
+    mainActor: "Charles Chaplin"
   },
   {
     id: 129,
     title: "Relatos salvajes",
-    emojis: "💥 🚗 🔪 😂",
+    emojis: "✈️ 💥 🚗 👰‍♀️",
     imdbID: "tt3011894",
     frenchTitle: "Les Nouveaux Sauvages",
     genre: "Comedy, Drama, Thriller",
@@ -1449,7 +1449,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Drama, Horror, Thriller",
     year: 1975,
     director: "Steven Spielberg",
-    mainActor: "Carl Gottlieb"
+    mainActor: "Roy Scheider"
   },
   {
     id: 132,
@@ -1460,7 +1460,7 @@ export const movies: Movie[] = [
     genre: "Drama, War",
     year: 1978,
     director: "Michael Cimino",
-    mainActor: "Amy Wright"
+    mainActor: "Robert De Niro"
   },
   {
     id: 133,
@@ -1471,7 +1471,7 @@ export const movies: Movie[] = [
     genre: "Action, Biography, Drama, Sport",
     year: 2019,
     director: "James Mangold",
-    mainActor: "Brad Beyer"
+    mainActor: "Matt Damon"
   },
   {
     id: 134,
@@ -1482,7 +1482,7 @@ export const movies: Movie[] = [
     genre: "Drama, Sport",
     year: 1976,
     director: "John G. Avildsen",
-    mainActor: "Burgess Meredith"
+    mainActor: "Sylvester Stallone"
   },
   {
     id: 135,
@@ -1493,7 +1493,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Crime",
     year: 1998,
     director: "Ethan Coen, Joel Coen",
-    mainActor: "Aimee Mann"
+    mainActor: "Jeff Bridges"
   },
   {
     id: 136,
@@ -1504,7 +1504,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Fantasy",
     year: 2003,
     director: "Gore Verbinski",
-    mainActor: "Angus Barnett"
+    mainActor: "Johnny Depp"
   },
   {
     id: 137,
@@ -1515,7 +1515,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama",
     year: 1995,
     director: "Mathieu Kassovitz",
-    mainActor: "Andrée Damant"
+    mainActor: "Vincent Cassel"
   },
   {
     id: 138,
@@ -1537,7 +1537,7 @@ export const movies: Movie[] = [
     genre: "Horror",
     year: 1973,
     director: "William Friedkin",
-    mainActor: "Eileen Dietz"
+    mainActor: "Ellen Burstyn"
   },
   {
     id: 140,
@@ -1548,7 +1548,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Family, Fantasy, Musical",
     year: 1978,
     director: "Victor Fleming, King Vidor",
-    mainActor: "Adriana Caselotti"
+    mainActor: "Judy Garland"
   },
   {
     id: 141,
@@ -1570,7 +1570,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Biography, Drama",
     year: 2007,
     director: "Sean Penn",
-    mainActor: "Brian H. Dierker"
+    mainActor: "Emile Hirsch"
   },
   {
     id: 143,
@@ -1581,7 +1581,7 @@ export const movies: Movie[] = [
     genre: "Drama",
     year: 1940,
     director: "John Ford",
-    mainActor: "Barney Gilmore"
+    mainActor: "Henry Fonda"
   },
   {
     id: 144,
@@ -1592,7 +1592,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Fantasy, Drama, Comedy",
     year: 1993,
     director: "Harold Ramis",
-    mainActor: "Andie MacDowell"
+    mainActor: "Bill Murray"
   },
   {
     id: 145,
@@ -1811,7 +1811,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama",
     year: 2011,
     director: "Éric Toledano, Olivier Nakache",
-    mainActor: "Alba Gaïa Bellugi"
+    mainActor: "François Cluzet"
   },
   {
     id: 165,
@@ -1822,7 +1822,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Fantasy, Sci-Fi",
     year: 2009,
     director: "James Cameron",
-    mainActor: "Alicia Vela-Bailey"
+    mainActor: "Sam Worthington"
   },
   {
     id: 166,
@@ -1833,7 +1833,7 @@ export const movies: Movie[] = [
     genre: "Drama, Mystery, Thriller",
     year: 2001,
     director: "David Lynch",
-    mainActor: "Angelo Badalamenti"
+    mainActor: "Naomi Watts"
   },
   {
     id: 167,
@@ -1844,7 +1844,7 @@ export const movies: Movie[] = [
     genre: "Horror, Mystery, Thriller",
     year: 1996,
     director: "Wes Craven",
-    mainActor: "Courteney Cox"
+    mainActor: "Neve Campbell"
   },
   {
     id: 168,
@@ -1855,7 +1855,7 @@ export const movies: Movie[] = [
     genre: "Horror, Mystery, Thriller",
     year: 2004,
     director: "James Wan",
-    mainActor: "Alexandra Bokyun Chun"
+    mainActor: "Cary Elwes"
   },
   {
     id: 169,
@@ -1886,7 +1886,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Crime, Fantasy",
     year: 1994,
     director: "Chuck Russell",
-    mainActor: "Amy Yasbeck"
+    mainActor: "Jim Carrey"
   },
   {
     id: 172,
@@ -1908,7 +1908,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Drama, Romance",
     year: 2000,
     director: "Robert Zemeckis",
-    mainActor: "Chris Noth"
+    mainActor: "Tom Hanks"
   },
   {
     id: 174,
@@ -1919,7 +1919,7 @@ export const movies: Movie[] = [
     genre: "Comedy",
     year: 2002,
     director: "Alain Chabat",
-    mainActor: "Alain Chabat"
+    mainActor: "Gérard Depardieu"
   },
   {
     id: 175,
@@ -1941,7 +1941,7 @@ export const movies: Movie[] = [
     genre: "Romance, Fantasy, Drama",
     year: 1990,
     director: "Tim Burton",
-    mainActor: "Aaron Lustig"
+    mainActor: "Johnny Depp"
   },
   {
     id: 177,
@@ -1952,7 +1952,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Drama, History, Romance, Thriller",
     year: 2024,
     director: "Matthieu Delaporte",
-    mainActor: "Anamaria Vartolomei"
+    mainActor: "Pierre Niney"
   },
   {
     id: 178,
@@ -1973,7 +1973,7 @@ export const movies: Movie[] = [
     genre: "Thriller, Sci-Fi, Crime, Action",
     year: 1987,
     director: "Paul Verhoeven",
-    mainActor: "Dan O'Herlihy"
+    mainActor: "Peter Weller"
   },
   {
     id: 180,
@@ -1984,7 +1984,7 @@ export const movies: Movie[] = [
     genre: "Thriller, Sci-Fi, Mystery",
     year: 1995,
     director: "Terry Gilliam",
-    mainActor: "Annie Golden"
+    mainActor: "Bruce Willis"
   },
   {
     id: 181,
@@ -1995,7 +1995,7 @@ export const movies: Movie[] = [
     genre: "Sci-Fi, Adventure",
     year: 1968,
     director: "Franklin J. Schaffner",
-    mainActor: "Billy Curtis"
+    mainActor: "Charlton Heston"
   },
   {
     id: 182,
@@ -2006,7 +2006,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama, Romance",
     year: 2003,
     director: "Wolfgang Becker",
-    mainActor: "Alexander Beyer"
+    mainActor: "Daniel Brühl"
   },
   {
     id: 183,
@@ -2017,7 +2017,7 @@ export const movies: Movie[] = [
     genre: "Romance, Adventure, Action",
     year: 2005,
     director: "Peter Jackson",
-    mainActor: "Adrien Brody"
+    mainActor: "Naomi Watts"
   },
   {
     id: 184,
@@ -2039,7 +2039,7 @@ export const movies: Movie[] = [
     genre: "Sci-Fi, Fanstasy, Comedy, Action",
     year: 1984,
     director: "Ivan Reitman",
-    mainActor: "Alice Drummond"
+    mainActor: "Bill Murray"
   },
   {
     id: 186,
@@ -2072,7 +2072,7 @@ export const movies: Movie[] = [
     genre: "Sci-Fi, Adventure, Action",
     year: 2000,
     director: "Bryan Singer",
-    mainActor: "Anna Paquin",
+    mainActor: "Patrick Stewart",
     tags: ["Superhero", "Marvel"]
   },
   {
@@ -2084,7 +2084,7 @@ export const movies: Movie[] = [
     genre: "Sci-Fi, Adventure, Action",
     year: 2003,
     director: "Ang Lee",
-    mainActor: "Cara Buono",
+    mainActor: "Eric Bana",
     tags: ["Superhero", "Marvel"]
   },
   {
@@ -2132,7 +2132,7 @@ export const movies: Movie[] = [
     genre: "Sci-Fi, Comedy, Action",
     year: 2016,
     director: "Tim Miller",
-    mainActor: "Andre Tricoteux",
+    mainActor: "Ryan Reynolds",
     tags: ["Superhero", "Marvel"]
   },
   {
@@ -2156,7 +2156,7 @@ export const movies: Movie[] = [
     genre: "Sci-Fi, Action",
     year: 2009,
     director: "Gavin Hood",
-    mainActor: "Aaron Jeffery",
+    mainActor: "Hugh Jackman",
     tags: ["Superhero", "Marvel"]
   },
   {
@@ -2212,7 +2212,7 @@ export const movies: Movie[] = [
     genre: "Thriller, Mystery",
     year: 2006,
     director: "Ron Howard",
-    mainActor: "Agathe Natanson"
+    mainActor: "Tom Hanks"
   },
   {
     id: 201,
@@ -2223,7 +2223,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Fantasy",
     year: 2018,
     director: "James Wan",
-    mainActor: "Amber Heard"
+    mainActor: "Jason Momoa"
   },
   {
     id: 202,
@@ -2234,7 +2234,7 @@ export const movies: Movie[] = [
     genre: "Comedy",
     year: 2009,
     director: "Todd Phillips",
-    mainActor: "Bradley Cooper"
+    mainActor: "Zach Galifianakis"
   },
   {
     id: 203,
@@ -2245,7 +2245,7 @@ export const movies: Movie[] = [
     genre: "Biography, Drama",
     year: 2010,
     director: "David Fincher",
-    mainActor: "Aaron Sorkin"
+    mainActor: "Jesse Eisenberg"
   },
   {
     id: 204,
@@ -2266,7 +2266,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance",
     year: 2005,
     director: "Joe Wright",
-    mainActor: "Brenda Blethyn"
+    mainActor: "Keira Knightley"
   },
   {
     id: 206,
@@ -2277,7 +2277,7 @@ export const movies: Movie[] = [
     genre: "Action, Biography, Drama",
     year: 2014,
     director: "Clint Eastwood",
-    mainActor: "Angel Oquendo"
+    mainActor: "Bradley Cooper"
   },
   {
     id: 207,
@@ -2288,7 +2288,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance, War",
     year: 2005,
     director: "Rob Marshall",
-    mainActor: "Cary-Hiroyuki Tagawa"
+    mainActor: "Ziyi Zhang"
   },
   {
     id: 208,
@@ -2299,7 +2299,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Comedy",
     year: 2006,
     director: "Michel Hazanavicius",
-    mainActor: "Arsène Mosca"
+    mainActor: "François Damiens"
   },
   {
     id: 209,
@@ -2310,7 +2310,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Romance",
     year: 2008,
     director: "Peyton Reed",
-    mainActor: "Bradley Cooper"
+    mainActor: "Jim Carrey"
   },
   {
     id: 210,
@@ -2321,7 +2321,7 @@ export const movies: Movie[] = [
     genre: "Comedy",
     year: 1994,
     director: "Tom Shadyac",
-    mainActor: "Alice Drummond"
+    mainActor: "Jim Carrey"
   },
   {
     id: 211,
@@ -2332,7 +2332,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Family",
     year: 1990,
     director: "Chris Columbus",
-    mainActor: "Alan Wilder"
+    mainActor: "Macaulay Culkin"
   },
   {
     id: 212,
@@ -2343,7 +2343,7 @@ export const movies: Movie[] = [
     genre: "Comedy",
     year: 1999,
     director: "Paul Weitz, Chris Weitz",
-    mainActor: "Alexandra Adi"
+    mainActor: "Jason Biggs"
   },
   {
     id: 213,
@@ -2354,7 +2354,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Mystery",
     year: 2009,
     director: "Guy Ritchie",
-    mainActor: "Bronagh Gallagher"
+    mainActor: "Robert Downey Jr."
   },
   {
     id: 214,
@@ -2365,7 +2365,7 @@ export const movies: Movie[] = [
     genre: "Horror, Thriller",
     year: 2016,
     director: "M. Night Shyamalan",
-    mainActor: "Anya Taylor-Joy"
+    mainActor: "James McAvoy"
   },
   {
     id: 215,
@@ -2376,7 +2376,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama, Romance",
     year: 1999,
     director: "Roger Michell",
-    mainActor: "Alec Baldwin"
+    mainActor: "Hugh Grant"
   },
   {
     id: 216,
@@ -2420,7 +2420,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance",
     year: 2008,
     director: "Gabriele Muccino",
-    mainActor: "Barry Pepper"
+    mainActor: "Will Smith"
   },
   {
     id: 220,
@@ -2431,7 +2431,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama, Romance",
     year: 2012,
     director: "David O. Russell",
-    mainActor: "Anupam Kher"
+    mainActor: "Bradley Cooper"
   },
   {
     id: 221,
@@ -2464,7 +2464,7 @@ export const movies: Movie[] = [
     genre: "Drama, Fantasy, Horror",
     year: 1994,
     director: "Neil Jordan",
-    mainActor: "Andrew Tiernan"
+    mainActor: "Brad Pitt"
   },
   {
     id: 224,
@@ -2475,7 +2475,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Drama",
     year: 2007,
     director: "Francis Lawrence",
-    mainActor: "Alexander DiPersia"
+    mainActor: "Will Smith"
   },
   {
     id: 225,
@@ -2486,7 +2486,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance",
     year: 1997,
     director: "James Cameron",
-    mainActor: "Anatoly Sagalevich"
+    mainActor: "Leonardo DiCaprio"
   },
   {
     id: 226,
@@ -2497,7 +2497,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure, Sci-Fi",
     year: 1997,
     director: "Luc Besson",
-    mainActor: "Al Matthews"
+    mainActor: "Bruce Willis"
   },
   {
     id: 227,
@@ -2508,7 +2508,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Fantasy",
     year: 2016,
     director: "David Yates",
-    mainActor: "Alison Sudol"
+    mainActor: "Eddie Redmayne"
   },
   {
     id: 228,
@@ -2519,7 +2519,7 @@ export const movies: Movie[] = [
     genre: "Drama, War",
     year: 1998,
     director: "Terrence Malick",
-    mainActor: "Adrien Brody"
+    mainActor: "Jim Caviezel"
   },
   {
     id: 229,
@@ -2530,7 +2530,7 @@ export const movies: Movie[] = [
     genre: "Drama, Thriller",
     year: 2010,
     director: "Darren Aronofsky",
-    mainActor: "Barbara Hershey"
+    mainActor: "Natalie Portman"
   },
   {
     id: 230,
@@ -2541,7 +2541,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama, Music",
     year: 2016,
     director: "Damien Chazelle",
-    mainActor: "Callie Hernandez"
+    mainActor: "Ryan Gosling"
   },
   {
     id: 231,
@@ -2552,7 +2552,7 @@ export const movies: Movie[] = [
     genre: "Drama, Music",
     year: 2004,
     director: "Christophe Barratier",
-    mainActor: "Armen Godel"
+    mainActor: "Gérard Jugnot"
   },
   {
     id: 232,
@@ -2563,7 +2563,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Comedy, Fantasy",
     year: 2023,
     director: "Greta Gerwig",
-    mainActor: "Alexandra Shipp"
+    mainActor: "Margot Robbie"
   },
   {
     id: 233,
@@ -2574,7 +2574,7 @@ export const movies: Movie[] = [
     genre: "Drama, Music, Romance",
     year: 2018,
     director: "Bradley Cooper",
-    mainActor: "Alec Baldwin"
+    mainActor: "Lady Gaga"
   },
   {
     id: 234,
@@ -2596,7 +2596,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Family, Sci-Fi",
     year: 1982,
     director: "Steven Spielberg",
-    mainActor: "Anne Lockhart"
+    mainActor: "Henry Thomas"
   },
   {
     id: 236,
@@ -2607,7 +2607,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Comedy, Family",
     year: 1995,
     director: "Joe Johnston",
-    mainActor: "Adam Hann-Byrd"
+    mainActor: "Robin Williams"
   },
   {
     id: 237,
@@ -2618,7 +2618,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama",
     year: 2007,
     director: "Jason Reitman",
-    mainActor: "Allison Janney"
+    mainActor: "Elliot Page"
   },
   {
     id: 238,
@@ -2629,7 +2629,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance",
     year: 2008,
     director: "Loveleen Tandan, Danny Boyle",
-    mainActor: "Anand Tiwari"
+    mainActor: "Dev Patel"
   },
   {
     id: 239,
@@ -2651,7 +2651,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance, Sci-Fi",
     year: 2013,
     director: "Spike Jonze",
-    mainActor: "Alia Janine"
+    mainActor: "Joaquin Phoenix"
   },
   {
     id: 241,
@@ -2662,7 +2662,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance",
     year: 2013,
     director: "Baz Luhrmann",
-    mainActor: "Adelaide Clemens"
+    mainActor: "Leonardo DiCaprio"
   },
   {
     id: 242,
@@ -2673,7 +2673,7 @@ export const movies: Movie[] = [
     genre: "Biography, Drama, History",
     year: 2010,
     director: "Tom Hooper",
-    mainActor: "Adrian Scarborough"
+    mainActor: "Colin Firth"
   },
   {
     id: 243,
@@ -2684,7 +2684,7 @@ export const movies: Movie[] = [
     genre: "Adventure, Drama, Sci-Fi",
     year: 2015,
     director: "Ridley Scott",
-    mainActor: "Aksel Hennie"
+    mainActor: "Matt Damon"
   },
   {
     id: 244,
@@ -2695,7 +2695,7 @@ export const movies: Movie[] = [
     genre: "Drama, Sci-Fi, Thriller",
     year: 2013,
     director: "Alfonso Cuarón",
-    mainActor: "Amy Warren"
+    mainActor: "Sandra Bullock"
   },
   {
     id: 245,
@@ -2706,7 +2706,7 @@ export const movies: Movie[] = [
     genre: "Crime, Drama, Thriller",
     year: 2018,
     director: "Clint Eastwood",
-    mainActor: "Alison Eastwood"
+    mainActor: "Clint Eastwood"
   },
   {
     id: 246,
@@ -2717,7 +2717,7 @@ export const movies: Movie[] = [
     genre: "Animation, Adventure, Comedy",
     year: 2015,
     director: "Kyle Balda, Pierre Coffin",
-    mainActor: "Alexander Polinsky"
+    mainActor: "Sandra Bullock"
   },
   {
     id: 247,
@@ -2737,7 +2737,7 @@ export const movies: Movie[] = [
     genre: "Drama, Romance",
     year: 1998,
     director: "Robert Redford",
-    mainActor: "Cherry Jones"
+    mainActor: "Robert Redford"
   },
   {
     id: 249,
@@ -2748,7 +2748,7 @@ export const movies: Movie[] = [
     genre: "Action, Drama, History",
     year: 2001,
     director: "Michael Bay",
-    mainActor: "Alec Baldwin"
+    mainActor: "Ben Affleck"
   },
   {
     id: 250,
@@ -2770,7 +2770,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Drama",
     year: 2010,
     director: "Guillaume Canet",
-    mainActor: "Anne Marivin"
+    mainActor: "François Cluzet"
   },
   {
     id: 252,
@@ -2781,7 +2781,7 @@ export const movies: Movie[] = [
     genre: "Comedy",
     year: 2008,
     director: "Dany Boon",
-    mainActor: "Anne Marivin"
+    mainActor: "Kad Merad"
   },
   {
     id: 253,
@@ -2792,7 +2792,7 @@ export const movies: Movie[] = [
     genre: "Comedy",
     year: 1998,
     director: "Francis Veber",
-    mainActor: "Alexandra Vandernoot"
+    mainActor: "Thierry Lhermitte"
   },
   {
     id: 254,
@@ -2803,7 +2803,7 @@ export const movies: Movie[] = [
     genre: "Comedy, Romance",
     year: 2010,
     director: "Pascal Chaumeil",
-    mainActor: "Amandine Dewasmes"
+    mainActor: "Romain Duris"
   },
   {
     id: 255,
@@ -2847,7 +2847,7 @@ export const movies: Movie[] = [
     genre: "Action, Adventure",
     year: 1993,
     director: "Stephen Herek",
-    mainActor: "Bob Anderson"
+    mainActor: "Charlie Sheen"
   },
   {
     id: 259,
@@ -2915,10 +2915,10 @@ export const movies: Movie[] = [
     genre: "Animation, Adventure, Comedy",
     year: 2016,
     director: "Don Hall",
+        mainActor: "Auli'i Cravalho",
     tags: ["Disney"]
   }
 ];
-
 
 // Helper function to get decade string
 export const getDecade = (year: number): string => {
