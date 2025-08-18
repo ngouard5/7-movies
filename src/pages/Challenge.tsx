@@ -19,7 +19,7 @@ const Challenge = () => {
     playerNickname?: string;
     totalScore?: number;
   } | null>(null);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     const loadChallenge = async () => {
@@ -132,7 +132,14 @@ const Challenge = () => {
               {t('challenge.accepted')}
             </div>
             <div className="text-[18px] font-sf text-[#191919] mb-2">
-              {challengeInfo?.playerNickname ? `${challengeInfo.playerNickname} challenges you to a Movie Emoji game!` : 'A friend challenges you to a Movie Emoji game!'}
+              {challengeInfo?.playerNickname 
+                ? language === 'fr' 
+                  ? `${challengeInfo.playerNickname} vous lance un défi Movie Emoji !`
+                  : `${challengeInfo.playerNickname} challenges you to a Movie Emoji game!`
+                : language === 'fr'
+                  ? 'Un ami vous lance un défi Movie Emoji !'
+                  : 'A friend challenges you to a Movie Emoji game!'
+              }
             </div>
             <div className="text-[16px] font-sf text-[#666] mb-8">
               {t('challenge.description')}

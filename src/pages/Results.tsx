@@ -226,14 +226,14 @@ const Results = () => {
                   {totalScore}
                 </div>
                 <div className="text-[22px] font-medium text-[#191919] font-sf">
-                  points
+                  {t('results.points')}
                 </div>
               </div>
               <div className="text-[16px] font-medium text-[#191919] mt-1 font-sf">
-                Movies guessed: {score} / {totalMovies}
+                {t('results.movies.guessed')}: {score} / {totalMovies}
               </div>
               <div className="text-[16px] font-medium text-[#191919] font-sf">
-                Total time: {formatTime(gameTime)}
+                {t('results.total.time')}: {formatTime(gameTime)}
               </div>
             </div>
 
@@ -241,7 +241,7 @@ const Results = () => {
               {guessedMovies.length > 0 && (
                 <div className="text-left text-[18px] font-bold flex items-center font-sf">
                   <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                  Guessed Movies
+                  {t('results.guessed.movies')}
                 </div>
               )}
               
@@ -277,7 +277,7 @@ const Results = () => {
               {passedMovies.length > 0 && (
                 <div className="text-left text-[18px] font-bold mt-2 flex items-center font-sf">
                   <XCircle className="h-5 w-5 mr-2 text-red-500" />
-                  Passed Movies
+                  {t('results.passed.movies')}
                 </div>
               )}
               

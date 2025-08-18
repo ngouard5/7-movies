@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const avatars = [
   "🫠", "🥶", "🥸", "🤬", "🤯", "🥳", "🧐", "😈"
@@ -13,6 +14,7 @@ const Countdown = () => {
   const navigate = useNavigate();
   const nickname = localStorage.getItem("playerNickname") || "Player";
   const avatarIndex = parseInt(localStorage.getItem("playerAvatar") || "0");
+  const { t } = useLanguage();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -46,11 +48,11 @@ const Countdown = () => {
             
             {/* Welcome message */}
             <h2 className="text-2xl font-bold mb-1 font-sf">
-              Welcome, {nickname}!
+              {t('welcome')}, {nickname}!
             </h2>
             
             {/* Game will start in */}
-            <p className="text-gray-600 mb-8 font-sf">The game will start in</p>
+            <p className="text-gray-600 mb-8 font-sf">{t('game.start.in')}</p>
             
             {/* Counter */}
             <div className="text-[120px] font-bold text-[#E72F2F] animate-pulse mb-8 font-fredoka">

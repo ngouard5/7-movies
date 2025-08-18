@@ -82,6 +82,43 @@ const translations = {
     'challenge.start': 'Start Challenge',
     'challenge.description': 'You will have 7 movies to guess, based on emojis. The faster you are, the more you score points!',
     'challenge.score.beat': 'Score to beat:',
+    
+    // Game interface
+    'skip': 'Skip',
+    'confirm': 'Confirm',
+    'i.need.hint': 'I need a hint',
+    'back': 'Back',
+    'start.new.game': 'Start a new game',
+    'examples': 'Examples',
+    'guess.titles': 'Guess the movie titles',
+    'how.scores.work': 'How the scores work?',
+    'scores.base': 'You earn 100 pts for each movie you find.',
+    'scores.bonus.intro': 'Then you get bonus points depending on your quickness:',
+    'scores.bonus.50': '+50 pts before 10 seconds',
+    'scores.bonus.30': '+30 pts between 10 and 20 seconds',
+    'scores.bonus.10': '+10 pts between 20 and 30 seconds',
+    
+    // Results
+    'results.points': 'points',
+    'results.movies.guessed': 'Movies guessed',
+    'results.total.time': 'Total time',
+    'results.guessed.movies': 'Guessed Movies',
+    'results.passed.movies': 'Passed Movies',
+    
+    // Hints
+    'hint.label': 'Hint',
+    'hint.directed.by': 'Directed by',
+    'hint.starring': 'Starring',
+    
+    // Score popup
+    'score.correct': 'Correct answer',
+    'score.speed.bonus': 'Speed bonus',
+    'score.no.speed.bonus': 'No speed bonus (>30s)',
+    
+    // Footer
+    'footer.made.with': '7 movies is an after dinner project made with 🍿',
+    'footer.contact': 'If you have suggestions please',
+    'footer.contact.link': 'contact me',
   },
   fr: {
     // Page d'accueil
@@ -147,14 +184,57 @@ const translations = {
     'challenge.start': 'Commencer le défi',
     'challenge.description': 'Vous devez deviner 7 films à partir d\'émojis. Plus vous êtes rapide, plus vous marquez de points !',
     'challenge.score.beat': 'Score à battre :',
+    
+    // Interface de jeu
+    'skip': 'Passer',
+    'confirm': 'Valider',
+    'i.need.hint': 'J\'ai besoin d\'un indice',
+    'back': 'Retour',
+    'start.new.game': 'Commencer une nouvelle partie',
+    'examples': 'Exemples',
+    'guess.titles': 'Devinez les titres des films',
+    'how.scores.work': 'Comment fonctionne le score ?',
+    'scores.base': 'Vous gagnez 100 pts pour chaque film trouvé.',
+    'scores.bonus.intro': 'Puis vous obtenez des points bonus selon votre rapidité :',
+    'scores.bonus.50': '+50 pts avant 10 secondes',
+    'scores.bonus.30': '+30 pts entre 10 et 20 secondes',
+    'scores.bonus.10': '+10 pts entre 20 et 30 secondes',
+    
+    // Résultats
+    'results.points': 'points',
+    'results.movies.guessed': 'Films trouvés',
+    'results.total.time': 'Temps total',
+    'results.guessed.movies': 'Films trouvés',
+    'results.passed.movies': 'Films passés',
+    
+    // Indices
+    'hint.label': 'Indice',
+    'hint.directed.by': 'Réalisé par',
+    'hint.starring': 'Avec',
+    
+    // Popup de score
+    'score.correct': 'Bonne réponse',
+    'score.speed.bonus': 'Bonus vitesse',
+    'score.no.speed.bonus': 'Pas de bonus vitesse (>30s)',
+    
+    // Pied de page
+    'footer.made.with': '7 movies est un projet after-dinner fait avec 🍿',
+    'footer.contact': 'Si vous avez des suggestions,',
+    'footer.contact.link': 'contactez-moi',
   }
 };
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  // Try to get saved language from localStorage, default to English
+  // Try to get saved language from localStorage or detect browser language
   const [language, setLanguage] = useState<Language>(() => {
     const savedLanguage = localStorage.getItem('language');
-    return (savedLanguage === 'fr' ? 'fr' : 'en') as Language;
+    if (savedLanguage === 'fr' || savedLanguage === 'en') {
+      return savedLanguage as Language;
+    }
+    
+    // Auto-detect from browser language
+    const browserLang = navigator.language || navigator.languages?.[0] || 'en';
+    return browserLang.toLowerCase().startsWith('fr') ? 'fr' : 'en';
   });
 
   // Translate function
@@ -162,9 +242,10 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     return translations[language][key as keyof typeof translations['en']] || key;
   };
 
-  // Save language preference when it changes
+  // Save language preference and update document language when it changes
   useEffect(() => {
     localStorage.setItem('language', language);
+    document.documentElement.lang = language;
   }, [language]);
 
   return (

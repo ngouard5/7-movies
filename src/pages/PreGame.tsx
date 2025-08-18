@@ -8,12 +8,14 @@ import { useToast } from "@/hooks/use-toast";
 import { HeaderLayout } from "@/components/layout/HeaderLayout";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const PreGame = () => {
   const [nickname, setNickname] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(0);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   // Load saved user data when component mounts
   useEffect(() => {
@@ -32,8 +34,8 @@ const PreGame = () => {
   const handleStartGame = () => {
     if (!nickname.trim()) {
       toast({
-        title: "Nickname required",
-        description: "Please enter a nickname to start the game",
+        title: t('your.nickname'),
+        description: t('enter.nickname'),
         variant: "destructive",
       });
       return;
@@ -81,20 +83,20 @@ const PreGame = () => {
 
             {isChallengeMode && (
               <h1 className="w-full max-w-[361px] text-[40px] leading-[48px] text-center text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
-                Accept the challenge!
+                {t('accept.challenge')}
               </h1>
             )}
 
             <div className="max-w-[361px] w-full space-y-6">
               <div>
                 <label htmlFor="nickname" className="block text-[18px] font-bold text-[#191919] mb-2 text-left font-sf">
-                  Your nickname
+                  {t('your.nickname')}
                 </label>
                 <input
                   type="text"
                   id="nickname"
                   className="w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid border-[#CCC] text-[18px] font-sf"
-                  placeholder="Enter your nickname"
+                  placeholder={t('enter.nickname')}
                   value={nickname}
                   onChange={(e) => setNickname(e.target.value)}
                   maxLength={20}
@@ -103,7 +105,7 @@ const PreGame = () => {
 
               <div className="mb-8">
                 <label className="block text-[18px] font-bold text-[#191919] mb-2 text-left font-sf">
-                  Choose your avatar
+                  {t('choose.avatar')}
                 </label>
                 <div className="flex justify-center">
                   <AvatarSelector 
@@ -114,7 +116,7 @@ const PreGame = () => {
               </div>
 
               <PrimaryButton onClick={handleStartGame}>
-                {isChallengeMode ? "Accept Challenge" : "Start the game!"}
+                {isChallengeMode ? t('accept.challenge.button') : t('start.game')}
               </PrimaryButton>
             </div>
           </div>

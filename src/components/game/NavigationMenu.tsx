@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { X, BookOpen } from "lucide-react";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { CloseButton } from "./CloseButton";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface NavigationMenuProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface NavigationMenuProps {
 export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose }) => {
   const [isClosing, setIsClosing] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   // Unmount after animation
   useEffect(() => {
@@ -52,7 +54,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
           <nav className="space-y-2">
             <NavItem 
               icon={<BookOpen className="text-[#E72F2F]" size={24} />} 
-              label="How to play"
+              label={t('how.to.play')}
               onClick={() => handleNavigation('/how-to-play')}
             />
           </nav>
@@ -60,15 +62,15 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
 
         <div className="p-6 border-t border-gray-200 space-y-4">
           <PrimaryButton onClick={() => handleNavigation('/pre-game')}>
-            Play now
+            {t('play.button')}
           </PrimaryButton>
           
           <div className="text-center space-y-2">
             <div className="text-[14px] text-gray-600">
-              7 movies is an after dinner project made with 🍿
+              {t('footer.made.with')}
             </div>
             <div className="text-[14px] text-gray-600">
-              If you have suggestions please <a href="https://www.linkedin.com/in/nicolasgouard/" target="_blank" className="underline">contact me</a>
+              {t('footer.contact')} <a href="https://www.linkedin.com/in/nicolasgouard/" target="_blank" className="underline">{t('footer.contact.link')}</a>
             </div>
           </div>
         </div>

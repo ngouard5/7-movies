@@ -1,4 +1,5 @@
 import React from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface MovieData {
   id: number;
@@ -24,6 +25,8 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
   totalPoints,
   currentMovie,
 }) => {
+  const { t } = useLanguage();
+  
   if (!show) return null;
 
   const getMoviePosterUrl = (imdbID: string) => {
@@ -45,12 +48,12 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
           <div className="flex-1 text-left">
             <div className="font-bold text-sm mb-1 font-sf">{currentMovie.title}</div>
             <div className="text-xs font-sf">
-              <div>💯 Correct answer: {basePoints} pts</div>
+              <div>💯 {t('score.correct')}: {basePoints} pts</div>
               {speedBonus > 0 && (
-                <div>⚡ Speed bonus: +{speedBonus} pts</div>
+                <div>⚡ {t('score.speed.bonus')}: +{speedBonus} pts</div>
               )}
               {speedBonus === 0 && (
-                <div className="opacity-75">⏱️ No speed bonus (&gt;30s)</div>
+                <div className="opacity-75">⏱️ {t('score.no.speed.bonus')}</div>
               )}
             </div>
           </div>
@@ -58,7 +61,7 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
             <div className="text-lg font-bold font-sf">
               +{totalPoints}
             </div>
-            <div className="text-xs font-sf">points</div>
+            <div className="text-xs font-sf">{t('results.points')}</div>
           </div>
         </div>
       </div>

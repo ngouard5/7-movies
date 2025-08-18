@@ -7,9 +7,11 @@ import { NavigationMenu } from "@/components/game/NavigationMenu";
 import { MenuButton } from "@/components/game/MenuButton";
 import { HeaderLayout } from "@/components/layout/HeaderLayout";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { useLanguage } from "@/contexts/LanguageContext";
 const Index = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { t } = useLanguage();
   return <AppLayout>
       <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter&family=SF+Pro+Display:wght@400;700&display=swap" rel="stylesheet" />
 
@@ -29,7 +31,7 @@ const Index = () => {
             </div>
 
             <h1 className="w-[90%] max-w-[361px] text-[40px] leading-[48px] text-center text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
-              Find 7 movies<br />with emojis
+              {t('find.movies')}
             </h1>
           </div>
 
@@ -40,7 +42,7 @@ const Index = () => {
           <div className="flex flex-col items-center space-y-8 px-4 pt-8">
             <section className="w-[90%] max-w-[361px] text-[22px] leading-[30px] text-[#191919] text-center max-sm:text-lg max-sm:leading-[26px] font-sf">
               <p>
-                Guess 7 movie titles based on emojis, in the shortest period of time!
+                {t('game.description')}
               </p>
             </section>
 
@@ -49,7 +51,7 @@ const Index = () => {
             </div>
 
             <button onClick={() => navigate("/how-to-play")} className="text-xl font-bold text-[#191919] hover:text-[#E72F2F] transition-colors font-sf">
-              How to play
+              {t('how.to.play')}
             </button>
           </div>
 

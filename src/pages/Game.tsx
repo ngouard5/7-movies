@@ -9,8 +9,10 @@ import { useGameLogic } from "@/hooks/useGameLogic";
 import { Button } from "@/components/ui/button";
 import { SkipForward, RefreshCw } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Game = () => {
+  const { t } = useLanguage();
   const {
     currentMovieIndex,
     searchTerm,
@@ -38,7 +40,7 @@ const Game = () => {
   }, []);
 
   // Convert boolean to string for the MovieSearchInput component
-  const wrongGuessMessage = wrongGuess ? "That's not it. Try again!" : null;
+  const wrongGuessMessage = wrongGuess ? t('wrong.guess') : null;
 
   return (
     <AppLayout>
@@ -56,7 +58,7 @@ const Game = () => {
             </div>
             <div className="flex justify-end">
               <Button onClick={handlePass} className="flex items-center gap-2 bg-white border border-[#CCC] text-black shadow-[0px_3px_3px_rgba(0,0,0,0.06)] hover:bg-gray-50 font-sf" size="sm">
-                Skip
+                {t('skip')}
                 <SkipForward className="w-4 h-4 text-[#E72F2F]" />
               </Button>
             </div>
@@ -85,13 +87,13 @@ const Game = () => {
                 inputRef.current?.focus();
               }
             }} className="w-full max-w-[361px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-4 font-sf">
-              Confirm
+              {t('confirm')}
             </Button>
 
             {/* I need a hint button - only show if hint is not visible */}
             {!showHint && (
               <Button onClick={requestHint} variant="outline" className="w-full max-w-[361px] h-10 mb-4 text-sm font-sf">
-                I need a hint
+                {t('i.need.hint')}
               </Button>
             )}
 
