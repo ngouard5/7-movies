@@ -33,7 +33,7 @@ const translations = {
     'enter.nickname': 'Enter your nickname',
     'choose.avatar': 'Choose your avatar',
     'start.game': 'Start the game!',
-    'accept.challenge.button': 'Accept Challenge',
+    'accept.challenge.button': 'Let\'s go!',
     
     // Countdown
     'welcome': 'Welcome',
@@ -144,7 +144,7 @@ const translations = {
     'enter.nickname': 'Entrez votre pseudo',
     'choose.avatar': 'Choisissez votre avatar',
     'start.game': 'Commencer le jeu !',
-    'accept.challenge.button': 'Accepter le défi',
+    'accept.challenge.button': 'C\'est parti !',
     
     // Compte à rebours
     'welcome': 'Bienvenue',
