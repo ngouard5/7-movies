@@ -46,7 +46,7 @@ const Challenge = () => {
         setChallengeData(movies, sessionId);
         
         // Store challenge source score for comparison in results
-        if (sessionInfo?.totalScore) {
+        if (sessionInfo && typeof sessionInfo.totalScore === 'number') {
           localStorage.setItem('challengeSourceScore', sessionInfo.totalScore.toString());
         }
         
@@ -173,7 +173,7 @@ const Challenge = () => {
               {t('challenge.description')}
             </div>
             
-            {challengeInfo?.totalScore && (
+            {(challengeInfo?.totalScore !== undefined && challengeInfo?.totalScore !== null) && (
               <div className="flex items-center justify-center gap-2 mb-8 p-4 bg-white border border-[#CCC] rounded-xl">
                 <Target className="w-5 h-5 text-[#E72F2F]" />
                 <span className="font-sf text-[#191919]">

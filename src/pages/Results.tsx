@@ -56,7 +56,12 @@ const Results = () => {
         setTotalScore(results.totalScore || 0);
         setTotalMovies(results.totalMovies || 7);
         setChallengeSourceSessionId(results.challengeSourceSessionId || null);
-        setChallengeSourceScore(results.challengeSourceScore || localStorage.getItem('challengeSourceScore') ? parseInt(localStorage.getItem('challengeSourceScore') || '0') : 0);
+        
+        // Prioritize challengeSourceScore from results, then localStorage, then 0 as fallback
+        const rawResultScore = typeof results.challengeSourceScore === 'number' ? results.challengeSourceScore : null;
+        const lsScoreStr = localStorage.getItem('challengeSourceScore');
+        const lsScore = lsScoreStr ? parseInt(lsScoreStr, 10) : null;
+        setChallengeSourceScore(rawResultScore ?? (lsScore ?? 0));
       } catch (e) {
         console.error("Error parsing game results:", e);
       }
