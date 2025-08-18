@@ -54,7 +54,9 @@ const PreGame = () => {
     navigate("/");
   };
 
-  const isChallengeMode = localStorage.getItem("challengeMovies") !== null;
+  // Check for challenge mode - only consider it if we have both movies and source info
+  const isChallengeMode = localStorage.getItem("challengeMovies") !== null && 
+                         localStorage.getItem("challengeSourceSessionId") !== null;
 
   return (
     <AppLayout>

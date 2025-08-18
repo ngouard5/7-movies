@@ -9,6 +9,10 @@ export const PlayButton = () => {
   const { t } = useLanguage();
   
   const handlePlay = () => {
+    // Clear any existing challenge data when starting a new game
+    localStorage.removeItem('challengeMovies');
+    localStorage.removeItem('challengeSourceSessionId');
+    localStorage.removeItem('challengeSourceScore');
     navigate("/pre-game");
   };
   
