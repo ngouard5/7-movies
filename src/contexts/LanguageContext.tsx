@@ -109,10 +109,10 @@ const translations = {
     
     // Result messages based on score
     'results.message.perfect': 'WOW! Perfect score! You are a true cinema expert! 🏆',
-    'results.message.excellent': 'Excellent! You scored {score} out of {maxScore} points! 🌟',
-    'results.message.great': 'Great job! You got {score} out of {maxScore} points! 👏',
-    'results.message.good': 'Good work! You scored {score} out of {maxScore} points! 👍',
-    'results.message.okay': 'Not bad! You got {score} out of {maxScore} points. Keep practicing! 🎬',
+    'results.message.excellent': 'Excellent! You scored {score}! 🌟',
+    'results.message.great': 'Great job! You got {score}! 👏',
+    'results.message.good': 'Good work! You scored {score}! 👍',
+    'results.message.okay': 'Not bad! You got {score} points. Keep practicing! 🎬',
     
     // Hints
     'hint.label': 'Hint',
@@ -219,10 +219,10 @@ const translations = {
     
     // Messages de résultats basés sur le score
     'results.message.perfect': 'WOW ! Score parfait ! Vous êtes un vrai expert du cinéma ! 🏆',
-    'results.message.excellent': 'Excellent ! Vous avez obtenu {score} points sur {maxScore} ! 🌟',
-    'results.message.great': 'Excellent travail ! Vous avez {score} points sur {maxScore} ! 👏',
-    'results.message.good': 'Bon travail ! Vous avez obtenu {score} points sur {maxScore} ! 👍',
-    'results.message.okay': 'Pas mal ! Vous avez {score} points sur {maxScore}. Continuez à vous entraîner ! 🎬',
+    'results.message.excellent': 'Excellent ! Vous avez obtenu {score} points ! 🌟',
+    'results.message.great': 'Excellent travail ! Vous avez {score} points ! 👏',
+    'results.message.good': 'Bon travail ! Vous avez obtenu {score} ! 👍',
+    'results.message.okay': 'Pas mal ! Vous avez {score} points sur. Continuez à vous entraîner ! 🎬',
     
     // Indices
     'hint.label': 'Indice',
