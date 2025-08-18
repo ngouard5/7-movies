@@ -80,6 +80,7 @@ export const useGameLogic = () => {
       
       // Check if this was a challenge
       const challengeData = getChallengeData();
+      const challengeSourceScore = localStorage.getItem('challengeSourceScore');
       
       // Navigate to results page
       const totalScore = guessedMovies.reduce((sum, movie) => sum + (movie.points || 0), 0);
@@ -92,7 +93,8 @@ export const useGameLogic = () => {
           score: guessedMovies.length,
           totalScore: totalScore,
           totalMovies: gameMovies.length,
-          challengeSourceSessionId: challengeData?.sourceSessionId || null
+          challengeSourceSessionId: challengeData?.sourceSessionId || null,
+          challengeSourceScore: challengeSourceScore ? parseInt(challengeSourceScore) : null
         })
       );
       navigate("/results");

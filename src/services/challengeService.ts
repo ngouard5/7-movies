@@ -87,6 +87,7 @@ export function getChallengeData(): { movies: Movie[]; sourceSessionId: string }
 export function clearChallengeData() {
   localStorage.removeItem('challengeMovies');
   localStorage.removeItem('challengeSourceSessionId');
+  localStorage.removeItem('challengeSourceScore');
 }
 
 /**

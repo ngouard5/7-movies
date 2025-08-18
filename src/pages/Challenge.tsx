@@ -45,6 +45,11 @@ const Challenge = () => {
         // Store challenge data for the game
         setChallengeData(movies, sessionId);
         
+        // Store challenge source score for comparison in results
+        if (sessionInfo?.totalScore) {
+          localStorage.setItem('challengeSourceScore', sessionInfo.totalScore.toString());
+        }
+        
         setChallengeInfo({
           movieCount: movies.length,
           playerNickname: sessionInfo?.playerNickname,

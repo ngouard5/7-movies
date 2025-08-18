@@ -196,6 +196,9 @@ export const useMovieGuess = ({
           
           // Navigate to results page after a delay to see the "correct" animation
           setTimeout(() => {
+            const challengeSourceScore = localStorage.getItem('challengeSourceScore');
+            const challengeSourceSessionId = localStorage.getItem('challengeSourceSessionId');
+            
             const allGuessedMovies = [...guessedMovies, updatedMovie];
             const totalScore = allGuessedMovies.reduce((sum, movie) => sum + (movie.points || 0), 0);
             localStorage.setItem(
@@ -206,7 +209,9 @@ export const useMovieGuess = ({
                 passedMovies: passedMovies,
                 score: guessedMovies.length + 1,
                 totalScore: totalScore,
-                totalMovies: gameMovies.length
+                totalMovies: gameMovies.length,
+                challengeSourceSessionId: challengeSourceSessionId || null,
+                challengeSourceScore: challengeSourceScore ? parseInt(challengeSourceScore) : null
               })
             );
             navigate("/results");
