@@ -8,7 +8,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { saveGameSession, type GameSessionData } from "@/services/statsService";
 import { supabase } from "@/integrations/supabase/client";
 import { ShareButton } from "@/components/game/ShareButton";
-import { ShareImageButton } from "@/components/game/ShareImageButton";
+import { ShareCopyButton } from "@/components/game/ShareCopyButton";
 import { clearChallengeData } from "@/services/challengeService";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -38,9 +38,10 @@ const Results = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [savedSessionId, setSavedSessionId] = useState<string | null>(null);
   const [challengeSourceSessionId, setChallengeSourceSessionId] = useState<string | null>(null);
+  const [challengeSourceScore, setChallengeSourceScore] = useState<number>(0);
   const navigate = useNavigate();
   const hasSaved = useRef(false);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   useEffect(() => {
     // Retrieve results from localStorage
@@ -55,6 +56,7 @@ const Results = () => {
         setTotalScore(results.totalScore || 0);
         setTotalMovies(results.totalMovies || 7);
         setChallengeSourceSessionId(results.challengeSourceSessionId || null);
+        setChallengeSourceScore(results.challengeSourceScore || 0);
       } catch (e) {
         console.error("Error parsing game results:", e);
       }
@@ -264,10 +266,12 @@ const Results = () => {
                         (e.target as HTMLImageElement).src = "/placeholder.svg";
                       }}
                     />
-                    <div className="flex-1 text-left">
-                      <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">{movie.title}</div>
-                      <div className="text-2xl mb-1">{movie.emojis}</div>
-                    </div>
+                     <div className="flex-1 text-left">
+                       <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">
+                         {language === 'fr' && movie.frenchTitle ? movie.frenchTitle : movie.title}
+                       </div>
+                       <div className="text-2xl mb-1">{movie.emojis}</div>
+                     </div>
                     <div className="flex flex-col items-end">
                       {movie.points && (
                         <div className="text-[14px] font-bold text-[#E72F2F] font-sf">
@@ -300,10 +304,12 @@ const Results = () => {
                         (e.target as HTMLImageElement).src = "/placeholder.svg";
                       }}
                     />
-                    <div className="flex-1 text-left">
-                      <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">{movie.title}</div>
-                      <div className="text-2xl mb-1">{movie.emojis}</div>
-                    </div>
+                     <div className="flex-1 text-left">
+                       <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">
+                         {language === 'fr' && movie.frenchTitle ? movie.frenchTitle : movie.title}
+                       </div>
+                       <div className="text-2xl mb-1">{movie.emojis}</div>
+                     </div>
                   </div>
                 </div>
               ))}
@@ -320,12 +326,13 @@ const Results = () => {
                 />
               )}
 
-              {/* Share image button for challenges */}
+              {/* Share copy button for challenges */}
               {challengeSourceSessionId && (
-                <ShareImageButton 
-                  elementId="results-content"
-                  filename={`movie-challenge-score-${totalScore}.png`}
-                  shareText={`I scored ${totalScore} points in the movie guessing challenge! Can you beat my score?`}
+                <ShareCopyButton 
+                  challengeSourceScore={challengeSourceScore}
+                  currentScore={totalScore}
+                  moviesGuessed={score}
+                  totalMovies={totalMovies}
                 />
               )}
               

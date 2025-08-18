@@ -25,7 +25,7 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
   totalPoints,
   currentMovie,
 }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   
   if (!show) return null;
 
@@ -46,7 +46,9 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
             }}
           />
           <div className="flex-1 text-left">
-            <div className="font-bold text-sm mb-1 font-sf">{currentMovie.title}</div>
+            <div className="font-bold text-sm mb-1 font-sf">
+              {language === 'fr' && currentMovie.frenchTitle ? currentMovie.frenchTitle : currentMovie.title}
+            </div>
             <div className="text-xs font-sf">
               <div>💯 {t('score.correct')}: {basePoints} pts</div>
               {speedBonus > 0 && (
