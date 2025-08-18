@@ -203,7 +203,7 @@ const Results = () => {
                 🎉🎉🎉
               </div>
               <div className="text-[32px] leading-[40px] font-fredoka text-[#191919] mb-4">
-                Aaaand... CUT!
+              {t('results.title')}
               </div>
               <div className="text-[18px] font-sf text-[#191919] mb-6">
                  {(() => {

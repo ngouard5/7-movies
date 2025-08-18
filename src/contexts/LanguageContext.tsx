@@ -58,6 +58,7 @@ const translations = {
 
     // Results
     'go.home': 'Go to the homepage',
+    'results.title': 'Aaaand... CUT!',
     'hint.first.letter': 'Hint: Title starts with',
     'hint.first.letter.words': 'Hint: First letters of each word:',
     'and.has': 'and has',
@@ -198,6 +199,7 @@ const translations = {
     'scores.bonus.10': '+10 pts entre 20 et 30 secondes',
     
     // Résultats
+    'results.title': 'Eeeet... COUPÉ !',
     'results.points': 'points',
     'results.movies.guessed': 'Films trouvés',
     'results.total.time': 'Temps total',
