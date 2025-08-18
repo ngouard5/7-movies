@@ -73,7 +73,7 @@ const Challenge = () => {
   if (isLoading) {
     return (
       <AppLayout>
-        <main className="relative w-full min-h-screen overflow-hidden bg-neutral-50">
+        <main className="relative w-full min-h-screen min-h-screen md:min-h-[600px] overflow-hidden">
           <BackgroundGradients />
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-xl font-sf">{t('challenge.loading')}</div>
@@ -86,7 +86,7 @@ const Challenge = () => {
   if (error) {
     return (
       <AppLayout>
-        <main className="relative w-full min-h-screen overflow-hidden bg-neutral-50">
+        <main className="relative w-full min-h-screen md:min-h-[600px] overflow-hidden">
           <BackgroundGradients />
           
           <TopLeftButton
@@ -116,7 +116,7 @@ const Challenge = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-screen overflow-hidden bg-neutral-50">
+      <main className="relative w-full min-h-screen md:min-h-[600px] overflow-hidden">
         <BackgroundGradients />
         
         <TopLeftButton
@@ -127,7 +127,7 @@ const Challenge = () => {
 
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-[90%] max-w-[340px] text-center">
-            <div className="text-[64px] mb-4">🎬</div>
+            <div className="text-[64px] mb-4">🍿</div>
             <div className="text-[32px] leading-[40px] font-fredoka text-[#191919] mb-4">
               {t('challenge.accepted')}
             </div>
