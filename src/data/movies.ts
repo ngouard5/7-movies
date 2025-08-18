@@ -2923,7 +2923,7 @@ export const movies: Movie[] = [
 // Helper function to get decade string
 export const getDecade = (year: number): string => {
   const decade = Math.floor(year / 10) * 10;
-  return `années ${decade}`;
+  return `${decade}s`;
 };
 
 // Helper function to get random movies for the game
