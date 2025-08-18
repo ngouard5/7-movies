@@ -70,7 +70,6 @@ const PreGame = () => {
         }
       >
         <div className="relative flex-1 flex flex-col items-center">
-          <BackgroundGradients />
 
           <div className="flex flex-col items-center pt-8 space-y-8 px-4 w-full">
             <div
@@ -82,12 +81,12 @@ const PreGame = () => {
             </div>
 
             {isChallengeMode && (
-              <h1 className="w-full max-w-[361px] text-[40px] leading-[48px] text-center text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
+              <h1 className="w-full max-w-[400px] text-[40px] leading-[48px] text-center text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
                 {t('accept.challenge')}
               </h1>
             )}
 
-            <div className="max-w-[361px] w-full space-y-6">
+            <div className="max-w-[400px] w-full space-y-6">
               <div>
                 <label htmlFor="nickname" className="block text-[18px] font-bold text-[#191919] mb-2 text-left font-sf">
                   {t('your.nickname')}

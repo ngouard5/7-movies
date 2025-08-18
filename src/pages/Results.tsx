@@ -185,7 +185,7 @@ const Results = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-screen md:min-h-[600px]] overflow-auto">
+      <main className="relative w-full min-h-screen md:min-h-[600px]]">
         {/* Homepage button */}
         <button
           onClick={handleGoHome}
@@ -196,7 +196,6 @@ const Results = () => {
         </button>
         
         <div className="relative flex flex-col items-center">
-          <BackgroundGradients />
 
           <div className="w-[90%] max-w-[340px] mx-auto pt-[60px] text-center flex flex-col items-center">
             <div className="mb-6 w-full">

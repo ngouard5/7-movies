@@ -46,16 +46,15 @@ const translations = {
     
     // How to play
     'how.to.play.title': 'How to play',
-    'step1.title': 'Choose your avatar',
-    'step1.description': 'Select an emoji that represents you and enter your nickname.',
-    'step2.title': 'Get ready',
-    'step2.description': 'A countdown will give you time to prepare. When it reaches zero, the game starts!',
-    'step3.title': 'Guess the movies',
-    'step3.description': 'You\'ll see a series of emojis that represent a movie title. Type your guess in the search box.',
-    'step4.title': 'Beat the clock',
-    'step4.description': 'Try to guess all 7 movies as quickly as possible. Your time is being recorded!',
-    'step5.title': 'Challenge friends',
-    'step5.description': 'Share your result with friends and challenge them to beat your time with the same movies!',
+    'step1.description': 'Start a new game and choose your nickname and emoji',
+    'step2.description': 'Find movie titles as fast as you can',
+    'step3.description': 'You can write titles both in 🇫🇷 and 🇬🇧',
+    'step4.description': 'Challenge your friends to beat your score!',
+
+    'howtoplay.movie1': 'The Lion King',
+    'howtoplay.movie2': 'Harry Potter and the Philosopher\'s Stone',
+    'howtoplay.movie3': 'The Matrix',
+
 
     // Results
     'go.home': 'Go to the homepage',
@@ -148,16 +147,14 @@ const translations = {
     
     // Comment jouer
     'how.to.play.title': 'Comment jouer',
-    'step1.title': 'Choisissez votre avatar',
-    'step1.description': 'Sélectionnez un émoji qui vous représente et entrez votre pseudo.',
-    'step2.title': 'Préparez-vous',
-    'step2.description': 'Un compte à rebours vous donnera le temps de vous préparer. Quand il atteint zéro, le jeu commence !',
-    'step3.title': 'Devinez les films',
-    'step3.description': 'Vous verrez une série d\'émojis qui représentent un titre de film. Tapez votre réponse dans la barre de recherche.',
-    'step4.title': 'Battez l\'horloge',
-    'step4.description': 'Essayez de deviner les 7 films le plus rapidement possible. Votre temps est enregistré !',
-    'step5.title': 'Défiez vos amis',
-    'step5.description': 'Partagez votre résultat avec vos amis et défiez-les de battre votre temps avec les mêmes films !',
+    'step1.description': 'Commencez une partie et choisissez un pseudo et un emoji',
+    'step2.description': 'Trouvez les titres films le plus rapidement possuble',
+    'step3.description': 'Vous pouvez écrire les titres en 🇫🇷 ou en 🇬🇧',
+    'step4.description': 'Défiez vos amis et battez leur score !',
+
+    'howtoplay.movie1': 'Le Roi Lion',
+    'howtoplay.movie2': 'Harry Potter à l\'école des sorciers',
+    'howtoplay.movie3': 'Matrix',
 
     // Résultats
     'go.home': 'Retourner à l\'accueil',
@@ -169,7 +166,7 @@ const translations = {
     'play.again': 'Jouer à nouveau',
     
     // Partage
-    'share.button': 'Partager ce défi',
+    'share.button': 'Défiez vos amis',
     'share.copied': 'Copié !',
     'share.copy.success': 'Lien de défi copié !',
     'share.copy.error': 'Erreur lors de la copie',

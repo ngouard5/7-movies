@@ -23,14 +23,13 @@ const Index = () => {
         }
       >
         <div className="relative flex-1">
-          <BackgroundGradients />
           
           <div className="flex flex-col items-center space-y-8 px-4 pt-8 pb-8">
             <div className="text-[64px]" role="img" aria-label="Popcorn emoji">
               🍿
             </div>
 
-            <h1 className="w-[90%] max-w-[361px] text-[40px] leading-[48px] text-center text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
+            <h1 className="w-[90%] max-w-[400px] text-[40px] leading-[48px] text-center text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
               {t('find.movies')}
             </h1>
           </div>
@@ -40,13 +39,13 @@ const Index = () => {
           </div>
 
           <div className="flex flex-col items-center space-y-8 px-4 pt-8">
-            <section className="w-[90%] max-w-[361px] text-[22px] leading-[30px] text-[#191919] text-center max-sm:text-lg max-sm:leading-[26px] font-sf">
+            <section className="w-[90%] max-w-[400px] text-[22px] leading-[30px] text-[#191919] text-center max-sm:text-lg max-sm:leading-[26px] font-sf">
               <p>
                 {t('game.description')}
               </p>
             </section>
 
-            <div className="w-[90%] max-w-[361px]">
+            <div className="w-[90%] max-w-[400px]">
               <PlayButton />
             </div>
 

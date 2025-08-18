@@ -27,10 +27,9 @@ const HowToPlay = () => {
         }
       >
         <div className="relative flex-1">
-          <BackgroundGradients />
           
           <div className="flex flex-col items-center px-4 pt-8 space-y-8">
-            <h1 className="w-full max-w-[361px] text-[40px] leading-[48px] text-left text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
+            <h1 className="w-full max-w-[400px] text-[40px] leading-[48px] text-left text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
               {t('how.to.play')}
             </h1>
 
@@ -40,10 +39,10 @@ const HowToPlay = () => {
                   {t('guess.titles')}
                 </h2>
                 <ul className="text-[16px] text-[#191919] leading-[24px] space-y-2 font-sf">
-                  <li>• Start a new game and choose your nickname and emoji</li>
-                  <li>• Find movie titles as fast as you can</li>
-                  <li>• You can write titles both in 🇫🇷 and 🇬🇧</li>
-                  <li>• Once you've done, challenge your friend to beat your score!</li>
+                  <li>• {t('step1.description')}</li>
+                  <li>• {t('step2.description')}</li>
+                  <li>• {t('step3.description')}</li>
+                  <li>• {t('step4.description')}</li>
                 </ul>
               </section>
 
@@ -52,9 +51,9 @@ const HowToPlay = () => {
                   {t('examples')}
                 </h2>
                 <div className="space-y-2 text-[16px] text-[#191919] font-sf">
-                  <div>🦁👑🌅🐗 → The Lion King</div>
-                  <div>🦇👨‍💼🏙️🚗 → Batman</div>
-                  <div>💊🕶️💻🌀 → The Matrix</div>
+                  <div>🦁 👑 🌅 🐗 → {t('howtoplay.movie1')}</div>
+                  <div>⚡️ 🏰 🧙‍♂️ 🧹 → {t('howtoplay.movie2')}</div>
+                  <div>💊 🕶️ 💻 🌀 → {t('howtoplay.movie3')}</div>
                 </div>
               </section>
 

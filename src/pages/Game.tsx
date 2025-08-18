@@ -44,9 +44,8 @@ const Game = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-screen md:min-h-[600px] overflow-auto mx-auto my-0">
+      <main className="relative w-full min-h-screen md:min-h-[600px] mx-auto my-0">
         <div className="relative flex flex-col">
-          <BackgroundGradients />
 
           {/* Header with MovieCounter, Timer, and Skip button - Sticky */}
           <header className="sticky top-0 h-[80px] grid grid-cols-3 items-center px-4 z-20">
@@ -72,7 +71,7 @@ const Game = () => {
             </div>
 
             {/* Input and Score Popup Container */}
-            <div className="w-full max-w-[361px] relative mb-6 mx-auto">
+            <div className="w-full max-w-[400px] relative mb-6 mx-auto">
               <MovieSearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} inputRef={inputRef} handleGuess={handleGuess} wrongGuess={wrongGuessMessage} showHint={showHint} answerStatus={answerStatus} />
               
               {/* Score popup positioned relative to input */}
@@ -86,19 +85,19 @@ const Game = () => {
                 setSearchTerm("");
                 inputRef.current?.focus();
               }
-            }} className="w-full max-w-[361px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-4 font-sf">
+            }} className="w-full max-w-[400px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-4 font-sf">
               {t('confirm')}
             </Button>
 
             {/* I need a hint button - only show if hint is not visible */}
             {!showHint && (
-              <Button onClick={requestHint} variant="outline" className="w-full max-w-[361px] h-10 mb-4 text-sm font-sf">
+              <Button onClick={requestHint} variant="outline" className="w-full max-w-[400px] h-10 mb-4 text-sm font-sf">
                 {t('i.need.hint')}
               </Button>
             )}
 
             {/* Message display for wrong guesses */}
-            {wrongGuessMessage && <div className="text-center mb-4 font-sf max-w-[361px]">
+            {wrongGuessMessage && <div className="text-center mb-4 font-sf max-w-[400px]">
                 <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600">
                   {wrongGuessMessage}
                 </div>
@@ -106,7 +105,7 @@ const Game = () => {
 
             {/* Hint display with refresh button */}
             {showHint && hint && (
-              <div className="text-center mb-4 font-sf max-w-[361px]">
+              <div className="text-center mb-4 font-sf max-w-[400px]">
                 <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600 flex items-center justify-between">
                   <div className="flex items-center">
                     <span className="mr-2">💡</span>
