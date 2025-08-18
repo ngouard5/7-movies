@@ -12,6 +12,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         md:max-w-[600px]
         md:rounded-[24px]
         md:shadow-[0px_1px_4px_rgba(0,0,0,0.16)]
+        relative overflow-hidden
       ">
         {children}
       </div>
