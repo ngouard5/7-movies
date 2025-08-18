@@ -8,10 +8,12 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { saveGameSession, type GameSessionData } from "@/services/statsService";
 import { supabase } from "@/integrations/supabase/client";
 import { ShareButton } from "@/components/game/ShareButton";
+import { ShareImageButton } from "@/components/game/ShareImageButton";
 import { clearChallengeData } from "@/services/challengeService";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
+import { MAX_TOTAL_SCORE } from "@/utils/scoreCalculator";
 
 interface MovieData {
   id: number;
@@ -182,6 +184,22 @@ const Results = () => {
     return `https://img.omdbapi.com/?i=${imdbID}&apikey=8342f4b&h=150`;
   };
 
+  const getResultMessage = (score: number, maxScore: number): string => {
+    const percentage = (score / maxScore) * 100;
+    
+    if (percentage === 100) {
+      return t('results.message.perfect');
+    } else if (percentage >= 80) {
+      return t('results.message.excellent', { score, maxScore });
+    } else if (percentage >= 60) {
+      return t('results.message.great', { score, maxScore });
+    } else if (percentage >= 40) {
+      return t('results.message.good', { score, maxScore });
+    } else {
+      return t('results.message.okay', { score, maxScore });
+    }
+  };
+
 
   return (
     <AppLayout>
@@ -197,7 +215,7 @@ const Results = () => {
         
         <div className="relative flex flex-col items-center">
 
-          <div className="w-[90%] max-w-[400px] mx-auto pt-[60px] text-center flex flex-col items-center">
+          <div id="results-content" className="w-[90%] max-w-[400px] mx-auto pt-[60px] text-center flex flex-col items-center">
             <div className="mb-6 w-full">
               <div className="text-[40px] leading-[48px] font-fredoka text-[#191919] mb-4">
                 🎉🎉🎉
@@ -206,19 +224,7 @@ const Results = () => {
               {t('results.title')}
               </div>
               <div className="text-[18px] font-sf text-[#191919] mb-6">
-                 {(() => {
-                  const baseMessage = (() => {
-                    if (score === 0) return `No movies this time, ${playerNickname}? Time for a movie marathon! 🍿`;
-                    if (score === 1) return `${score} movie found, ${playerNickname}! Every journey starts with one step! 🎬`;
-                    if (score <= 2) return `${score} movies found, ${playerNickname}! Getting warmed up! 🔥`;
-                    if (score <= 4) return `${score} movies out of ${totalMovies}, solid work ${playerNickname}! 🎯`;
-                    if (score <= 6) return `${score} movies out of ${totalMovies}, impressive ${playerNickname}! 🌟`;
-                    return `${score} movies out of ${totalMovies}, absolutely crushing it ${playerNickname}! 🏆`;
-                  })();
-                  
-                  const challengeMessage = challengeSourceSessionId ? " 🏆 Challenge completed!" : "";
-                  return baseMessage + challengeMessage;
-                })()}
+                {getResultMessage(totalScore, MAX_TOTAL_SCORE)}
               </div>
               <div className="flex justify-center items-center gap-2 mt-2">
                 <div className="text-[64px] font-bold text-[#E72F2F] font-sf">
@@ -311,6 +317,15 @@ const Results = () => {
                   playerNickname={playerNickname}
                   score={score}
                   totalMovies={totalMovies}
+                />
+              )}
+
+              {/* Share image button for challenges */}
+              {challengeSourceSessionId && (
+                <ShareImageButton 
+                  elementId="results-content"
+                  filename={`movie-challenge-score-${totalScore}.png`}
+                  shareText={`I scored ${totalScore} points in the movie guessing challenge! Can you beat my score?`}
                 />
               )}
               
