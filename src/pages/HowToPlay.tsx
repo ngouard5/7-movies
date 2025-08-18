@@ -63,12 +63,11 @@ const HowToPlay = () => {
                 <div className="text-[16px] text-[#191919] leading-[24px] font-sf">
                   <p className="mb-3">You earn 100 pts for each movie you find.</p>
                   <p className="mb-2">Then you get bonus points depending on your quickness:</p>
-                  <ul className="space-y-1 ml-4 mb-4">
+                  <ul className="space-y-1 ml-4">
                     <li>• +50 pts before 10 seconds</li>
                     <li>• +30 pts between 10 and 20 seconds</li>
                     <li>• +10 pts between 20 and 30 seconds</li>
                   </ul>
-                  <p className="mb-3">You can use the hints, but sparingly! Each hint costs you 5 points.</p>
                 </div>
               </section>
 
