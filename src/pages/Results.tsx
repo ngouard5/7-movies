@@ -56,7 +56,7 @@ const Results = () => {
         setTotalScore(results.totalScore || 0);
         setTotalMovies(results.totalMovies || 7);
         setChallengeSourceSessionId(results.challengeSourceSessionId || null);
-        setChallengeSourceScore(results.challengeSourceScore || 0);
+        setChallengeSourceScore(results.challengeSourceScore || localStorage.getItem('challengeSourceScore') ? parseInt(localStorage.getItem('challengeSourceScore') || '0') : 0);
       } catch (e) {
         console.error("Error parsing game results:", e);
       }

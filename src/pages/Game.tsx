@@ -64,7 +64,7 @@ const Game = () => {
           </header>
 
           {/* Main content area */}
-          <div className="flex-1 flex flex-col items-center px-0">
+          <div className="flex-1 flex flex-col items-center px-4">
             {/* Emoji Display - Sticky */}
             <div className="w-full mb-6 sticky top-[80px] z-10 bg-neutral-50">
               <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />

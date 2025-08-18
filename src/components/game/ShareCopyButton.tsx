@@ -20,21 +20,29 @@ export const ShareCopyButton: React.FC<ShareCopyButtonProps> = ({
   const { t, language } = useLanguage();
 
   const getShareMessage = () => {
-    if (currentScore > challengeSourceScore) {
+    // Validate challengeSourceScore to ensure it's a meaningful number
+    const validSourceScore = challengeSourceScore && challengeSourceScore > 0 ? challengeSourceScore : null;
+    
+    if (validSourceScore && currentScore > validSourceScore) {
       // Player won
       return language === 'fr' 
         ? `J'ai gagné 🥳 ! J'ai trouvé ${moviesGuessed}/${totalMovies} films - ${currentScore} points 🍿`
         : `I won 🥳! I found ${moviesGuessed}/${totalMovies} movies - ${currentScore} points 🍿`;
-    } else if (currentScore < challengeSourceScore) {
+    } else if (validSourceScore && currentScore < validSourceScore) {
       // Player lost
       return language === 'fr'
         ? `Bravo tu as gagné 😡 ! J'ai trouvé ${moviesGuessed}/${totalMovies} films - ${currentScore} points 🍿`
         : `Well done you won 😡! I found ${moviesGuessed}/${totalMovies} movies - ${currentScore} points 🍿`;
-    } else {
+    } else if (validSourceScore && currentScore === validSourceScore) {
       // Tie
       return language === 'fr'
         ? `Égalité parfaite ! J'ai trouvé ${moviesGuessed}/${totalMovies} films - ${currentScore} points 🍿`
         : `Perfect tie! I found ${moviesGuessed}/${totalMovies} movies - ${currentScore} points 🍿`;
+    } else {
+      // No valid source score for comparison - just share personal result
+      return language === 'fr'
+        ? `J'ai trouvé ${moviesGuessed}/${totalMovies} films - ${currentScore} points 🍿`
+        : `I found ${moviesGuessed}/${totalMovies} movies - ${currentScore} points 🍿`;
     }
   };
 
