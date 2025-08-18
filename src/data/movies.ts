@@ -489,11 +489,11 @@ export const movies: Movie[] = [
   {
     id: 44,
     title: "Modern Times",
-    emojis: "⚙️ 🏭 🍔 👮",
+    emojis: "⚙️ 🏭 👨‍🔧 🍔",
     imdbID: "tt0027977",
     frenchTitle: "Les Temps modernes",
     genre: "Action, Crime, Drama",
-    year: 2001,
+    year: 1936,
     director: "Charlie Chaplin",
     mainActor: "Charles Chaplin"
   },
