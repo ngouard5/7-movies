@@ -869,6 +869,7 @@ export const movies: Movie[] = [
     genre: "Animation, Adventure, Comedy, Drama, Family",
     year: 2009,
     director: "Bob Peterson, Pete Docter",
+    mainActor: "Ed Asner",
     tags: ["Disney"]
   },
   {

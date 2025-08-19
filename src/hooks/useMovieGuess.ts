@@ -43,6 +43,7 @@ export const useMovieGuess = ({
   const [hintIndex, setHintIndex] = useState(0);
   const [errorCount, setErrorCount] = useState(0);
   const [hint, setHint] = useState("");
+  const [uniqueHints, setUniqueHints] = useState<string[]>([]);
   const [showScorePopup, setShowScorePopup] = useState(false);
   const [lastScore, setLastScore] = useState<{basePoints: number, speedBonus: number, totalPoints: number, guessedMovie: MovieData} | null>(null);
 
@@ -103,36 +104,49 @@ export const useMovieGuess = ({
     return generateLettersAndWordsHint(movie);
   }, [generateLettersAndWordsHint]);
 
+  // Function to generate all unique hints for a movie
+  const generateUniqueHints = useCallback((movie: MovieData) => {
+    const allHints = [
+      generateFirstHint(movie),
+      generateSecondHint(movie),
+      generateThirdHint(movie),
+      generateFourthHint(movie)
+    ];
+    
+    // Remove duplicates while preserving order
+    const unique = [];
+    const seen = new Set();
+    
+    for (const hint of allHints) {
+      if (!seen.has(hint)) {
+        seen.add(hint);
+        unique.push(hint);
+      }
+    }
+    
+    return unique;
+  }, [generateFirstHint, generateSecondHint, generateThirdHint, generateFourthHint]);
+
   // Function to request the first hint manually
   const requestHint = useCallback(() => {
     const currentMovie = gameMovies[currentMovieIndex];
     if (!currentMovie) return;
 
+    const hints = generateUniqueHints(currentMovie);
+    setUniqueHints(hints);
     setShowHint(true);
     setHintIndex(0);
-    setHint(generateFirstHint(currentMovie));
-  }, [gameMovies, currentMovieIndex, generateFirstHint]);
+    setHint(hints[0]);
+  }, [gameMovies, currentMovieIndex, generateUniqueHints]);
 
   // Function to cycle through hints
   const cycleHint = useCallback(() => {
-    const currentMovie = gameMovies[currentMovieIndex];
-    if (!currentMovie) return;
+    if (uniqueHints.length === 0) return;
 
-    const nextIndex = (hintIndex + 1) % 4;
+    const nextIndex = (hintIndex + 1) % uniqueHints.length;
     setHintIndex(nextIndex);
-
-    let newHint;
-    if (nextIndex === 0) {
-      newHint = generateFirstHint(currentMovie);
-    } else if (nextIndex === 1) {
-      newHint = generateSecondHint(currentMovie);
-    } else if (nextIndex === 2) {
-      newHint = generateThirdHint(currentMovie);
-    } else {
-      newHint = generateFourthHint(currentMovie);
-    }
-    setHint(newHint);
-  }, [gameMovies, currentMovieIndex, hintIndex, generateFirstHint, generateSecondHint, generateThirdHint, generateFourthHint]);
+    setHint(uniqueHints[nextIndex]);
+  }, [uniqueHints, hintIndex]);
 
   // Functions
   const handleGuess = useCallback(
@@ -176,6 +190,7 @@ export const useMovieGuess = ({
         setWrongGuess(false);
         setShowHint(false);
         setHintIndex(0);
+        setUniqueHints([]);
         setErrorCount(0);
 
         // Move to next movie or finish game
@@ -268,6 +283,7 @@ export const useMovieGuess = ({
     setShowHint(false);
     setHint("");
     setHintIndex(0);
+    setUniqueHints([]);
     setErrorCount(0);
     setAnswerStatus(null);
   }, []);
