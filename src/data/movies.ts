@@ -638,7 +638,7 @@ export const movies: Movie[] = [
     imdbID: "tt0032553",
     frenchTitle: "Le dictateur",
     genre: "Comedy",
-    year: 2012,
+    year: 1940,
     director: "Charlie Chaplin",
     mainActor: "Charles Chaplin"
   },
