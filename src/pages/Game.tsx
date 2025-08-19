@@ -1,15 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { GameTimer } from "@/components/game/GameTimer";
 import { MovieCounter } from "@/components/game/MovieCounter";
 import { EmojiDisplay } from "@/components/game/EmojiDisplay";
 import { MovieSearchInput } from "@/components/game/MovieSearchInput";
+import { MovieAutocomplete } from "@/components/game/MovieAutocomplete";
 import { ScorePopup } from "@/components/game/ScorePopup";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { Button } from "@/components/ui/button";
 import { SkipForward, RefreshCw } from "lucide-react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { searchLocalMovies } from "@/services/movieService";
 
 const Game = () => {
   const { t } = useLanguage();
@@ -34,10 +36,44 @@ const Game = () => {
     lastScore
   } = useGameLogic();
 
-  // Ajoute ce useEffect ici :
+  // Autocomplete state
+  const [suggestions, setSuggestions] = useState<Array<{title: string, year: number, frenchTitle?: string}>>([]);
+  const [showAutocomplete, setShowAutocomplete] = useState(false);
+
+  // Focus input on mount
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  // Debounced autocomplete search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchTerm.length >= 1) {
+        const results = searchLocalMovies(searchTerm, 5);
+        setSuggestions(results);
+        setShowAutocomplete(results.length > 0);
+      } else {
+        setSuggestions([]);
+        setShowAutocomplete(false);
+      }
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Handle suggestion click
+  const handleSuggestionClick = (title: string) => {
+    handleGuess(title);
+    setSearchTerm("");
+    setSuggestions([]);
+    setShowAutocomplete(false);
+    inputRef.current?.focus();
+  };
+
+  // Clear autocomplete when input loses focus or user types
+  const handleInputChange = (newSearchTerm: string) => {
+    setSearchTerm(newSearchTerm);
+  };
 
   // Convert boolean to string for the MovieSearchInput component
   const wrongGuessMessage = wrongGuess ? t('wrong.guess') : null;
@@ -73,7 +109,22 @@ const Game = () => {
             <div className="w-full max-w-[400px] relative px-4 mx-auto">
             {/* Input and Score Popup Container */}
             <div className="w-full max-w-[400px] relative mb-6 mx-auto">
-              <MovieSearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} inputRef={inputRef} handleGuess={handleGuess} wrongGuess={wrongGuessMessage} showHint={showHint} answerStatus={answerStatus} />
+              <MovieSearchInput 
+                searchTerm={searchTerm} 
+                setSearchTerm={handleInputChange} 
+                inputRef={inputRef} 
+                handleGuess={handleGuess} 
+                wrongGuess={wrongGuessMessage} 
+                showHint={showHint} 
+                answerStatus={answerStatus} 
+              />
+              
+              {/* Autocomplete suggestions */}
+              <MovieAutocomplete 
+                suggestions={suggestions}
+                isOpen={showAutocomplete}
+                onSuggestionClick={handleSuggestionClick}
+              />
               
               {/* Score popup positioned relative to input */}
               {lastScore && <ScorePopup show={showScorePopup} basePoints={lastScore.basePoints} speedBonus={lastScore.speedBonus} totalPoints={lastScore.totalPoints} currentMovie={lastScore.guessedMovie} />}

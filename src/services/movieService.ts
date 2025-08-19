@@ -296,6 +296,77 @@ export const searchMovies = async (searchTerm: string): Promise<MovieSearchResul
   }
 };
 
+// Search local movies for autocomplete
+export const searchLocalMovies = (searchTerm: string, limit: number = 5): Array<{title: string, year: number, frenchTitle?: string}> => {
+  if (!searchTerm || searchTerm.length < 1) {
+    return [];
+  }
+
+  const normalizedSearch = normalizeText(searchTerm);
+  const results: Array<{title: string, year: number, frenchTitle?: string, score: number}> = [];
+
+  movies.forEach(movie => {
+    const normalizedTitle = normalizeText(movie.title);
+    const normalizedFrenchTitle = movie.frenchTitle ? normalizeText(movie.frenchTitle) : '';
+    
+    let score = 0;
+    
+    // Exact match (highest priority)
+    if (normalizedTitle === normalizedSearch || normalizedFrenchTitle === normalizedSearch) {
+      score = 100;
+    }
+    // Starts with (high priority)
+    else if (normalizedTitle.startsWith(normalizedSearch) || normalizedFrenchTitle.startsWith(normalizedSearch)) {
+      score = 80;
+    }
+    // Contains (medium priority)
+    else if (normalizedTitle.includes(normalizedSearch) || normalizedFrenchTitle.includes(normalizedSearch)) {
+      score = 60;
+    }
+    // Fuzzy match (lower priority)
+    else {
+      // Check fuzzy match for English title
+      const englishDistance = levenshteinDistance(normalizedTitle, normalizedSearch);
+      const englishMaxLength = Math.max(normalizedTitle.length, normalizedSearch.length);
+      const englishSimilarity = 1 - englishDistance / englishMaxLength;
+      
+      // Check fuzzy match for French title
+      let frenchSimilarity = 0;
+      if (normalizedFrenchTitle) {
+        const frenchDistance = levenshteinDistance(normalizedFrenchTitle, normalizedSearch);
+        const frenchMaxLength = Math.max(normalizedFrenchTitle.length, normalizedSearch.length);
+        frenchSimilarity = 1 - frenchDistance / frenchMaxLength;
+      }
+      
+      const bestSimilarity = Math.max(englishSimilarity, frenchSimilarity);
+      
+      if (bestSimilarity >= 0.6) {
+        score = Math.floor(bestSimilarity * 40); // 0.6 -> 24, 1.0 -> 40
+      }
+    }
+    
+    if (score > 0) {
+      results.push({
+        title: movie.title,
+        year: movie.year || 0,
+        frenchTitle: movie.frenchTitle,
+        score
+      });
+    }
+  });
+
+  // Sort by score (highest first), then by year (most recent first)
+  results.sort((a, b) => {
+    if (b.score !== a.score) {
+      return b.score - a.score;
+    }
+    return b.year - a.year;
+  });
+
+  // Remove score from final results and limit
+  return results.slice(0, limit).map(({title, year, frenchTitle}) => ({title, year, frenchTitle}));
+};
+
 export const getMovieById = async (imdbId: string): Promise<MovieDetail | null> => {
   try {
     const response = await fetch(`${BASE_URL}?apikey=${API_KEY}&i=${imdbId}&plot=short`);
