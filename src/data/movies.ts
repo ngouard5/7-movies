@@ -869,7 +869,6 @@ export const movies: Movie[] = [
     genre: "Animation, Adventure, Comedy, Drama, Family",
     year: 2009,
     director: "Bob Peterson, Pete Docter",
-    mainActor: "Ed Asner",
     tags: ["Disney"]
   },
   {
@@ -1207,8 +1206,8 @@ export const movies: Movie[] = [
     emojis: "😀 😢 😡 👧",
     imdbID: "tt2096673",
     frenchTitle: "Vice-versa",
-    genre: "Comedy, Fantasy",
-    year: 1988,
+    genre: "Animation, Comedy, Fantasy",
+    year: 2015,
     director: "Ronnie del Carmen, Pete Docter",
     tags: ["Disney"]
   },
