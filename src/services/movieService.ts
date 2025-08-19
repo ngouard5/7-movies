@@ -30,11 +30,23 @@ const LOCAL_CACHE = new Map<string, MovieSearchResult[]>();
 const movieTitleTranslations: Record<string, string> = {};
 const frenchToEnglishTitles = new Map<string, string>();
 
+// Normalize text for comparison (same as in fuzzyMatching.ts)
+const normalizeText = (text: string): string => {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics (accents)
+    .replace(/[-–—_']/g, ' ') // Replace hyphens/apostrophes with spaces
+    .replace(/[^\p{L}\p{N}\s]/gu, '') // Keep only letters, numbers, and spaces (Unicode-aware)
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim();
+};
+
 // Build the translations from our unified movies data
 movies.forEach(movie => {
   if (movie.frenchTitle && movie.frenchTitle !== movie.title) {
     movieTitleTranslations[movie.title] = movie.frenchTitle;
-    frenchToEnglishTitles.set(movie.frenchTitle.toLowerCase(), movie.title);
+    frenchToEnglishTitles.set(normalizeText(movie.frenchTitle), movie.title);
   }
 });
 
@@ -72,22 +84,22 @@ const levenshteinDistance = (a: string, b: string): number => {
 const isFuzzyMatch = (title: string, searchTerm: string, threshold = 0.25): boolean => {
   if (!title || !searchTerm) return false;
   
-  const titleLower = title.toLowerCase();
-  const searchLower = searchTerm.toLowerCase();
+  const normalizedTitle = normalizeText(title);
+  const normalizedSearch = normalizeText(searchTerm);
   
   // Check for partial match first (optimistic case)
-  if (titleLower.includes(searchLower)) {
+  if (normalizedTitle.includes(normalizedSearch)) {
     return true;
   }
   
   // For very short search terms, be more strict about fuzzy matching
-  if (searchLower.length < 3) {
-    return titleLower.startsWith(searchLower);
+  if (normalizedSearch.length < 3) {
+    return normalizedTitle.startsWith(normalizedSearch);
   }
   
   // Apply fuzzy matching for longer search terms
-  const distance = levenshteinDistance(titleLower, searchLower);
-  const maxLength = Math.max(titleLower.length, searchLower.length);
+  const distance = levenshteinDistance(normalizedTitle, normalizedSearch);
+  const maxLength = Math.max(normalizedTitle.length, normalizedSearch.length);
   const similarityRatio = 1 - distance / maxLength;
   
   return similarityRatio >= threshold;
@@ -95,13 +107,13 @@ const isFuzzyMatch = (title: string, searchTerm: string, threshold = 0.25): bool
 
 // Helper function to filter movie results with fuzzy matching
 const filterMoviesByPartialTitle = (movies: MovieSearchResult[], partialTitle: string): MovieSearchResult[] => {
-  const lowerPartial = partialTitle.toLowerCase();
+  const normalizedPartial = normalizeText(partialTitle);
   
   // First get exact or partial matches
   const exactMatches = movies.filter(movie => {
-    const englishMatches = movie.Title.toLowerCase().includes(lowerPartial);
+    const englishMatches = normalizeText(movie.Title).includes(normalizedPartial);
     const frenchTitle = movieTitleTranslations[movie.Title];
-    const frenchMatches = frenchTitle ? frenchTitle.toLowerCase().includes(lowerPartial) : false;
+    const frenchMatches = frenchTitle ? normalizeText(frenchTitle).includes(normalizedPartial) : false;
     
     // Add the French title to the movie object if it exists
     if (frenchTitle) {
@@ -135,11 +147,11 @@ const filterMoviesByPartialTitle = (movies: MovieSearchResult[], partialTitle: s
 const findEnglishTitleFromFrench = (frenchSearchTerm: string): string | null => {
   if (frenchSearchTerm.length < 2) return null;
   
-  const lowerSearchTerm = frenchSearchTerm.toLowerCase();
+  const normalizedSearchTerm = normalizeText(frenchSearchTerm);
   
   // First try exact matches
-  for (const [frenchTitle, englishTitle] of frenchToEnglishTitles.entries()) {
-    if (frenchTitle.includes(lowerSearchTerm)) {
+  for (const [normalizedFrenchTitle, englishTitle] of frenchToEnglishTitles.entries()) {
+    if (normalizedFrenchTitle.includes(normalizedSearchTerm)) {
       return englishTitle;
     }
   }
@@ -148,9 +160,9 @@ const findEnglishTitleFromFrench = (frenchSearchTerm: string): string | null => 
   let bestMatch: string | null = null;
   let bestSimilarity = 0;
   
-  for (const [frenchTitle, englishTitle] of frenchToEnglishTitles.entries()) {
-    const distance = levenshteinDistance(frenchTitle, lowerSearchTerm);
-    const maxLength = Math.max(frenchTitle.length, lowerSearchTerm.length);
+  for (const [normalizedFrenchTitle, englishTitle] of frenchToEnglishTitles.entries()) {
+    const distance = levenshteinDistance(normalizedFrenchTitle, normalizedSearchTerm);
+    const maxLength = Math.max(normalizedFrenchTitle.length, normalizedSearchTerm.length);
     const similarity = 1 - distance / maxLength;
     
     if (similarity > 0.7 && similarity > bestSimilarity) {

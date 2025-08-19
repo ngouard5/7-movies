@@ -34,9 +34,12 @@ const levenshteinDistance = (a: string, b: string): number => {
 const normalizeText = (text: string): string => {
   return text
     .toLowerCase()
-    .trim()
-    .replace(/[^\w\s]/g, '') // Remove punctuation
-    .replace(/\s+/g, ' '); // Normalize whitespace
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove diacritics (accents)
+    .replace(/[-–—_']/g, ' ') // Replace hyphens/apostrophes with spaces
+    .replace(/[^\p{L}\p{N}\s]/gu, '') // Keep only letters, numbers, and spaces (Unicode-aware)
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim();
 };
 
 // Extract keywords from title (remove common words)
