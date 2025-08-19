@@ -39,8 +39,8 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
   }
   
   const shareText = language === 'fr' 
-    ? `🍿 Je viens de jouer à 7 movies, j'ai trouvé ${score}/${totalMovies} films et j'ai fait ${totalScore} pts. Essaie de me battre :)`
-    : `🍿 I just played the 7 movies game - I found ${score}/${totalMovies} movies and scored ${totalScore} pts. Try to beat me :)`;
+    ? `🍿 Je viens de jouer à movie.guessr, j'ai trouvé ${score}/${totalMovies} films et j'ai fait ${totalScore} pts. Essaie de me battre :)`
+    : `🍿 I just played the movie.guessr game - I found ${score}/${totalMovies} movies and scored ${totalScore} pts. Try to beat me :)`;
 
   const handleShare = async () => {
     // Try to use native Web Share API first

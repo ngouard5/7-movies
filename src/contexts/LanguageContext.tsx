@@ -125,9 +125,9 @@ const translations = {
     'score.no.speed.bonus': 'No speed bonus (>30s)',
     
     // Footer
-    'footer.made.with': '7 movies is an after dinner project made with 🍿',
-    'footer.contact': 'If you have suggestions please',
-    'footer.contact.link': 'contact me',
+    'footer.made.with': 'movie.guessr is an after dinner project made with 🍿',
+    'footer.contact': 'If you have feedbacks please write to',
+    'footer.contact.link': 'feedback@guessr.app',
   },
   fr: {
     // Page d'accueil
@@ -235,9 +235,9 @@ const translations = {
     'score.no.speed.bonus': 'Pas de bonus vitesse (>30s)',
     
     // Pied de page
-    'footer.made.with': '7 movies est un projet after-dinner fait avec 🍿',
-    'footer.contact': 'Si vous avez des suggestions,',
-    'footer.contact.link': 'contactez-moi',
+    'footer.made.with': 'movie.guessr est un projet fait avec 🍿',
+    'footer.contact': 'Si vous avez des suggestions, écrivez à',
+    'footer.contact.link': 'feedback@guessr.app',
   }
 };
 

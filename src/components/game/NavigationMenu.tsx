@@ -70,7 +70,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({ isOpen, onClose 
               {t('footer.made.with')}
             </div>
             <div className="text-[14px] text-gray-600">
-              {t('footer.contact')} <a href="https://www.linkedin.com/in/nicolasgouard/" target="_blank" className="underline">{t('footer.contact.link')}</a>
+              {t('footer.contact')} <a href="mailto:feedback@guessr.app" target="_blank" className="underline">{t('footer.contact.link')}</a>
             </div>
           </div>
         </div>
