@@ -43,13 +43,15 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
     : `🍿 I just played the movie.guessr game - I found ${score}/${totalMovies} movies and scored ${totalScore} pts. Try to beat me :)`;
 
   const handleShare = async () => {
+    const fullShareText = `${shareText}\n${shareUrl}`;
+    
     // Try to use native Web Share API first
     if (navigator.share) {
       try {
+        // For iOS, include URL in text to ensure it's copied
         await navigator.share({
           title: t('share.web.title'),
-          text: shareText,
-          url: shareUrl,
+          text: fullShareText,
         });
         return;
       } catch (error) {
@@ -60,7 +62,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
 
     // Fallback: copy to clipboard
     try {
-      await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+      await navigator.clipboard.writeText(fullShareText);
       setCopied(true);
       toast.success(t('share.copy.success'));
       
