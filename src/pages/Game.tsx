@@ -130,16 +130,6 @@ const Game = () => {
               {lastScore && <ScorePopup show={showScorePopup} basePoints={lastScore.basePoints} speedBonus={lastScore.speedBonus} totalPoints={lastScore.totalPoints} currentMovie={lastScore.guessedMovie} />}
             </div>
 
-            {/* Confirm Button */}
-            <Button onClick={() => {
-              if (searchTerm.trim()) {
-                handleGuess(searchTerm.trim());
-                setSearchTerm("");
-                inputRef.current?.focus();
-              }
-            }} className="w-full max-w-[400px] h-14 bg-[#E72F2F] text-white text-xl font-bold rounded-2xl shadow-[0px_3px_3px_rgba(0,0,0,0.08),0px_5px_7px_rgba(255,255,255,0.20)_inset] hover:bg-[#d62b2b] transition-colors mb-4 font-sf">
-              {t('confirm')}
-            </Button>
 
             {/* I need a hint button - only show if hint is not visible */}
             {!showHint && (
