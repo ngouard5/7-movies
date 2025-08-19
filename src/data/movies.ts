@@ -15,7 +15,7 @@ export const movies: Movie[] = [
   {
     id: 1,
     title: "The Shawshank Redemption",
-    emojis: "🏛️ 🔒 🧑‍🤝‍🧑",
+    emojis: "🏛️ 🔒 🧑‍🤝‍🧑 🪓",
     imdbID: "tt0111161",
     frenchTitle: "Les Évadés",
     genre: "Drama",
