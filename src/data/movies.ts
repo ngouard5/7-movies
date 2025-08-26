@@ -566,7 +566,7 @@ export const movies: Movie[] = [
   {
     id: 47,
     title: "Star Wars: Episode II - Attack of the Clones",
-    emojis: "🤖 ⚔️ 👫 🏛️",
+    emojis: "⭐️ ⚔️ 🌌 👩‍❤️‍💋‍👨",
     imdbID: "tt0121765",
     frenchTitle: "Star Wars, épisode II - L'Attaque des clones",
     genre: "Aventure, Action, Science-Fiction",
@@ -2160,7 +2160,7 @@ export const movies: Movie[] = [
   {
     id: 181,
     title: "Superman",
-    emojis: "🦸‍♂️ 🛡️ 🌎 🚀",
+    emojis: "🦸‍♂️ 🟦 🟥 📰",
     imdbID: "tt0078346",
     frenchTitle: "Superman",
     genre: "Science-Fiction, Action, Aventure",
