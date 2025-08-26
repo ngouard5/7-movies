@@ -23,14 +23,14 @@ const PreGame = () => {
   // Category options with emojis
   const categoryOptions = [
     { value: 'all', label: t('category.all'), emoji: '🎬' },
-    { value: 'disney', label: t('category.disney'), emoji: '🏰' },
     { value: 'blockbusters', label: t('category.blockbusters'), emoji: '💥' },
-    { value: 'superheroes', label: t('category.superheroes'), emoji: '🦸' },
+    { value: 'disney', label: t('category.disney'), emoji: '🏰' },
     { value: 'animation', label: t('category.animation'), emoji: '🎨' },
-    { value: 'true_stories', label: t('category.true_stories'), emoji: '📖' },
+    { value: 'superheroes', label: t('category.superheroes'), emoji: '🦸' },
     { value: 'comedies', label: t('category.comedies'), emoji: '😂' },
     { value: 'fantasy', label: t('category.fantasy'), emoji: '🧙' },
     { value: 'scifi', label: t('category.scifi'), emoji: '🚀' },
+    { value: 'true_stories', label: t('category.true_stories'), emoji: '📖' },
   ] as const;
 
   // Load saved user data when component mounts
