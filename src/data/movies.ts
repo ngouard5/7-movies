@@ -1383,7 +1383,7 @@ export const movies: Movie[] = [
     year: 1997,
     director: "Barry Sonnenfeld",
     mainActor: "Tommy Lee Jones",
-    tags: ["blockbusters", "superhero"]
+    tags: ["blockbusters"]
   },
   {
     id: 116,
