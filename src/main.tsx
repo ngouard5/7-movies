@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client'
 import React from 'react'
-import { PostHogProvider } from 'posthog-js/react'
 import posthog from 'posthog-js'
 import App from './App.tsx'
 import './index.css'
@@ -20,8 +19,6 @@ const root = createRoot(document.getElementById("root")!)
 
 root.render(
   <React.StrictMode>
-    <PostHogProvider client={posthog}>
-      <App />
-    </PostHogProvider>
+    <App />
   </React.StrictMode>
 )

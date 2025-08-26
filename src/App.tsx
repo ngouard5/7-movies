@@ -14,7 +14,7 @@ import { Toaster } from "./components/ui/toaster";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { usePostHog } from "posthog-js/react";
+import posthog from 'posthog-js';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -25,14 +25,16 @@ function ScrollToTop() {
 }
 
 function PostHogPageview() {
-  const pathname = useLocation().pathname;
-  const posthog = usePostHog();
+  const { pathname } = useLocation();
   
   useEffect(() => {
-    if (posthog) {
-      posthog.capture('$pageview');
+    // Capture pageview on route change
+    try {
+      posthog?.capture('$pageview');
+    } catch (e) {
+      // noop
     }
-  }, [pathname, posthog]);
+  }, [pathname]);
   
   return null;
 }
