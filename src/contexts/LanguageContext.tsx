@@ -32,8 +32,20 @@ const translations = {
     'your.nickname': 'Your nickname',
     'enter.nickname': 'Enter your nickname',
     'choose.avatar': 'Choose your avatar',
+    'choose.category': 'Choose a category',
     'start.game': 'Start the game!',
     'accept.challenge.button': 'Let\'s go!',
+    
+    // Categories
+    'category.all': 'All movies',
+    'category.disney': 'Disney',
+    'category.blockbusters': 'Blockbusters',
+    'category.superheroes': 'Superheroes',
+    'category.animation': 'Animated films',
+    'category.true_stories': 'True stories',
+    'category.comedies': 'Comedies',
+    'category.fantasy': 'Fantasy',
+    'category.scifi': 'Science-Fiction',
     
     // Countdown
     'welcome': 'Welcome',
@@ -143,8 +155,20 @@ const translations = {
     'your.nickname': 'Votre pseudo',
     'enter.nickname': 'Entrez votre pseudo',
     'choose.avatar': 'Choisissez votre avatar',
+    'choose.category': 'Choisissez une catégorie',
     'start.game': 'Commencer le jeu !',
     'accept.challenge.button': 'C\'est parti !',
+    
+    // Catégories
+    'category.all': 'Tous les films',
+    'category.disney': 'Disney',
+    'category.blockbusters': 'Blockbusters',
+    'category.superheroes': 'Superhéros',
+    'category.animation': 'Films d\'animation',
+    'category.true_stories': 'Histoires vraies',
+    'category.comedies': 'Comédies',
+    'category.fantasy': 'Fantastique',
+    'category.scifi': 'Science-Fiction',
     
     // Compte à rebours
     'welcome': 'Bienvenue',

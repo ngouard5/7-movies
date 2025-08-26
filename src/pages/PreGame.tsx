@@ -9,10 +9,13 @@ import { HeaderLayout } from "@/components/layout/HeaderLayout";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CategoryKey } from "@/utils/category";
 
 const PreGame = () => {
   const [nickname, setNickname] = useState("");
   const [selectedAvatar, setSelectedAvatar] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryKey>("all");
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
@@ -21,6 +24,7 @@ const PreGame = () => {
   useEffect(() => {
     const savedNickname = localStorage.getItem("playerNickname");
     const savedAvatar = localStorage.getItem("playerAvatar");
+    const savedCategory = localStorage.getItem("selectedCategory") as CategoryKey;
     
     if (savedNickname) {
       setNickname(savedNickname);
@@ -28,6 +32,10 @@ const PreGame = () => {
     
     if (savedAvatar) {
       setSelectedAvatar(parseInt(savedAvatar));
+    }
+    
+    if (savedCategory) {
+      setSelectedCategory(savedCategory);
     }
   }, []);
 
@@ -44,6 +52,7 @@ const PreGame = () => {
     // Save player data
     localStorage.setItem("playerNickname", nickname);
     localStorage.setItem("playerAvatar", selectedAvatar.toString());
+    localStorage.setItem("selectedCategory", selectedCategory);
     
     // Navigate to countdown page
     navigate("/countdown");
@@ -115,6 +124,30 @@ const PreGame = () => {
                   />
                 </div>
               </div>
+
+              {!isChallengeMode && (
+                <div className="mb-6">
+                  <label className="block text-[18px] font-bold text-[#191919] mb-2 text-left font-sf">
+                    {t('choose.category')}
+                  </label>
+                  <Select value={selectedCategory} onValueChange={(value: CategoryKey) => setSelectedCategory(value)}>
+                    <SelectTrigger className="w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid border-[#CCC] text-[18px] font-sf">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">{t('category.all')}</SelectItem>
+                      <SelectItem value="disney">{t('category.disney')}</SelectItem>
+                      <SelectItem value="blockbusters">{t('category.blockbusters')}</SelectItem>
+                      <SelectItem value="superheroes">{t('category.superheroes')}</SelectItem>
+                      <SelectItem value="animation">{t('category.animation')}</SelectItem>
+                      <SelectItem value="true_stories">{t('category.true_stories')}</SelectItem>
+                      <SelectItem value="comedies">{t('category.comedies')}</SelectItem>
+                      <SelectItem value="fantasy">{t('category.fantasy')}</SelectItem>
+                      <SelectItem value="scifi">{t('category.scifi')}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
 
               <PrimaryButton onClick={handleStartGame}>
                 {isChallengeMode ? t('accept.challenge.button') : t('start.game')}

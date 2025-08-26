@@ -6,6 +6,7 @@ import { MovieData } from "@/types/gameTypes";
 import { formatGameTime } from "@/utils/movieUtils";
 import { useMovieGuess } from "@/hooks/useMovieGuess";
 import { getChallengeData, clearChallengeData } from "@/services/challengeService";
+import { filterMoviesByCategory, CategoryKey } from "@/utils/category";
 
 export type { MovieData } from "@/types/gameTypes";
 
@@ -19,8 +20,28 @@ export const useGameLogic = () => {
       console.log("Using challenge movies:", challengeData.movies.length);
       return challengeData.movies;
     }
-    // Get random movies - all data is already unified in the movies array
-    return getRandomMovies(movies, 7);
+    
+    // Get selected category from localStorage
+    const selectedCategory = (localStorage.getItem("selectedCategory") as CategoryKey) || "all";
+    
+    // Filter movies by category
+    const filteredMovies = filterMoviesByCategory(movies, selectedCategory);
+    
+    // If we have enough movies in the category, use them
+    if (filteredMovies.length >= 7) {
+      return getRandomMovies(filteredMovies, 7);
+    }
+    
+    // If not enough movies in category, complete with random movies
+    const selectedFromCategory = getRandomMovies(filteredMovies, filteredMovies.length);
+    const remainingCount = 7 - selectedFromCategory.length;
+    
+    // Get remaining movies from the full pool (excluding already selected)
+    const selectedIds = new Set(selectedFromCategory.map(m => m.id));
+    const remainingMovies = movies.filter(m => !selectedIds.has(m.id));
+    const additionalMovies = getRandomMovies(remainingMovies, remainingCount);
+    
+    return [...selectedFromCategory, ...additionalMovies];
   });
   
   const [currentMovieIndex, setCurrentMovieIndex] = useState(0);
