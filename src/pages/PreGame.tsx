@@ -9,7 +9,7 @@ import { HeaderLayout } from "@/components/layout/HeaderLayout";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { CategoryKey } from "@/utils/category";
 
 const PreGame = () => {
@@ -19,6 +19,19 @@ const PreGame = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
+
+  // Category options with emojis
+  const categoryOptions = [
+    { value: 'all', label: t('category.all'), emoji: '🎬' },
+    { value: 'disney', label: t('category.disney'), emoji: '🏰' },
+    { value: 'blockbusters', label: t('category.blockbusters'), emoji: '💥' },
+    { value: 'superheroes', label: t('category.superheroes'), emoji: '🦸' },
+    { value: 'animation', label: t('category.animation'), emoji: '🎨' },
+    { value: 'true_stories', label: t('category.true_stories'), emoji: '📖' },
+    { value: 'comedies', label: t('category.comedies'), emoji: '😂' },
+    { value: 'fantasy', label: t('category.fantasy'), emoji: '🧙' },
+    { value: 'scifi', label: t('category.scifi'), emoji: '🚀' },
+  ] as const;
 
   // Load saved user data when component mounts
   useEffect(() => {
@@ -82,9 +95,9 @@ const PreGame = () => {
       >
         <div className="relative flex-1 flex flex-col items-center">
 
-          <div className="flex flex-col items-center pt-8 space-y-8 px-4 w-full">
+          <div className="flex flex-col items-center pt-4 space-y-6 px-4 w-full">
             <div
-              className="text-[64px]"
+              className="text-[48px]"
               role="img"
               aria-label="Popcorn emoji"
             >
@@ -127,25 +140,21 @@ const PreGame = () => {
 
               {!isChallengeMode && (
                 <div className="mb-6">
-                  <label className="block text-[18px] font-bold text-[#191919] mb-2 text-left font-sf">
+                  <label htmlFor="category" className="block text-[18px] font-bold text-[#191919] mb-2 text-left font-sf">
                     {t('choose.category')}
                   </label>
-                  <Select value={selectedCategory} onValueChange={(value: CategoryKey) => setSelectedCategory(value)}>
-                    <SelectTrigger className="w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid border-[#CCC] text-[18px] font-sf">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">{t('category.all')}</SelectItem>
-                      <SelectItem value="disney">{t('category.disney')}</SelectItem>
-                      <SelectItem value="blockbusters">{t('category.blockbusters')}</SelectItem>
-                      <SelectItem value="superheroes">{t('category.superheroes')}</SelectItem>
-                      <SelectItem value="animation">{t('category.animation')}</SelectItem>
-                      <SelectItem value="true_stories">{t('category.true_stories')}</SelectItem>
-                      <SelectItem value="comedies">{t('category.comedies')}</SelectItem>
-                      <SelectItem value="fantasy">{t('category.fantasy')}</SelectItem>
-                      <SelectItem value="scifi">{t('category.scifi')}</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <select
+                    id="category"
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value as CategoryKey)}
+                    className="w-full h-14 px-4 border shadow-[0px_2px_5px_rgba(0,0,0,0.08)_inset] bg-white rounded-xl border-solid border-[#CCC] text-[18px] font-sf"
+                  >
+                    {categoryOptions.map(opt => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.emoji} {opt.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               )}
 
