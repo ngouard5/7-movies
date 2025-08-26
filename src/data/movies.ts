@@ -4781,3 +4781,26 @@ export const movies: Movie[] = [
     mainActor: "Steve Carell"
   }
 ];
+
+// Helper function to get decade string
+export const getDecade = (year: number): string => {
+  const decade = Math.floor(year / 10) * 10;
+  return `${decade}s`;
+};
+
+// Helper function to get random movies for the game
+export const getRandomMovies = (movies: Movie[], count: number = 7): Movie[] => {
+  const shuffled = [...movies].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+};
+
+// Helper function to find a movie by title
+export const findMovieByTitle = (title: string): Movie | undefined => {
+  return movies.find(movie => movie.title === title);
+};
+
+// Helper function to get unique emojis for carousel
+export const getUniqueEmojis = (limit: number = 10): string[] => {
+  const uniqueEmojis = Array.from(new Set(movies.map(movie => movie.emojis)));
+  return uniqueEmojis.slice(0, limit);
+};
