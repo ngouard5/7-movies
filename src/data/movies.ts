@@ -3379,18 +3379,6 @@ export const movies: Movie[] = [
     tags: ["hero_woman"]
   },
   {
-    id: 283,
-    title: "The Secret of NIMH",
-    emojis: "🐭 🔬 🌾 🗝️",
-    imdbID: "tt0084649",
-    frenchTitle: "Brisby et le Secret de NIMH",
-    genre: "Familial, Animation, Fantastique, Aventure, Drame, Mystère, Science-Fiction",
-    year: 1982,
-    director: "Don Bluth",
-    mainActor: "Elizabeth Hartman",
-    tags: ["hero_woman"]
-  },
-  {
     id: 284,
     title: "Kiki's Delivery Service",
     emojis: "🧹 🧙‍♀️ 🐈 🏙️",
@@ -4702,17 +4690,6 @@ export const movies: Movie[] = [
     year: 2004,
     director: "Masaaki Yuasa",
     mainActor: "Koji Imada"
-  },
-  {
-    id: 395,
-    title: "Tekkonkinkreet",
-    emojis: "🏙️ 👦 👦 🐈",
-    imdbID: "tt0831888",
-    frenchTitle: "Amer béton",
-    genre: "Action, Aventure, Animation",
-    year: 2006,
-    director: "Michael Arias",
-    mainActor: "Kazunari Ninomiya"
   },
   {
     id: 396,
