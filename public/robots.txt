@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /how-to-play
+
+Disallow: /game
+Disallow: /pre-game
+Disallow: /countdown
+Disallow: /results
+Disallow: /challenge
+
+Sitemap: https://movie.guessr.app/sitemap.xml

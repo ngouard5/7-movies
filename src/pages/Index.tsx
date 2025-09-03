@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { EmojiCarousel } from "@/components/game/EmojiCarousel";
 import { PlayButton } from "@/components/game/PlayButton";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
@@ -49,9 +49,9 @@ const Index = () => {
               <PlayButton />
             </div>
 
-            <button onClick={() => navigate("/how-to-play")} className="text-xl font-bold text-[#191919] hover:text-[#E72F2F] transition-colors font-sf">
+            <Link to="/how-to-play" className="text-xl font-bold text-[#191919] hover:text-[#E72F2F] transition-colors font-sf">
               {t('how.to.play')}
-            </button>
+            </Link>
           </div>
 
           <NavigationMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
