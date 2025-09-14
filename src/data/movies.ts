@@ -3465,7 +3465,7 @@ export const movies: Movie[] = [
   {
     id: 291,
     title: "Braveheart",
-    emojis: "🗡️ 🏴 🛡️ 👑",
+    emojis: "🗡️ 🏴󠁧󠁢󠁳󠁣󠁴󠁿 🛡️ 👑",
     imdbID: "tt0112573",
     frenchTitle: "Braveheart",
     genre: "Action, Drame, Histoire, Guerre",
