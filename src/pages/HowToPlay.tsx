@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { ArrowLeft } from "lucide-react";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { NavigationMenu } from "@/components/game/NavigationMenu";
@@ -14,7 +15,16 @@ const HowToPlay = () => {
   const { t } = useLanguage();
 
   return (
-    <AppLayout>
+    <>
+      <Helmet>
+        <title>How to Play - movie.guessr | Learn the Rules</title>
+        <meta name="description" content="Learn how to play movie.guessr! Complete guide with rules, scoring system, and tips to master the emoji movie guessing game." />
+        <link rel="canonical" href="https://movie.guessr.app/how-to-play" />
+        <meta property="og:title" content="How to Play - movie.guessr | Learn the Rules" />
+        <meta property="og:description" content="Learn how to play movie.guessr! Complete guide with rules, scoring system, and tips to master the emoji movie guessing game." />
+        <meta property="og:url" content="https://movie.guessr.app/how-to-play" />
+      </Helmet>
+      <AppLayout>
       <HeaderLayout
         leftButton={
             <button 
@@ -84,6 +94,7 @@ const HowToPlay = () => {
         </div>
       </HeaderLayout>
     </AppLayout>
+    </>
   );
 };
 

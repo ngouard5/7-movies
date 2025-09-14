@@ -12,6 +12,7 @@ import Challenge from "./pages/Challenge";
 import NotFound from "./pages/NotFound";
 import { Toaster } from "./components/ui/toaster";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import posthog from 'posthog-js';
@@ -41,8 +42,9 @@ function PostHogPageview() {
 
 function App() {
   return (
-    <LanguageProvider>
-      <Router>
+    <HelmetProvider>
+      <LanguageProvider>
+        <Router>
         <div className="w-full min-h-screen">
           <ScrollToTop />
           <PostHogPageview />
@@ -61,6 +63,7 @@ function App() {
         </div>
       </Router>
     </LanguageProvider>
+    </HelmetProvider>
   );
 }
 
