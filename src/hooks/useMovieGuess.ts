@@ -202,7 +202,7 @@ export const useMovieGuess = ({
             if (inputRef.current) {
               inputRef.current.focus();
             }
-          }, 1000);
+          }, 2500);
         } else {
           // Game over, clear timer
           if (timerRef.current) {
@@ -230,7 +230,7 @@ export const useMovieGuess = ({
               })
             );
             navigate("/results");
-          }, 1000);
+          }, 2500);
         }
       } else {
         // Wrong guess
