@@ -5,7 +5,6 @@ import { MovieCounter } from "@/components/game/MovieCounter";
 import { EmojiDisplay } from "@/components/game/EmojiDisplay";
 import { MovieSearchInput } from "@/components/game/MovieSearchInput";
 import { MovieAutocomplete } from "@/components/game/MovieAutocomplete";
-import { ScorePopup } from "@/components/game/ScorePopup";
 import { useGameLogic } from "@/hooks/useGameLogic";
 import { Button } from "@/components/ui/button";
 import { SkipForward, RefreshCw } from "lucide-react";
@@ -14,7 +13,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { searchLocalMovies } from "@/services/movieService";
 
 const Game = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const {
     currentMovieIndex,
     searchTerm,
@@ -103,23 +102,16 @@ const Game = () => {
           <div className="flex-1 flex flex-col items-center">
             {/* Emoji Display - Sticky */}
             <div className="w-full mb-6 sticky top-[80px] z-10 bg-neutral-50">
-              <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
+              <EmojiDisplay 
+                emojis={currentMovie.emojis} 
+                status={answerStatus}
+                movieData={answerStatus === "correct" && lastScore ? lastScore.guessedMovie : undefined}
+                basePoints={answerStatus === "correct" && lastScore ? lastScore.basePoints : undefined}
+                speedBonus={answerStatus === "correct" && lastScore ? lastScore.speedBonus : undefined}
+                totalPoints={answerStatus === "correct" && lastScore ? lastScore.totalPoints : undefined}
+                language={language}
+              />
             </div>
-
-            {/* Score popup positioned under emojis */}
-            {lastScore && showScorePopup && (
-              <div className="w-full px-4 mb-4">
-                <div className="w-full max-w-[400px] mx-auto">
-                  <ScorePopup 
-                    show={showScorePopup} 
-                    basePoints={lastScore.basePoints} 
-                    speedBonus={lastScore.speedBonus} 
-                    totalPoints={lastScore.totalPoints} 
-                    currentMovie={lastScore.guessedMovie} 
-                  />
-                </div>
-              </div>
-            )}
 
             <div className="w-full max-w-[400px] relative px-4 mx-auto">
             {/* Input and Autocomplete Container - Hidden when answer is correct */}
