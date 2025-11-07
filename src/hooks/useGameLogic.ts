@@ -122,16 +122,24 @@ export const useGameLogic = () => {
     }
   };
 
-  // Start timer when component mounts
+  // Start timer when component mounts, pause when answer is correct
   useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setTimer(prev => prev + 1);
-    }, 1000);
+    // Clear any existing interval
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    
+    // Only run timer if answer is not correct
+    if (answerStatus !== 'correct') {
+      timerRef.current = setInterval(() => {
+        setTimer(prev => prev + 1);
+      }, 1000);
+    }
     
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, []);
+  }, [answerStatus]);
 
   // Update movie start time when movie changes (only when movie index changes)
   useEffect(() => {

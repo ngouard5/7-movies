@@ -106,56 +106,70 @@ const Game = () => {
               <EmojiDisplay emojis={currentMovie.emojis} status={answerStatus} />
             </div>
 
+            {/* Score popup positioned under emojis */}
+            {lastScore && showScorePopup && (
+              <div className="w-full px-4 mb-4">
+                <div className="w-full max-w-[400px] mx-auto">
+                  <ScorePopup 
+                    show={showScorePopup} 
+                    basePoints={lastScore.basePoints} 
+                    speedBonus={lastScore.speedBonus} 
+                    totalPoints={lastScore.totalPoints} 
+                    currentMovie={lastScore.guessedMovie} 
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="w-full max-w-[400px] relative px-4 mx-auto">
-            {/* Input and Score Popup Container */}
-            <div className="w-full max-w-[400px] relative mb-6 mx-auto">
-              <MovieSearchInput 
-                searchTerm={searchTerm} 
-                setSearchTerm={handleInputChange} 
-                inputRef={inputRef} 
-                handleGuess={handleGuess} 
-                wrongGuess={wrongGuessMessage} 
-                showHint={showHint} 
-                answerStatus={answerStatus} 
-              />
-              
-              {/* Autocomplete suggestions */}
-              <MovieAutocomplete 
-                suggestions={suggestions}
-                isOpen={showAutocomplete}
-                onSuggestionClick={handleSuggestionClick}
-              />
-              
-              {/* Score popup positioned relative to input */}
-              {lastScore && <ScorePopup show={showScorePopup} basePoints={lastScore.basePoints} speedBonus={lastScore.speedBonus} totalPoints={lastScore.totalPoints} currentMovie={lastScore.guessedMovie} />}
-            </div>
+            {/* Input and Autocomplete Container - Hidden when answer is correct */}
+            {answerStatus !== 'correct' && (
+              <div className="w-full max-w-[400px] relative mb-6 mx-auto">
+                <MovieSearchInput 
+                  searchTerm={searchTerm} 
+                  setSearchTerm={handleInputChange} 
+                  inputRef={inputRef} 
+                  handleGuess={handleGuess} 
+                  wrongGuess={wrongGuessMessage} 
+                  showHint={showHint} 
+                  answerStatus={answerStatus} 
+                />
+                
+                {/* Autocomplete suggestions */}
+                <MovieAutocomplete 
+                  suggestions={suggestions}
+                  isOpen={showAutocomplete}
+                  onSuggestionClick={handleSuggestionClick}
+                />
+              </div>
+            )}
 
-
-            {/* I need a hint button - only show if hint is not visible */}
-            {!showHint && (
+            {/* I need a hint button - only show if hint is not visible and answer is not correct */}
+            {!showHint && answerStatus !== 'correct' && (
               <Button onClick={requestHint} variant="outline" className="w-full max-w-[400px] h-10 mb-4 text-sm font-sf">
-                {t('i.need.hint')}
+                💡 {t('i.need.hint')}
               </Button>
             )}
 
-            {/* Message display for wrong guesses */}
-            {wrongGuessMessage && <div className="text-center mb-4 font-sf max-w-[400px]">
+            {/* Hint display - clickable area */}
+            {showHint && hint && answerStatus !== 'correct' && (
+              <button 
+                onClick={cycleHint} 
+                className="w-full max-w-[400px] bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer mb-4 text-left"
+              >
+                <div className="flex items-center">
+                  <span className="mr-2">💡</span>
+                  {hint}
+                </div>
+                <RefreshCw className="w-3 h-3 ml-2 flex-shrink-0" />
+              </button>
+            )}
+
+            {/* Message display for wrong guesses - after hint */}
+            {wrongGuessMessage && answerStatus !== 'correct' && (
+              <div className="text-center mb-4 font-sf max-w-[400px]">
                 <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600">
                   {wrongGuessMessage}
-                </div>
-              </div>}
-
-            {/* Hint display with refresh button */}
-            {showHint && hint && (
-              <div className="text-center mb-4 font-sf max-w-[400px]">
-                <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600 flex items-center justify-between">
-                  <div className="flex items-center">
-                    <span className="mr-2">💡</span>
-                    {hint}
-                  </div>
-                  <Button onClick={cycleHint} variant="ghost" size="sm" className="ml-2 h-6 w-6 p-0">
-                    <RefreshCw className="w-3 h-3" />
-                  </Button>
                 </div>
               </div>
             )}

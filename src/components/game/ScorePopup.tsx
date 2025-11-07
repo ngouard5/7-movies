@@ -34,7 +34,7 @@ export const ScorePopup: React.FC<ScorePopupProps> = ({
   };
 
   return (
-    <div className="absolute top-full left-0 right-0 z-[100] mt-2">
+    <div className="w-full">
       <div className="bg-green-500 text-white p-3 rounded-xl shadow-lg animate-fade-in">
         <div className="flex items-start gap-3">
           <img

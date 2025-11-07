@@ -58,7 +58,7 @@ export const useMovieGuess = ({
     const wordCount = words.length;
     
     // Create localized hint text
-    return `${t('hint.label')}: ${firstLetters} (${wordCount} ${wordCount > 1 ? t('words') : t('word')})`;
+    return `${firstLetters} (${wordCount} ${wordCount > 1 ? t('words') : t('word')})`;
   }, [language, t]);
 
   // Generate first hint: Genre + decade
@@ -68,7 +68,7 @@ export const useMovieGuess = ({
     
     if (hasGenre && hasYear) {
       const decade = getDecade(movie.year);
-      return `${t('hint.label')}: ${movie.genre}, ${decade}`;
+      return `${movie.genre}, ${decade}`;
     } else {
       // Fallback to letters + words if genre or year missing
       return generateLettersAndWordsHint(movie);
@@ -80,7 +80,7 @@ export const useMovieGuess = ({
     const hasDirector = movie.director && movie.director.trim() !== "";
     
     if (hasDirector) {
-      return `${t('hint.label')}: ${t('hint.directed.by')} ${movie.director}`;
+      return `${t('hint.directed.by')} ${movie.director}`;
     } else {
       // Fallback to letters + words if no director info
       return generateLettersAndWordsHint(movie);
@@ -92,7 +92,7 @@ export const useMovieGuess = ({
     const hasActor = movie.mainActor && movie.mainActor.trim() !== "";
     
     if (hasActor) {
-      return `${t('hint.label')}: ${t('hint.starring')} ${movie.mainActor}`;
+      return `${t('hint.starring')} ${movie.mainActor}`;
     } else {
       // Fallback to letters + words if no actor info
       return generateLettersAndWordsHint(movie);
