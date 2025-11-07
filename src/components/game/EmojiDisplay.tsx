@@ -58,7 +58,7 @@ export const EmojiDisplay: React.FC<EmojiDisplayProps> = ({
       {/* Score Details Section - Only shown when correct */}
       {showScoreDetails && (
         <div className="w-full border-t border-[#99CC99] bg-[#DDFFDD] px-4 py-4">
-          <div className="flex items-left gap-4 max-w-[400px]">
+          <div className="flex items-center gap-4 max-w-[400px]">
             {/* Movie Poster */}
             <img
               src={movieData.image || getMoviePosterUrl(movieData.imdbID)}
@@ -70,7 +70,7 @@ export const EmojiDisplay: React.FC<EmojiDisplayProps> = ({
             />
             
             {/* Score Information */}
-            <div className="flex-1">
+            <div className="flex-1 text-left">
               <div className="font-bold text-base mb-2 text-gray-900">
                 {language === 'fr' && movieData.frenchTitle ? movieData.frenchTitle : movieData.title}
               </div>
