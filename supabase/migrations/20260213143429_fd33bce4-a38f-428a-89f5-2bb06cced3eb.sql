@@ -1,0 +1,1 @@
+DROP POLICY "Public can view game session movies" ON public.game_session_movies;
