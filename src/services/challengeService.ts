@@ -25,33 +25,34 @@ export async function getChallengeMovies(sessionId: string): Promise<Movie[] | n
   try {
     console.log("Fetching challenge movies for session:", sessionId);
     
-    const { data: movies, error } = await supabase
-      .from('game_session_movies')
-      .select('*')
-      .eq('session_id', sessionId)
-      .order('movie_order', { ascending: true });
+    const response = await fetch(
+      `https://beibpjlcoriuebctohcm.supabase.co/functions/v1/get-challenge-movies?sessionId=${encodeURIComponent(sessionId)}`,
+      {
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJlaWJwamxjb3JpdWViY3RvaGNtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU0NDg3NDcsImV4cCI6MjA3MTAyNDc0N30.KJ3VQN-HQ_Mk92Macxd4YKtg4QyN5nkrzkdOnFUAUYQ',
+        },
+      }
+    );
 
-    if (error) {
-      console.error('Error fetching challenge movies:', error);
+    if (!response.ok) {
+      console.error('Error fetching challenge movies:', response.statusText);
       return null;
     }
+
+    const { movies } = await response.json();
 
     if (!movies || movies.length === 0) {
       console.warn('No movies found for challenge session:', sessionId);
       return null;
     }
 
-    // Convert database movies to Movie format
-    // Note: Only use properties that exist in the database
-    const challengeMovies: Movie[] = movies.map(movie => ({
+    const challengeMovies: Movie[] = movies.map((movie: any) => ({
       id: parseInt(movie.movie_id),
       title: movie.movie_title,
       emojis: movie.movie_emojis,
       imdbID: movie.movie_imdb_id || '',
       image: movie.movie_image,
-      frenchTitle: movie.french_title
-      // Note: genre, year, director, mainActor are not stored in game_session_movies
-      // so we don't include them here
+      frenchTitle: movie.french_title,
     }));
 
     console.log("Challenge movies loaded:", challengeMovies.length);

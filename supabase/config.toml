@@ -1,1 +1,4 @@
 project_id = "beibpjlcoriuebctohcm"
+
+[functions.get-challenge-movies]
+verify_jwt = false
