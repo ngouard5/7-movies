@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { ArrowLeft } from "lucide-react";
-import { BackgroundGradients } from "@/components/game/BackgroundGradients";
-import { NavigationMenu } from "@/components/game/NavigationMenu";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { HeaderLayout } from "@/components/layout/HeaderLayout";
 import { PrimaryButton } from "@/components/ui/PrimaryButton";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const HowToPlay = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { t } = useLanguage();
 
@@ -20,9 +17,15 @@ const HowToPlay = () => {
         <title>How to Play - movie.guessr | Learn the Rules</title>
         <meta name="description" content="Learn how to play movie.guessr! Complete guide with rules, scoring system, and tips to master the emoji movie guessing game." />
         <link rel="canonical" href="https://movie.guessr.app/how-to-play" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://movie.guessr.app/how-to-play" />
         <meta property="og:title" content="How to Play - movie.guessr | Learn the Rules" />
         <meta property="og:description" content="Learn how to play movie.guessr! Complete guide with rules, scoring system, and tips to master the emoji movie guessing game." />
-        <meta property="og:url" content="https://movie.guessr.app/how-to-play" />
+        <meta property="og:image" content="https://movie.guessr.app/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="How to Play - movie.guessr | Learn the Rules" />
+        <meta name="twitter:description" content="Learn how to play movie.guessr! Complete guide with rules, scoring system, and tips to master the emoji movie guessing game." />
+        <meta name="twitter:image" content="https://movie.guessr.app/og-image.jpg" />
       </Helmet>
       <AppLayout>
       <HeaderLayout
@@ -39,11 +42,11 @@ const HowToPlay = () => {
         <div className="relative flex-1">
           
           <div className="flex flex-col items-center px-4 pt-8 space-y-8">
-            <h1 className="w-full max-w-[400px] text-[40px] leading-[48px] text-left text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
+            <h1 className="w-full max-w-[400px] md:max-w-[720px] text-[40px] leading-[48px] text-left text-[#191919] max-sm:text-[32px] max-sm:leading-10 font-fredoka">
               {t('how.to.play')}
             </h1>
 
-            <div className="max-w-[400px] w-full space-y-8">
+            <div className="max-w-[400px] md:max-w-[720px] w-full space-y-8">
               <section className="text-left">
                 <h2 className="text-[24px] font-bold text-[#191919] mb-4 font-fredoka">
                   {t('guess.titles')}
@@ -90,7 +93,6 @@ const HowToPlay = () => {
             </div>
           </div>
 
-          <NavigationMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
         </div>
       </HeaderLayout>
     </AppLayout>

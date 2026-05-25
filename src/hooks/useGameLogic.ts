@@ -21,11 +21,12 @@ export const useGameLogic = () => {
       return challengeData.movies;
     }
     
-    // Get selected category from localStorage
-    const selectedCategory = (localStorage.getItem("selectedCategory") as CategoryKey) || "all";
-    
-    // Filter movies by category
-    const filteredMovies = filterMoviesByCategory(movies, selectedCategory);
+    // Get selected categories from localStorage
+    const savedCategories = localStorage.getItem("selectedCategories");
+    const selectedCategories: CategoryKey[] = savedCategories ? JSON.parse(savedCategories) : [];
+
+    // Filter movies by categories
+    const filteredMovies = filterMoviesByCategory(movies, selectedCategories);
     
     // If we have enough movies in the category, use them
     if (filteredMovies.length >= 7) {

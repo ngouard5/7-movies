@@ -15,11 +15,11 @@ export const AvatarSelector: React.FC<AvatarSelectorProps> = ({
   onSelect 
 }) => {
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-4 gap-3 w-full">
       {avatars.map((avatar, index) => (
         <button
           key={index}
-          className={`w-[78px] h-[78px] flex items-center justify-center text-4xl border rounded-xl ${
+          className={`aspect-square flex items-center justify-center text-4xl border rounded-xl ${
             selectedAvatar === index
               ? "bg-[#FFF2CC] border-[#FC3] shadow-[0px_2px_5px_rgba(0,0,0,0.10)_inset]"
               : "bg-white border-[#CCC] shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"

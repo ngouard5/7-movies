@@ -36,7 +36,7 @@ const Countdown = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-screen md:min-h-[600px] pt-16 overflow-hidden mx-auto my-0 flex items-center justify-center">
+      <main className="relative w-full min-h-screen pt-16 overflow-hidden mx-auto my-0 flex items-center justify-center">
         <div className="relative w-full h-full flex flex-col items-center justify-center">
 
           <div className="flex flex-col items-center justify-center">

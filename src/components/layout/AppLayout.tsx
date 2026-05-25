@@ -7,18 +7,10 @@ interface AppLayoutProps {
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen md:min-h-[600px] flex items-center justify-center md:p-4">
-      <div className="pb-16 
-        w-full mx-auto
-        md:max-w-[600px]
-        md:rounded-[24px]
-        md:shadow-[0px_1px_4px_rgba(0,0,0,0.16)]
-        relative overflow-hidden
-      ">
-        <BackgroundBlobs />
-        <div className="relative z-10">
-          {children}
-        </div>
+    <div className="min-h-screen relative overflow-hidden">
+      <BackgroundBlobs />
+      <div className="relative z-10 pb-16">
+        {children}
       </div>
     </div>
   );

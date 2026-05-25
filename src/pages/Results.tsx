@@ -210,7 +210,7 @@ const Results = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-screen md:min-h-[600px]]">
+      <main className="relative w-full min-h-screen">
         {/* Homepage button */}
         <button
           onClick={handleGoHome}
@@ -222,7 +222,7 @@ const Results = () => {
         
         <div className="relative flex flex-col items-center">
 
-          <div id="results-content" className="w-[90%] max-w-[400px] mx-auto pt-[60px] text-center flex flex-col items-center">
+          <div id="results-content" className="w-[90%] max-w-[400px] md:max-w-[900px] mx-auto pt-[60px] text-center flex flex-col items-center">
             <div className="mb-6 w-full">
               <div className="text-[40px] leading-[48px] font-fredoka text-[#191919] mb-4">
                 🎉🎉🎉
@@ -251,76 +251,82 @@ const Results = () => {
 
             <div className="flex flex-col gap-4 w-full mt-4">
               {guessedMovies.length > 0 && (
-                <div className="text-left text-[18px] font-bold flex items-center font-sf">
-                  <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                  {t('results.guessed.movies')}
-                </div>
-              )}
-              
-              {guessedMovies.map((movie) => (
-                <div 
-                  key={movie.id} 
-                  className="flex flex-col bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
-                >
-                  <div className="flex items-center p-3">
-                    <img
-                      src={movie.image || getMoviePosterUrl(movie.imdbID)}
-                      alt={movie.title}
-                      className="w-12 h-[68px] rounded object-cover mr-3"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "/placeholder.svg";
-                      }}
-                    />
-                     <div className="flex-1 text-left">
-                       <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">
-                         {language === 'fr' && movie.frenchTitle ? movie.frenchTitle : movie.title}
-                       </div>
-                       <div className="text-2xl mb-1">{movie.emojis}</div>
-                     </div>
-                    <div className="flex flex-col items-end">
-                      {movie.points && (
-                        <div className="text-[14px] font-bold text-[#E72F2F] font-sf">
-                          +{movie.points} pts
+                <>
+                  <div className="text-left text-[18px] font-bold flex items-center font-sf">
+                    <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+                    {t('results.guessed.movies')}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {guessedMovies.map((movie) => (
+                      <div
+                        key={movie.id}
+                        className="flex flex-col bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)]"
+                      >
+                        <div className="flex items-center p-3">
+                          <img
+                            src={movie.image || getMoviePosterUrl(movie.imdbID)}
+                            alt={movie.title}
+                            className="w-12 h-[68px] rounded object-cover mr-3"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "/placeholder.svg";
+                            }}
+                          />
+                          <div className="flex-1 text-left">
+                            <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">
+                              {language === 'fr' && movie.frenchTitle ? movie.frenchTitle : movie.title}
+                            </div>
+                            <div className="text-2xl mb-1">{movie.emojis}</div>
+                          </div>
+                          <div className="flex flex-col items-end">
+                            {movie.points && (
+                              <div className="text-[14px] font-bold text-[#E72F2F] font-sf">
+                                +{movie.points} pts
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              ))}
-              
-              {passedMovies.length > 0 && (
-                <div className="text-left text-[18px] font-bold mt-2 flex items-center font-sf">
-                  <XCircle className="h-5 w-5 mr-2 text-red-500" />
-                  {t('results.passed.movies')}
-                </div>
+                </>
               )}
-              
-              {passedMovies.map((movie) => (
-                <div 
-                  key={movie.id} 
-                  className="flex flex-col bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)] opacity-80"
-                >
-                  <div className="flex items-center p-3">
-                    <img
-                      src={movie.image || getMoviePosterUrl(movie.imdbID)}
-                      alt={movie.title}
-                      className="w-12 h-[68px] rounded object-cover mr-3 grayscale"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = "/placeholder.svg";
-                      }}
-                    />
-                     <div className="flex-1 text-left">
-                       <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">
-                         {language === 'fr' && movie.frenchTitle ? movie.frenchTitle : movie.title}
-                       </div>
-                       <div className="text-2xl mb-1">{movie.emojis}</div>
-                     </div>
+
+              {passedMovies.length > 0 && (
+                <>
+                  <div className="text-left text-[18px] font-bold mt-2 flex items-center font-sf">
+                    <XCircle className="h-5 w-5 mr-2 text-red-500" />
+                    {t('results.passed.movies')}
                   </div>
-                </div>
-              ))}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {passedMovies.map((movie) => (
+                      <div
+                        key={movie.id}
+                        className="flex flex-col bg-white border border-[#CCC] rounded-xl shadow-[0px_3px_3px_rgba(0,0,0,0.06)] opacity-80"
+                      >
+                        <div className="flex items-center p-3">
+                          <img
+                            src={movie.image || getMoviePosterUrl(movie.imdbID)}
+                            alt={movie.title}
+                            className="w-12 h-[68px] rounded object-cover mr-3 grayscale"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "/placeholder.svg";
+                            }}
+                          />
+                          <div className="flex-1 text-left">
+                            <div className="font-bold text-[16px] text-[#191919] mb-1 font-sf">
+                              {language === 'fr' && movie.frenchTitle ? movie.frenchTitle : movie.title}
+                            </div>
+                            <div className="text-2xl mb-1">{movie.emojis}</div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
-            <div className="flex w-full gap-2 mt-8 flex-col">
+            <div className="flex w-full gap-2 mt-8 flex-col md:max-w-[560px] md:mx-auto">
               {/* Share button - only show if session is saved and not from a challenge */}
               {savedSessionId && !challengeSourceSessionId && (
                 <ShareButton 

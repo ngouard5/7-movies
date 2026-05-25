@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { BackgroundGradients } from "@/components/game/BackgroundGradients";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { getChallengeMovies, getChallengeSessionInfo, setChallengeData } from "@/services/challengeService";
@@ -78,7 +79,7 @@ const Challenge = () => {
   if (isLoading) {
     return (
       <AppLayout>
-        <main className="relative w-full min-h-screen min-h-screen md:min-h-[600px] overflow-hidden">
+        <main className="relative w-full min-h-screen overflow-hidden">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-xl font-sf">{t('challenge.loading')}</div>
           </div>
@@ -90,7 +91,7 @@ const Challenge = () => {
   if (error) {
     return (
       <AppLayout>
-        <main className="relative w-full min-h-screen md:min-h-[600px] overflow-hidden">
+        <main className="relative w-full min-h-screen overflow-hidden">
           
           <TopLeftButton
             onClick={handleGoHome}
@@ -99,7 +100,7 @@ const Challenge = () => {
           />
 
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-[90%] max-w-[400px] text-center">
+            <div className="w-[90%] max-w-[400px] md:max-w-[560px] text-center">
               <div className="text-[40px] mb-4">❌</div>
               <div className="text-[24px] font-bold mb-4 font-sf text-[#191919]">
                 {t('challenge.not.found')}
@@ -117,10 +118,29 @@ const Challenge = () => {
     );
   }
 
+  const challengerName = challengeInfo?.playerNickname;
+  const ogTitle = challengerName
+    ? `${challengerName} challenges you on movie.guessr!`
+    : "Can you beat this score on movie.guessr?";
+  const ogDescription = `Guess 7 movies from emojis and beat ${challengerName ? `${challengerName}'s` : "their"} score of ${challengeInfo?.totalScore ?? "?"} pts. Play movie.guessr!`;
+
   return (
     <AppLayout>
-      <main className="relative w-full min-h-screen md:min-h-[600px] overflow-hidden">
-        
+      <Helmet>
+        <title>{ogTitle}</title>
+        <meta name="description" content={ogDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={ogTitle} />
+        <meta property="og:description" content={ogDescription} />
+        <meta property="og:image" content="https://movie.guessr.app/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={ogTitle} />
+        <meta name="twitter:description" content={ogDescription} />
+        <meta name="twitter:image" content="https://movie.guessr.app/og-image.jpg" />
+        <meta name="robots" content="noindex" />
+      </Helmet>
+      <main className="relative w-full min-h-screen min-h-screen overflow-hidden">
+
         <TopLeftButton
           onClick={handleGoHome}
           icon={<Home className="w-6 h-6 text-[#E72F2F]" />}

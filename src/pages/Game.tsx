@@ -38,6 +38,7 @@ const Game = () => {
   // Autocomplete state
   const [suggestions, setSuggestions] = useState<Array<{title: string, year: number, frenchTitle?: string}>>([]);
   const [showAutocomplete, setShowAutocomplete] = useState(false);
+  const [hintFlipped, setHintFlipped] = useState(false);
 
   // Focus input on mount
   useEffect(() => {
@@ -79,7 +80,7 @@ const Game = () => {
 
   return (
     <AppLayout>
-      <main className="relative w-full min-h-screen md:min-h-[600px] mx-auto my-0">
+      <main className="relative w-full min-h-screen mx-auto my-0">
         <div className="relative flex flex-col">
 
           {/* Header with MovieCounter, Timer, and Skip button - Sticky */}
@@ -113,10 +114,10 @@ const Game = () => {
               />
             </div>
 
-            <div className="w-full max-w-[400px] relative px-4 mx-auto">
+            <div className="w-full max-w-[400px] md:max-w-[560px] relative px-4 mx-auto">
             {/* Input and Autocomplete Container - Hidden when answer is correct */}
             {answerStatus !== 'correct' && (
-              <div className="w-full max-w-[400px] relative mb-6 mx-auto">
+              <div className="w-full max-w-[400px] md:max-w-[560px] relative mb-6 mx-auto">
                 <MovieSearchInput 
                   searchTerm={searchTerm} 
                   setSearchTerm={handleInputChange} 
@@ -138,28 +139,34 @@ const Game = () => {
 
             {/* I need a hint button - only show if hint is not visible and answer is not correct */}
             {!showHint && answerStatus !== 'correct' && (
-              <Button onClick={requestHint} variant="outline" className="w-full max-w-[400px] h-10 mb-4 text-sm font-sf">
+              <Button onClick={requestHint} variant="outline" className="w-full max-w-[400px] md:max-w-[560px] h-10 mb-4 text-sm font-sf">
                 💡 {t('i.need.hint')}
               </Button>
             )}
 
             {/* Hint display - clickable area */}
             {showHint && hint && answerStatus !== 'correct' && (
-              <button 
-                onClick={cycleHint} 
-                className="w-full max-w-[400px] bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer mb-4 text-left"
+              <button
+                onClick={() => { cycleHint(); setHintFlipped(f => !f); }}
+                className="w-full max-w-[400px] md:max-w-[560px] bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600 flex items-center justify-between hover:bg-gray-50 transition-colors cursor-pointer mb-4 text-left active:scale-95"
               >
-                <div className="flex items-center">
-                  <span className="mr-2">💡</span>
-                  {hint}
+                <div className="flex items-center gap-2">
+                  <span>💡</span>
+                  <span>{hint}</span>
                 </div>
-                <RefreshCw className="w-3 h-3 ml-2 flex-shrink-0" />
+                <div className="flex items-center gap-1 text-[11px] text-gray-400 flex-shrink-0 ml-3">
+                  <RefreshCw
+                    className="w-3.5 h-3.5 transition-transform duration-300"
+                    style={{ transform: hintFlipped ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                  />
+                  <span>new hint</span>
+                </div>
               </button>
             )}
 
             {/* Message display for wrong guesses - after hint */}
             {wrongGuessMessage && answerStatus !== 'correct' && (
-              <div className="text-center mb-4 font-sf max-w-[400px]">
+              <div className="text-center mb-4 font-sf max-w-[400px] md:max-w-[560px]">
                 <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm text-gray-600">
                   {wrongGuessMessage}
                 </div>
