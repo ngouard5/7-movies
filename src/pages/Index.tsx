@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { EmojiCarousel } from "@/components/game/EmojiCarousel";
@@ -46,9 +45,9 @@ const Index = () => {
           <div className="relative flex-1">
 
             <div className="flex flex-col items-center space-y-8 px-4 pt-8 pb-8">
-              <div className="text-[64px]" role="img" aria-label="Popcorn emoji">
+              <Link to="/" className="text-[64px]" aria-label="Popcorn emoji">
                 🍿
-              </div>
+              </Link>
 
               <h1 className="w-[90%] max-w-[400px] md:max-w-[640px] text-[56px] leading-[64px] text-center text-[#191919] max-sm:text-[40px] max-sm:leading-[48px] font-fredoka whitespace-pre-line">
                 {t('find.movies')}
