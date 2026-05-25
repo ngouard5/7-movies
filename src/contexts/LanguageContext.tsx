@@ -20,7 +20,7 @@ const LanguageContext = createContext<LanguageContextType>({
 const translations = {
   en: {
     // Home page
-    'find.movies': 'Find movies\nwith emojis',
+    'find.movies': 'movie.guessr',
     'game.description': 'Guess 7 movie titles based on emojis, in the shortest period of time!',
     'challenge.friends': 'Challenge your friends to beat your record!',
     'play.button': 'Play now',
@@ -143,7 +143,7 @@ const translations = {
   },
   fr: {
     // Page d'accueil
-    'find.movies': 'Devinez les films grâce aux émojis',
+    'find.movies': 'movie.guessr',
     'game.description': 'Devinez 7 titres de films à partir d\'émojis, le plus rapidement possible !',
     'challenge.friends': 'Défiez vos amis pour battre votre record !',
     'play.button': 'Jouer',
