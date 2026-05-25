@@ -77,7 +77,7 @@ const Index = () => {
           </div>
 
           <footer className="mt-12 pb-8 text-center text-[14px] text-gray-500 font-sf space-y-1 px-4">
-            <p>movie.guessr is an after dinner project made with 🍿</p>
+            <p>movie.guessr is an after dinner project made with 🍿 by <a href="https://nicolasgouard.com" className="underline hover:text-[#E72F2F] transition-colors" target="_blank" rel="noopener">Nicolas Gouard</a></p>
             <p>If you have feedbacks please write to <a href="mailto:feedback@guessr.app" className="underline hover:text-[#E72F2F] transition-colors">feedback@guessr.app</a></p>
           </footer>
         </HeaderLayout>
